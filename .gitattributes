@@ -1,1 +1,9 @@
 * text=auto !eol
+main/.classpath -text svneol=unset#text/plain
+main/.project -text svneol=unset#text/plain
+main/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
+main/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
+main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
+main/src/GPL.txt -text svneol=unset#text/plain
+main/src/NOTICE.txt -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
