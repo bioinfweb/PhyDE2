@@ -26,17 +26,17 @@ public class NewAction extends AbstractFileAction {
 	
 	
 	public static AlignmentModel<Character> createAlignmentModel() {
-		return new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance());
+		return new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true));
 	}
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
-			getEditor().getAlignmentArea().setAlignmentModel(createAlignmentModel(), true);
-			getEditor().setFile(null);
-			getEditor().setFormat(MainFrame.DEFAULT_FORMAT);
-			getEditor().setChanged(false);
+			getMainFrame().getAlignmentArea().setAlignmentModel(createAlignmentModel(), true);
+			getMainFrame().setFile(null);
+			getMainFrame().setFormat(MainFrame.DEFAULT_FORMAT);
+			getMainFrame().setChanged(false);
 		}
 	}
 }

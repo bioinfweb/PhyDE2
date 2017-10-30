@@ -29,10 +29,12 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.edit.AddSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
+import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
 import info.bioinfweb.phyde2.gui.actions.file.NewAction;
 import info.bioinfweb.phyde2.gui.actions.file.OpenAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAsAction;
+import info.bioinfweb.phyde2.gui.actions.help.AboutAction;
 
 
 
@@ -41,22 +43,28 @@ public class ActionManagement extends AbstractUndoActionManagement {
 //	private Vector<Action> popupActions = new Vector<Action>();
 //	private JPopupMenu popupMenu = new JPopupMenu();
 	
+	
 	public ActionManagement(MainFrame mainFrame) {
 		super();
 		this.mainFrame = mainFrame;
 		fillMap();
 	}
 	
+	
 	protected void fillMap() {
 		put("file.new", new NewAction(mainFrame));
-		put("file.openAction", new OpenAction(mainFrame));
-		put("file.saveAction", new SaveAction(mainFrame));
-		put("file.saveAsAction", new SaveAsAction(mainFrame));
+		put("file.open", new OpenAction(mainFrame));
+		put("file.save", new SaveAction(mainFrame));
+		put("file.saveAs", new SaveAsAction(mainFrame));
+		put("file.export",new ExportAction(mainFrame));
 		
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
-		put("edit.removegaps", new RemoveGapsAction(mainFrame));
+		put("edit.removeGaps", new RemoveGapsAction(mainFrame));
+		
+		put("help.about", new AboutAction(mainFrame));
 	}
+	
 	
 	@Override
 	protected AccessibleUndoManager getUndoManager() {

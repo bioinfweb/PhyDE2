@@ -6,17 +6,22 @@ main/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
+main/src/GPL.html -text svneol=unset#text/plain
 main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/Main.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/ActionManagement.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveGapsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/AbstractFileAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/file/ExportAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/NewAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/OpenAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAsAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain

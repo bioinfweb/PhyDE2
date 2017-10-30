@@ -26,11 +26,11 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SelectionModel selection = getEditor().getAlignmentArea().getSelection();
+		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
 
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			String id = getEditor().getAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
-			getEditor().getAlignmentArea().getAlignmentModel().removeSequence(id);
+			String id = getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
+			getMainFrame().getAlignmentArea().getAlignmentModel().removeSequence(id);
 		}
 	}	
 }

@@ -8,12 +8,17 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
+import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
+import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
 @SuppressWarnings("serial")
 public class SaveAsAction extends AbstractFileAction{
+	private static JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
+	
 	public SaveAsAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Save As..."); 
@@ -25,5 +30,7 @@ public class SaveAsAction extends AbstractFileAction{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		save();
+		
+		factory.getFormatInfo(Main.DEFAULT_FORMAT).createFileFilter(TestStrategy.BOTH);
 	}
 }

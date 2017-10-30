@@ -27,17 +27,17 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SelectionModel selection = getEditor().getAlignmentArea().getSelection();
+		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
 		int indexFirstColumn = selection.getFirstColumn();
 
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			String id = getEditor().getAlignmentArea().getSequenceOrder().idByIndex(row);
-			int indexLastColumn = Math.min(selection.getLastColumn(), getEditor().getAlignmentArea().getAlignmentModel().getSequenceLength(id) - 1);
+			String id = getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(row);
+			int indexLastColumn = Math.min(selection.getLastColumn(), getMainFrame().getAlignmentArea().getAlignmentModel().getSequenceLength(id) - 1);
 
 			int columnPosition = indexFirstColumn;
 			for (int i = indexFirstColumn; i <= indexLastColumn; i++) {				
-				if (getEditor().getAlignmentArea().getAlignmentModel().getTokenAt(id, columnPosition).equals('-')) {
-					getEditor().getAlignmentArea().getAlignmentModel().removeTokenAt(id, columnPosition);
+				if (getMainFrame().getAlignmentArea().getAlignmentModel().getTokenAt(id, columnPosition).equals('-')) {
+					getMainFrame().getAlignmentArea().getAlignmentModel().removeTokenAt(id, columnPosition);
 				} 
 				else {
 					columnPosition++;

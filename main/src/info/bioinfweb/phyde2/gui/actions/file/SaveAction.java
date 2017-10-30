@@ -14,8 +14,8 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 @SuppressWarnings("serial")
 public class SaveAction extends AbstractFileAction{
-	public SaveAction(MainFrame editor) {
-		super(editor);
+	public SaveAction(MainFrame mainframe) {
+		super(mainframe);
 		putValue(Action.NAME, "Save"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -24,11 +24,16 @@ public class SaveAction extends AbstractFileAction{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (getEditor().getFile() == null) {
-			save();
+		if (getMainFrame().getFile() == null) {
+			if (getMainFrame().getFormat() == MainFrame.DEFAULT_FORMAT) {
+				save();
+			}
+			else {
+				export();
+			}
 		}
 		else {
-			writeFile();
+			save();
 		}
 	}
 }

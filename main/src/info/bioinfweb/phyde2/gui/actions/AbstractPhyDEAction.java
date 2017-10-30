@@ -18,7 +18,7 @@ public abstract class AbstractPhyDEAction extends AbstractAction {
 	}	
 	
 	
-	protected MainFrame getEditor() {
+	protected MainFrame getMainFrame() {
 		return mainframe;
 	}
 }

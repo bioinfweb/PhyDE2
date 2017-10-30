@@ -45,6 +45,7 @@ public class OpenAction extends AbstractFileAction {
 			fileChooser = new JFileChooser();
 			fileChooser.setAcceptAllFileFilterUsed(true);
 			
+			//TODO Unterscheiden nach input Dateiformaten --> Nexus, FASTA, Phylip = import, ungespeichert --> Nexml = öffnen, gespeichert
 			ListOrderedSet<String> validExtensions = new ListOrderedSet<String>();
 			for (String formatID : factory.getFormatIDsSet()) {
 				JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
@@ -66,33 +67,43 @@ public class OpenAction extends AbstractFileAction {
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
 			try {
-				if (getOpenFileChooser().showOpenDialog(getEditor().getFrame()) == JFileChooser.APPROVE_OPTION) {
+				if (getOpenFileChooser().showOpenDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
 					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
 					AlignmentDataReader mainReader = new AlignmentDataReader(eventReader, new BioPolymerCharAlignmentModelFactory());
 					mainReader.readAll();
 
 					// File does not contain any alignments
 					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {
-						JOptionPane.showMessageDialog(getEditor().getFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
+						JOptionPane.showMessageDialog(getMainFrame().getFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
 								"\" does not contain any alignments.", "Error while loading file", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
+						
 						// File contains one alignment
-						getEditor().getAlignmentArea().setAlignmentModel(mainReader.getAlignmentModelReader().getCompletedModels().get(0), true);
-						getEditor().setFile(getOpenFileChooser().getSelectedFile());
-						getEditor().setFormat(eventReader.getFormatID());
-						getEditor().setChanged(false);
+						getMainFrame().getAlignmentArea().setAlignmentModel(mainReader.getAlignmentModelReader().getCompletedModels().get(0), true);
+						getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
+						getMainFrame().setFormat(eventReader.getFormatID());
+						
+						//Seperate NeXML File open procedure form the other formats
+						if (getMainFrame().getFormat() == MainFrame.DEFAULT_FORMAT) {
+							getMainFrame().setChanged(false);
+						}
+						else {
+							//just an import
+							getMainFrame().setChanged(true);
+						}
 
+						
 						// File contains more than one alignment --> just the first one was loaded
 						if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
-							JOptionPane.showMessageDialog(getEditor().getFrame(),
+							JOptionPane.showMessageDialog(getMainFrame().getFrame(),
 									"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				}
 			}
 			catch (Exception ex) {
-				JOptionPane.showMessageDialog(getEditor().getFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

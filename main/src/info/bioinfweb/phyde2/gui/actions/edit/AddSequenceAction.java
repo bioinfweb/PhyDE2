@@ -29,7 +29,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	public void actionPerformed(ActionEvent e) {
 		String name = JOptionPane.showInputDialog("New sequence name");
 		if (name != null) {
-			getEditor().getAlignmentArea().getAlignmentModel().addSequence(name);
+			getMainFrame().getAlignmentArea().getAlignmentModel().addSequence(name);
 		}
 	}
 }
