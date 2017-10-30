@@ -11,15 +11,15 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
-public class Main extends ProgramMainClass{
+public class Main extends ProgramMainClass {
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	
 	private static Main firstInstance = null;
 	
-	//TODO Error report, problem with import of and create URL 
+	//TODO Error report, problem with import of and create URL
 	//private SwingErrorReporter errorReporter;
 	//public static final String PHYDE2_URL = "http://phyde2.bioinfweb.info/";
-	//public static final String ERROR_URL = PHYDE2_URL + "errorreport/ApplicationReport.jsp"; 
+	//public static final String ERROR_URL = PHYDE2_URL + "errorreport/ApplicationReport.jsp";
 	
 	
 	/**
