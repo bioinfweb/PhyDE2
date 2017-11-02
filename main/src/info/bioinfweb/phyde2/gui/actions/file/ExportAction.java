@@ -53,21 +53,25 @@ public class ExportAction extends AbstractFileAction{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (exportFileName()) {
+			fileChooser = AbstractFileAction.getFileChooser();
 			export();
 		}
 		else {
-			JOptionPane.showMessageDialog(getMainFrame().getFrame(), "Warning", "Error while exporting file", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(getMainFrame().getFrame(), "Error while exporting file", "Warning", JOptionPane.WARNING_MESSAGE);
 		}
 		
 		for (String formatID : factory.getFormatIDsSet()) {
 			JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
 			if (info.isElementModeled(EventContentType.ALIGNMENT, true)) {
 				JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
+				System.out.println(fileChooser);
 				fileChooser.addChoosableFileFilter(filter);
+				System.out.println(fileChooser);
 			}
 		}
 		
 	}
+	
 	
 	//show save Dialog, set File, set File format
 	protected boolean exportFileName() {
@@ -76,7 +80,6 @@ public class ExportAction extends AbstractFileAction{
 	    	getMainFrame().setFile(getFileChooser().getSelectedFile());
 	    	//setFormat beim speichern nur auf NeXML und keinen FileFilter
 		    getMainFrame().setFormat(((JPhyloIOContentExtensionFileFilter)getFileChooser().getFileFilter()).getFormatID());
-			getMainFrame().setChanged(true);
 		}
 		return result;
 	}

@@ -39,7 +39,8 @@ public class OpenAction extends AbstractFileAction {
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
-	
+	//TODO Fix Bug: shows unsaved changes after opening file
+	//TODO Fix Bug: cant open NexML files because there are some unreadable changes after writing NexML files
 	public JFileChooser getOpenFileChooser() {
 		if (fileChooser == null) {
 			fileChooser = new JFileChooser();
@@ -84,14 +85,14 @@ public class OpenAction extends AbstractFileAction {
 						getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
 						getMainFrame().setFormat(eventReader.getFormatID());
 						
-						//Seperate NeXML File open procedure form the other formats
-						if (getMainFrame().getFormat() == MainFrame.DEFAULT_FORMAT) {
-							getMainFrame().setChanged(false);
-						}
-						else {
-							//just an import
-							getMainFrame().setChanged(true);
-						}
+//						//Seperate NeXML File open procedure form the other formats
+//						if (getMainFrame().getFormat() == MainFrame.DEFAULT_FORMAT) {
+//							getMainFrame().setChanged(false);
+//						}
+//						else {
+//							//just an import
+//							getMainFrame().setChanged(false);
+//						}
 
 						
 						// File contains more than one alignment --> just the first one was loaded

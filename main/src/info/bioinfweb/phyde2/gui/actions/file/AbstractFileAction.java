@@ -59,9 +59,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		} 
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			System.out.println(fileChooser.getAcceptAllFileFilter());
-			
-			//
-			
 	
 		return fileChooser;
 	}
@@ -92,7 +89,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	
 	protected void export() {
 			writeFile(getMainFrame().getFile(), getMainFrame().getFormat());
-			getMainFrame().setChanged(true);
 	}
 	
 	
