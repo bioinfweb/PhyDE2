@@ -31,7 +31,7 @@ import info.bioinfweb.tic.SwingComponentFactory;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
-	public static final String APPLICATION_NAME = "PhyDE 2 Alignemt Editor, alpha";
+	public static final String APPLICATION_NAME = "PhyDE 2";
 	public static final String APPLICATION_VERSION = "0.0.0";
 	public static final String APPLICATION_URL = "http://r.bioinfweb.info/PhyDE2";
 	
