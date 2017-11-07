@@ -22,6 +22,7 @@ package info.bioinfweb.phyde2.gui.actions.file;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -29,6 +30,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
+import info.bioinfweb.jphyloio.JPhyloIOEventReader;
+import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
@@ -39,8 +42,10 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 @SuppressWarnings("serial")
 public class ExportAction extends AbstractFileAction{
-	private static JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
-	private static JFileChooser fileChooser = null;
+	private JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
+	
+	private JFileChooser fileChooser = null;
+	
 	
 	public ExportAction (MainFrame mainframe) {
 		super(mainframe);
@@ -50,38 +55,75 @@ public class ExportAction extends AbstractFileAction{
 	}
 	
 	
+	private JFileChooser getExportFileChooser() {
+		if (fileChooser == null) {
+			fileChooser = new JFileChooser() {
+			    @Override
+			    public void approveSelection(){
+			        File f = getSelectedFile();
+			        JPhyloIOContentExtensionFileFilter filter = (JPhyloIOContentExtensionFileFilter)getFileFilter();
+			        if (!filter.accept(f)) {
+			        	f = new File(f.getAbsolutePath() + "." + filter.getDefaultExtension());
+			        	setSelectedFile(f);
+			        }
+
+			        if(f.exists()) {
+			            switch(JOptionPane.showConfirmDialog(this, "The file already exists. Do you want to overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION)) {
+			                case JOptionPane.YES_OPTION:
+			                    super.approveSelection();
+			                    return;
+			                case JOptionPane.NO_OPTION:
+			                    return;
+			                case JOptionPane.CLOSED_OPTION:
+			                    return;
+			                case JOptionPane.CANCEL_OPTION:
+			                    cancelSelection();
+			                    return;
+			            }
+			        }
+			        super.approveSelection();  
+			        
+			    }
+			};
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			
+	        for (String formatID : factory.getFormatIDsSet()) {
+				JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
+				if (info.isElementModeled(EventContentType.ALIGNMENT, true)) {
+					JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
+					fileChooser.addChoosableFileFilter(filter);
+				}
+			}
+	        fileChooser.setDialogTitle("Export File");
+
+		} 
+	
+		return fileChooser;
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (exportFileName()) {
-			fileChooser = AbstractFileAction.getFileChooser();
-			export();
-		}
-		else {
-			JOptionPane.showMessageDialog(getMainFrame().getFrame(), "Error while exporting file", "Warning", JOptionPane.WARNING_MESSAGE);
-		}
-		
-		for (String formatID : factory.getFormatIDsSet()) {
-			JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
-			if (info.isElementModeled(EventContentType.ALIGNMENT, true)) {
-				JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
-				System.out.println(fileChooser);
-				fileChooser.addChoosableFileFilter(filter);
-				System.out.println(fileChooser);
+		try {
+			if (exportFileName()) {
+				JPhyloIOEventReader eventReader = factory.guessReader(getExportFileChooser().getSelectedFile(), new ReadWriteParameterMap());
+				writeFile(getMainFrame().getFile(), eventReader.getFormatID());
 			}
 		}
-		
+		catch (Exception ex){
+			JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	
 	//show save Dialog, set File, set File format
 	protected boolean exportFileName() {
-		boolean result = (getFileChooser().showSaveDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION);
+		boolean result = (getExportFileChooser().showDialog(getMainFrame().getFrame(), "Export") == JFileChooser.APPROVE_OPTION);
+		
 		if (result) {
-	    	getMainFrame().setFile(getFileChooser().getSelectedFile());
-	    	//setFormat beim speichern nur auf NeXML und keinen FileFilter
-		    getMainFrame().setFormat(((JPhyloIOContentExtensionFileFilter)getFileChooser().getFileFilter()).getFormatID());
+	    	getMainFrame().setFile(getExportFileChooser().getSelectedFile());
 		}
+		
 		return result;
 	}
-
 }

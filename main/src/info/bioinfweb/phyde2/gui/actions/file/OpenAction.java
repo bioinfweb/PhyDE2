@@ -39,7 +39,6 @@ public class OpenAction extends AbstractFileAction {
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
-	//TODO Fix Bug: shows unsaved changes after opening file
 	//TODO Fix Bug: cant open NexML files because there are some unreadable changes after writing NexML files
 	public JFileChooser getOpenFileChooser() {
 		if (fileChooser == null) {
@@ -71,39 +70,38 @@ public class OpenAction extends AbstractFileAction {
 				if (getOpenFileChooser().showOpenDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
 					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
 					AlignmentDataReader mainReader = new AlignmentDataReader(eventReader, new BioPolymerCharAlignmentModelFactory());
+					//TODO: goes till here and throws exception
 					mainReader.readAll();
-
+					
+					
 					// File does not contain any alignments
 					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {
 						JOptionPane.showMessageDialog(getMainFrame().getFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
 								"\" does not contain any alignments.", "Error while loading file", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
-						
 						// File contains one alignment
 						getMainFrame().getAlignmentArea().setAlignmentModel(mainReader.getAlignmentModelReader().getCompletedModels().get(0), true);
-						getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
-						getMainFrame().setFormat(eventReader.getFormatID());
-						
-//						//Seperate NeXML File open procedure form the other formats
-//						if (getMainFrame().getFormat() == MainFrame.DEFAULT_FORMAT) {
-//							getMainFrame().setChanged(false);
-//						}
-//						else {
-//							//just an import
-//							getMainFrame().setChanged(false);
-//						}
+						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT)) {
+							getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
+							getMainFrame().setChanged(false);
 
-						
-						// File contains more than one alignment --> just the first one was loaded
-						if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
-							JOptionPane.showMessageDialog(getMainFrame().getFrame(),
-									"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
+
+							// File contains more than one alignment --> just the first one was loaded
+							if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
+								JOptionPane.showMessageDialog(getMainFrame().getFrame(),
+										"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
+								getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
+								getMainFrame().setChanged(false);
+							}
 						}
+						
 					}
+					
 				}
 			}
 			catch (Exception ex) {
+				//TODO: Throws Exception while opening a NexML file: "The symbol("-")of a standard data token definition must be of type Integer." 
 				JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
 			}
 		}

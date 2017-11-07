@@ -54,7 +54,6 @@ public class MainFrame extends JFrame {
 	public AlignmentArea alignmentArea;
 	
 	private File file = null;
-	private String format = DEFAULT_FORMAT;
 	private boolean changed = false;
 	
 	
@@ -93,16 +92,6 @@ public class MainFrame extends JFrame {
 	public void setFile(File file) {
 		this.file = file;
 		refreshWindowTitle();
-	}
-
-
-	public String getFormat() {
-		return format;
-	}
-
-
-	public void setFormat(String format) {
-		this.format = format;
 	}
 
 

@@ -14,6 +14,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 @SuppressWarnings("serial")
 public class SaveAction extends AbstractFileAction{
+	
 	public SaveAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Save"); 
@@ -24,16 +25,12 @@ public class SaveAction extends AbstractFileAction{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if (getMainFrame().getFile() == null) {
-			if (getMainFrame().getFormat() == MainFrame.DEFAULT_FORMAT) {
-				save();
-			}
-			else {
-				export();
-			}
+			save();
 		}
 		else {
-			save();
+			writeFile();
 		}
 	}
 }
