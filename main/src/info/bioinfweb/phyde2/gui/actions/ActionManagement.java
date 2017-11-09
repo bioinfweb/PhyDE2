@@ -35,6 +35,10 @@ import info.bioinfweb.phyde2.gui.actions.file.OpenAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAsAction;
 import info.bioinfweb.phyde2.gui.actions.help.AboutAction;
+import info.bioinfweb.phyde2.gui.actions.help.BioinfWebMainPageAction;
+import info.bioinfweb.phyde2.gui.actions.help.PhyDEMainPageAction;
+import info.bioinfweb.phyde2.gui.actions.help.TwitterAction;
+
 
 
 
@@ -61,8 +65,11 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
 		put("edit.removeGaps", new RemoveGapsAction(mainFrame));
-		
+		// TODO Links adden
 		put("help.about", new AboutAction(mainFrame));
+		put("help.contents", new BioinfWebMainPageAction());
+		put("help.index", new PhyDEMainPageAction());
+		put("help.twitter", new TwitterAction());
 	}
 	
 	

@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
+import info.bioinfweb.libralign.alignmentarea.tokenpainter.NucleotideTokenPainter;
+import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
 import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
@@ -21,6 +23,7 @@ import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
 import info.bioinfweb.libralign.model.events.TokenChangeEvent;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
+import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -33,7 +36,7 @@ public class MainFrame extends JFrame {
 
 	public static final String APPLICATION_NAME = "PhyDE 2";
 	public static final String APPLICATION_VERSION = "0.0.0";
-	public static final String APPLICATION_URL = "http://r.bioinfweb.info/PhyDE2";
+	public static final String APPLICATION_URL = "http://bioinfweb.info/PhyDE2";
 	
 	private JPanel jContentPane = null;
 	//private JFrame frame;
@@ -51,7 +54,8 @@ public class MainFrame extends JFrame {
 	
 	private static MainFrame firstInstance = null;
 	
-	public AlignmentArea alignmentArea;
+	AlignmentArea mainArea = null;
+	public MultipleAlignmentsContainer container = null;
 	
 	private File file = null;
 	private boolean changed = false;
@@ -79,8 +83,13 @@ public class MainFrame extends JFrame {
 	}
 
 
+	public MultipleAlignmentsContainer getMSAContainer() {
+		return container;
+	}
+	
+	
 	public AlignmentArea getAlignmentArea() {
-		return alignmentArea;
+		return mainArea;
 	}
 
 
@@ -127,7 +136,26 @@ public class MainFrame extends JFrame {
 		setTitle(title.toString());
 	}
 
-	
+//	protected MultipleAlignmentsContainer createContainer() {
+//		// Create main container instance (TIC component):
+//		MultipleAlignmentsContainer container = new MultipleAlignmentsContainer();
+//		
+//		// Create head and main AlignmentArea:
+//		AlignmentArea headArea = new AlignmentArea(container);
+//		AlignmentArea mainArea = new AlignmentArea(container);
+//		
+//		// Prepare heading area:
+//		headArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(headArea.getContentArea(), mainArea));
+//		container.getAlignmentAreas().add(headArea);
+//		container.getAlignmentAreas().add(mainArea);
+//		
+//		// Prepare main area:
+//		mainArea.setAlignmentModel(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), false);
+//		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
+//		container.getAlignmentAreas().add(mainArea);
+//		
+//		return container;
+//	}
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -156,12 +184,28 @@ public class MainFrame extends JFrame {
 		});
 		refreshWindowTitle();
 		
-		// Create LibrAlign component instance:
-		alignmentArea = new AlignmentArea();
-		alignmentArea.setAlignmentModel(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), false);
+		// Create main container instance (TIC component):
+		container = new MultipleAlignmentsContainer();
+		
+		// Create head and main AlignmentArea:
+		AlignmentArea headArea = new AlignmentArea(container);
+		mainArea = new AlignmentArea(container);
+		
+		// Prepare heading area:
+		headArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(headArea.getContentArea(), mainArea));
+		container.getAlignmentAreas().add(headArea);
+		container.getAlignmentAreas().add(mainArea);
+		
+		// Prepare main area:
+		mainArea.setAlignmentModel(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), false);
+		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
+		container.getAlignmentAreas().add(mainArea);
+		
+		// Create Swing-specific component from TIC component:
+		JComponent swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
 		
 		// Register changes listener to know when to ask for saving changes:
-		alignmentArea.getAlignmentModel().getChangeListeners().add(new AlignmentModelChangeListener() {
+		mainArea.getAlignmentModel().getChangeListeners().add(new AlignmentModelChangeListener() {
 			@Override
 			public <T> void afterTokenChange(TokenChangeEvent<T> e) {
 				setChanged(true);
@@ -183,11 +227,15 @@ public class MainFrame extends JFrame {
 		
 		setJMenuBar(getMainMenu());
 		
-		// Create instance specific to Swing:
-		JComponent swingAlignmentArea = SwingComponentFactory.getInstance().getSwingComponent(alignmentArea);
+		
+		// Create Swing-specific component from TIC component:
+		swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		getContentPane().add(swingAlignmentArea, BorderLayout.CENTER);
+		
+		// Add Swing component to GUI:
+		getContentPane().add(swingContainer, BorderLayout.CENTER);
+		
 	}
 	
 	
@@ -241,6 +289,10 @@ public class MainFrame extends JFrame {
 			helpMenu = new JMenu();
 			helpMenu.setText("Help");
 			helpMenu.add(getActionManagement().get("help.about"));
+			helpMenu.add(getActionManagement().get("help.index"));
+			helpMenu.add(getActionManagement().get("help.contents"));
+			helpMenu.add(getActionManagement().get("help.twitter"));
+			//helpMenu.setIcon(new ImageIcon(Object.class.getResource("/resources/symbols/Help16.png")));
 			}
 		return helpMenu;
 	}

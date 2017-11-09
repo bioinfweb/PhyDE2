@@ -1,3 +1,21 @@
+/*
+ * PhyDE 2 - An alignment editor for phylogenetic purposes
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * <http://bioinfweb.info/PhyDE2>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package info.bioinfweb.phyde2.gui.actions.file;
 
 
@@ -37,6 +55,7 @@ public class OpenAction extends AbstractFileAction {
 		putValue(Action.NAME, "Open..."); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		loadSymbols("Open");
 	}
 
 	//TODO Fix Bug: cant open NexML files because there are some unreadable changes after writing NexML files
@@ -69,7 +88,7 @@ public class OpenAction extends AbstractFileAction {
 			try {
 				if (getOpenFileChooser().showOpenDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
 					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
-					AlignmentDataReader mainReader = new AlignmentDataReader(eventReader, new BioPolymerCharAlignmentModelFactory());
+					AlignmentDataReader mainReader = new AlignmentDataReader(eventReader, new BioPolymerCharAlignmentModelFactory('?', true));
 					//TODO: goes till here and throws exception
 					mainReader.readAll();
 					

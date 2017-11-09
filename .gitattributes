@@ -24,4 +24,26 @@ main/src/info/bioinfweb/phyde2/gui/actions/file/OpenAction.java -text svneol=uns
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/help/BioinfWebMainPageAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/help/PhyDEMainPageAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/help/TwitterAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
+main/src/resources/symbols/Delete16.png -text
+main/src/resources/symbols/Delete22.png -text
+main/src/resources/symbols/Help16.png -text
+main/src/resources/symbols/Help22.png -text
+main/src/resources/symbols/NewDocument16.png -text
+main/src/resources/symbols/NewDocument22.png -text
+main/src/resources/symbols/Open16.png -text
+main/src/resources/symbols/Open22.png -text
+main/src/resources/symbols/Replace16.png -text
+main/src/resources/symbols/Replace22.png -text
+main/src/resources/symbols/Save16.png -text
+main/src/resources/symbols/Save22.png -text
+main/src/resources/symbols/SaveAs16.png -text
+main/src/resources/symbols/SaveAs22.png -text
+main/src/resources/symbols/Twitter16.png -text
+main/src/resources/symbols/Twitter22.png -text
+main/src/resources/symbols/bioinfweb16.png -text
+main/src/resources/symbols/bioinfweb22.png -text

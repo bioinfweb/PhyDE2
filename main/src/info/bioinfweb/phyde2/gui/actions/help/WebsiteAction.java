@@ -16,40 +16,61 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.file;
+package info.bioinfweb.phyde2.gui.actions.help;
 
-
-import java.awt.Toolkit;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-import javax.swing.Action;
-import javax.swing.KeyStroke;
+import javax.swing.JOptionPane;
 
+import info.bioinfweb.commons.swing.ExtendedAbstractAction;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
-
 @SuppressWarnings("serial")
-public class SaveAction extends AbstractFileAction {
+public class WebsiteAction extends ExtendedAbstractAction{
+
+	private URI url;
+
 	
-	public SaveAction(MainFrame mainframe) {
-		super(mainframe);
-		putValue(Action.NAME, "Save"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		loadSymbols("Save");
+	protected static URI createURI(String uri) {
+		try {
+			return new URI(uri);
+		}
+		catch (URISyntaxException e) {
+			throw new InternalError(e);
+		}
+	}
+	
+	
+	public WebsiteAction(String url) {
+		this(createURI(url));
+	}
+	
+	
+	public WebsiteAction(URI url) {
+		super();
+		this.url = url;
 	}
 
-	
+
+	public URI getURL() {
+		return url;
+	}
+
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (getMainFrame().getFile() == null) {
-			save();
+		try {
+			Desktop.getDesktop().browse(getURL());
 		}
-		else {
-			writeFile();
+		catch (IOException ex) {
+			JOptionPane.showMessageDialog(MainFrame.getInstance(), "The website could not be opened due to the following error: " +
+					ex.getLocalizedMessage(), "Could not open website", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
 }

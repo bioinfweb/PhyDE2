@@ -44,7 +44,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 public class ExportAction extends AbstractFileAction{
 	private JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
 	
-	private JFileChooser fileChooser = null;
+	private JFileChooser exportfileChooser = null;
 	
 	
 	public ExportAction (MainFrame mainframe) {
@@ -56,8 +56,8 @@ public class ExportAction extends AbstractFileAction{
 	
 	
 	private JFileChooser getExportFileChooser() {
-		if (fileChooser == null) {
-			fileChooser = new JFileChooser() {
+		if (exportfileChooser == null) {
+			exportfileChooser = new JFileChooser() {
 			    @Override
 			    public void approveSelection(){
 			        File f = getSelectedFile();
@@ -85,27 +85,27 @@ public class ExportAction extends AbstractFileAction{
 			        
 			    }
 			};
-			fileChooser.setAcceptAllFileFilterUsed(false);
+			exportfileChooser.setAcceptAllFileFilterUsed(false);
 			
 	        for (String formatID : factory.getFormatIDsSet()) {
 				JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
 				if (info.isElementModeled(EventContentType.ALIGNMENT, true)) {
 					JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
-					fileChooser.addChoosableFileFilter(filter);
+					exportfileChooser.addChoosableFileFilter(filter);
 				}
 			}
-	        fileChooser.setDialogTitle("Export File");
+	        exportfileChooser.setDialogTitle("Export File");
 
 		} 
 	
-		return fileChooser;
+		return exportfileChooser;
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		try {
-			if (exportFileName()) {
+			if (promptexportFileName()) {
 				JPhyloIOEventReader eventReader = factory.guessReader(getExportFileChooser().getSelectedFile(), new ReadWriteParameterMap());
 				writeFile(getMainFrame().getFile(), eventReader.getFormatID());
 			}
@@ -117,7 +117,7 @@ public class ExportAction extends AbstractFileAction{
 	
 	
 	//show save Dialog, set File, set File format
-	protected boolean exportFileName() {
+	protected boolean promptexportFileName() {
 		boolean result = (getExportFileChooser().showDialog(getMainFrame().getFrame(), "Export") == JFileChooser.APPROVE_OPTION);
 		
 		if (result) {

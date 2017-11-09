@@ -16,40 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.file;
+package info.bioinfweb.phyde2.gui.actions.help;
 
-
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
-import javax.swing.KeyStroke;
-
-import info.bioinfweb.phyde2.gui.MainFrame;
-
 
 
 @SuppressWarnings("serial")
-public class SaveAction extends AbstractFileAction {
-	
-	public SaveAction(MainFrame mainframe) {
-		super(mainframe);
-		putValue(Action.NAME, "Save"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		loadSymbols("Save");
+public class TwitterAction extends WebsiteAction {
+	public TwitterAction() {
+		super("http://r.bioinfweb.info/Twitter");
+		
+		putValue(Action.NAME, "Twitter"); 
+		putValue(Action.SHORT_DESCRIPTION, "bioinfweb main page on Twitter"); 
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
+		loadSymbols("Twitter");
 	}
 
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		if (getMainFrame().getFile() == null) {
-			save();
-		}
-		else {
-			writeFile();
-		}
-	}
 }

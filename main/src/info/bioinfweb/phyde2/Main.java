@@ -1,3 +1,4 @@
+
 package info.bioinfweb.phyde2;
 
 
@@ -13,6 +14,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 public class Main extends ProgramMainClass {
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
+	public static final String APPLICATION_NAME = "PhyDE 2"; 
 	
 	private static Main firstInstance = null;
 	
@@ -26,7 +28,7 @@ public class Main extends ProgramMainClass {
 	 * Launch the application.
 	 */
 	public Main(){
-		super(new ApplicationVersion(2, 14, 0, 771, ApplicationType.ALPHA));
+		super(new ApplicationVersion(0, 0, 0, 0, ApplicationType.ALPHA));
 		//errorReporter = new SwingErrorReporter(ERROR_URL, getVersion());
 	}
 	
@@ -48,7 +50,7 @@ public class Main extends ProgramMainClass {
 					MainFrame window = new MainFrame();
 					//show frame
 					window.setVisible(true);
-					window.alignmentArea.assignSize();
+					//window.swingContainer.assignSize();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
