@@ -40,6 +40,8 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.model.factory.BioPolymerCharAlignmentModelFactory;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
+import info.bioinfweb.phyde2.document.io.IOConstants;
+import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -88,10 +90,8 @@ public class OpenAction extends AbstractFileAction {
 			try {
 				if (getOpenFileChooser().showOpenDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
 					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
-					AlignmentDataReader mainReader = new AlignmentDataReader(eventReader, new BioPolymerCharAlignmentModelFactory('?', true));
-					//TODO: goes till here and throws exception
+					PhyDEAlignmentDataReader mainReader = new PhyDEAlignmentDataReader(eventReader);
 					mainReader.readAll();
-					
 					
 					// File does not contain any alignments
 					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {
@@ -101,7 +101,7 @@ public class OpenAction extends AbstractFileAction {
 					else {
 						// File contains one alignment
 						getMainFrame().getAlignmentArea().setAlignmentModel(mainReader.getAlignmentModelReader().getCompletedModels().get(0), true);
-						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT)) {
+						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 							getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
 							getMainFrame().setChanged(false);
 
@@ -110,8 +110,6 @@ public class OpenAction extends AbstractFileAction {
 							if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
 								JOptionPane.showMessageDialog(getMainFrame().getFrame(),
 										"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
-								getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
-								getMainFrame().setChanged(false);
 							}
 						}
 						
@@ -120,7 +118,8 @@ public class OpenAction extends AbstractFileAction {
 				}
 			}
 			catch (Exception ex) {
-				//TODO: Throws Exception while opening a NexML file: "The symbol("-")of a standard data token definition must be of type Integer." 
+				//TODO: Throws Exception while opening a NexML file: "The symbol("-")of a standard data token definition must be of type Integer."
+				ex.printStackTrace();
 				JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
 			}
 		}

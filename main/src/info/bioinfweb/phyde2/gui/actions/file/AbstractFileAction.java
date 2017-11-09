@@ -26,12 +26,15 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
+import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
+import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
 import info.bioinfweb.libralign.model.io.IOTools;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -108,7 +111,15 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, MainFrame.APPLICATION_VERSION);
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, MainFrame.APPLICATION_URL);
 			
-			IOTools.writeSingleAlignment(getMainFrame().getAlignmentArea().getAlignmentModel(), null, file, formatID, parameters);
+			//IOTools.writeSingleAlignment(getMainFrame().getAlignmentArea().getAlignmentModel(), null, file, formatID, parameters);
+			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter();
+			documentAdapter.getMatrices().add(new AlignmentModelDataAdapter("", 
+					new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, "Alignment0", null, null), 
+					getMainFrame().getAlignmentArea().getAlignmentModel(), false));
+			factory.getWriter(Main.DEFAULT_FORMAT).writeDocument(documentAdapter, file, parameters);
+			
+			
+			
 			// Note that files containing multiple alignments or additional trees or OTU lists would be overwritten with a single alignment file here. 
 			// This problem is not handles here, to keep this example simple
 			getMainFrame().setChanged(false);
