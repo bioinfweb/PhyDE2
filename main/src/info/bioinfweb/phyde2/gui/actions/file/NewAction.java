@@ -53,9 +53,8 @@ public class NewAction extends AbstractFileAction {
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
 			getMainFrame().getAlignmentArea().setAlignmentModel(createAlignmentModel(), true);
-			getMainFrame().setFile(null);
-			//getMainFrame().setFormat(MainFrame.DEFAULT_FORMAT);
-			getMainFrame().setChanged(false);
+			getMainFrame().getDocument().setFile(null);
+			getMainFrame().getDocument().setChanged(false);
 		}
 	}
 }

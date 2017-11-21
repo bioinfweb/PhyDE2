@@ -38,8 +38,6 @@ import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
-import info.bioinfweb.libralign.model.factory.BioPolymerCharAlignmentModelFactory;
-import info.bioinfweb.libralign.model.io.AlignmentDataReader;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -102,8 +100,8 @@ public class OpenAction extends AbstractFileAction {
 						// File contains one alignment
 						getMainFrame().getAlignmentArea().setAlignmentModel(mainReader.getAlignmentModelReader().getCompletedModels().get(0), true);
 						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
-							getMainFrame().setFile(getOpenFileChooser().getSelectedFile());
-							getMainFrame().setChanged(false);
+							getMainFrame().getDocument().setFile(getOpenFileChooser().getSelectedFile());
+							getMainFrame().getDocument().setChanged(false);
 
 
 							// File contains more than one alignment --> just the first one was loaded

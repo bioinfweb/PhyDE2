@@ -18,37 +18,39 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
-
-
-
 @SuppressWarnings("serial")
-public class AddSequenceAction extends AbstractPhyDEAction implements Action {
-	public AddSequenceAction(MainFrame mainFrame) {
-		super(mainFrame);
-		putValue(Action.NAME, "Add sequence"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('A', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		loadSymbols("Add");
+public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Action {
+
+	 
+	public AddColumnsToCharSetAction(MainFrame mainframe) {
+		super(mainframe);
+		putValue(Action.NAME, "Add selected character set"); 
 	}
 
-	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		String name = JOptionPane.showInputDialog("New sequence name");
-		if (name != null) {
-			getMainFrame().getAlignmentArea().getAlignmentModel().addSequence(name);
+	public void actionPerformed(ActionEvent arg0) {
+		CharSetDataModel model = new CharSetDataModel();
+		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
+		int id = getMainFrame().getCharSetArea().getSelectedIndex();
+		
+		if (id == -1) {
+			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want to add a bar.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		model = getMainFrame().getCharSetArea().getModel();
+		CharSet charSet = model.get(model.get(id));
+		charSet.add(selection.getFirstColumn(), selection.getLastColumn());
 	}
+
 }

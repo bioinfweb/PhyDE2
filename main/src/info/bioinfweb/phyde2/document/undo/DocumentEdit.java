@@ -16,42 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.help;
+package info.bioinfweb.phyde2.document.undo;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import javax.swing.undo.UndoableEdit;
 
-import javax.swing.Action;
-
-import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-import info.bioinfweb.phyde2.gui.dialogs.AboutDialog;
+import info.bioinfweb.commons.swing.AbstractDocumentEdit;
+import info.bioinfweb.phyde2.document.Document;
 
 
 
-@SuppressWarnings("serial")
-public class AboutAction extends AbstractPhyDEAction {
-	private AboutDialog dialog = null;
+public abstract class DocumentEdit extends AbstractDocumentEdit implements UndoableEdit {
+	private Document document;
+
 	
+	public DocumentEdit(Document document) {
+		super();
+		this.document = document;
+	}
+
 	
-	public AboutAction(MainFrame mainframe) {
-		super(mainframe);
-		putValue(Action.NAME, "About..."); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-		loadSymbols("Help");
+	public Document getDocument() {
+		return document;
 	}
 
 
-	private AboutDialog getDialog() {
-		if (dialog == null) {
-			dialog = new AboutDialog(MainFrame.getInstance());
-		}
-		return dialog;
-	}
-	
-	
-	public void actionPerformed(ActionEvent e) {
-		getDialog().setVisible(true);
+	@Override
+	protected void registerDocumentChange() {
+		// TODO Auto-generated method stub
+		
 	}
 }

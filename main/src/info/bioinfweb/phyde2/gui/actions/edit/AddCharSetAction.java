@@ -16,42 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.help;
+package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.commons.IntegerIDManager;
+import info.bioinfweb.commons.graphics.UniqueColorLister;
+import info.bioinfweb.phyde2.document.undo.edit.AddCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-import info.bioinfweb.phyde2.gui.dialogs.AboutDialog;
-
+import info.bioinfweb.phyde2.gui.dialogs.NewCharSetDialog;
 
 
 @SuppressWarnings("serial")
-public class AboutAction extends AbstractPhyDEAction {
-	private AboutDialog dialog = null;
+public class AddCharSetAction extends AbstractPhyDEAction implements Action {
+	private IntegerIDManager idManager = new IntegerIDManager();
+	private UniqueColorLister colorLister = new UniqueColorLister();
+	private NewCharSetDialog dialog = new NewCharSetDialog(getMainFrame());
 	
-	
-	public AboutAction(MainFrame mainframe) {
-		super(mainframe);
-		putValue(Action.NAME, "About..."); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-		loadSymbols("Help");
+
+	public AddCharSetAction(MainFrame mainFrame) {
+		super(mainFrame);
+		putValue(Action.NAME, "Add character set"); 
 	}
 
-
-	private AboutDialog getDialog() {
-		if (dialog == null) {
-			dialog = new AboutDialog(MainFrame.getInstance());
-		}
-		return dialog;
-	}
 	
-	
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		getDialog().setVisible(true);
+		dialog.setSelectedColor(colorLister.generateNext());
+		dialog.setName("");
+		if (dialog.execute()) {
+			getMainFrame().getDocument().executeEdit(new AddCharSetEdit(getMainFrame().getDocument(), "cs" + idManager.createNewID(), dialog.getName(), dialog.getSelectedColor()));
+		}
 	}
 }

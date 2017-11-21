@@ -24,21 +24,20 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.Main;
 
 
 @SuppressWarnings("serial")
 public class PhyDEMainPageAction extends WebsiteAction {
 	public PhyDEMainPageAction() {
-		super(MainFrame.APPLICATION_URL);
+		super(Main.APPLICATION_URL);
 		
 		putValue(Action.NAME, "PhyDE 2 website"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_W);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
 		putValue(Action.SHORT_DESCRIPTION, "PhyDE Main Page comming soon");
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, 
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, 
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		loadSymbols("Help");
-		//loadSymbols("PhyDE2");
+		loadSymbols("PhyDE2");
 	}
 
 }

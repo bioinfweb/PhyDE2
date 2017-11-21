@@ -21,6 +21,7 @@ package info.bioinfweb.phyde2.gui.actions.help;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.KeyStroke;
 
 
 @SuppressWarnings("serial")
@@ -30,7 +31,7 @@ public class TwitterAction extends WebsiteAction {
 		
 		putValue(Action.NAME, "Twitter"); 
 		putValue(Action.SHORT_DESCRIPTION, "bioinfweb main page on Twitter"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, 0));
 		loadSymbols("Twitter");
 	}
 

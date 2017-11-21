@@ -32,7 +32,6 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
-import info.bioinfweb.libralign.model.io.IOTools;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -100,16 +99,16 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 
 	protected void writeFile() {
-		writeFile(getMainFrame().getFile(), Main.DEFAULT_FORMAT);
+		writeFile(getMainFrame().getDocument().getFile(), Main.DEFAULT_FORMAT);
 	}
 
 
 	protected void writeFile(File file, String formatID) {
 		try {
 			ReadWriteParameterMap parameters = new ReadWriteParameterMap();
-			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_NAME, MainFrame.APPLICATION_NAME);
-			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, MainFrame.APPLICATION_VERSION);
-			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, MainFrame.APPLICATION_URL);
+			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_NAME, Main.APPLICATION_NAME);
+			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, Main.APPLICATION_VERSION);
+			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			
 			//IOTools.writeSingleAlignment(getMainFrame().getAlignmentArea().getAlignmentModel(), null, file, formatID, parameters);
 			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter();
@@ -122,7 +121,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			
 			// Note that files containing multiple alignments or additional trees or OTU lists would be overwritten with a single alignment file here. 
 			// This problem is not handles here, to keep this example simple
-			getMainFrame().setChanged(false);
+			getMainFrame().getDocument().setChanged(false);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -135,7 +134,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 		boolean result = (getFileChooser().showSaveDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION);
 		if (result) {
-			getMainFrame().setFile(getFileChooser().getSelectedFile());
+			getMainFrame().getDocument().setFile(getFileChooser().getSelectedFile());
 			//JPhyloIOContentExtensionFileFilter filter = (JPhyloIOContentExtensionFileFilter)getFileChooser().getFileFilter();
 		}
 		return result;
@@ -153,7 +152,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	
 	   
 	public boolean handleUnsavedChanges() {
-		if (getMainFrame().isChanged()) {
+		if (getMainFrame().getDocument().isChanged()) {
             switch (JOptionPane.showConfirmDialog(getMainFrame().getFrame(), "There are unsaved changes. Do you want to save the changes?", 
             		"Unsaved changes", JOptionPane.YES_NO_CANCEL_OPTION)) {
 	            case JOptionPane.YES_OPTION:

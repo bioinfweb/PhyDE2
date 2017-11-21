@@ -26,9 +26,17 @@ import javax.swing.undo.UndoableEdit;
 import info.bioinfweb.commons.swing.AbstractUndoActionManagement;
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.gui.actions.edit.AddCharSetAction;
+import info.bioinfweb.phyde2.gui.actions.edit.AddColumnsToCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddSequenceAction;
+import info.bioinfweb.phyde2.gui.actions.edit.ChangeCharSetColorAction;
+import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RedoAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RemoveCurrentSelectedCharSet;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RenameCharSetAction;
+import info.bioinfweb.phyde2.gui.actions.edit.UndoAction;
 import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
 import info.bioinfweb.phyde2.gui.actions.file.NewAction;
 import info.bioinfweb.phyde2.gui.actions.file.OpenAction;
@@ -62,10 +70,20 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("file.saveAs", new SaveAsAction(mainFrame));
 		put("file.export",new ExportAction(mainFrame));
 		
+		put("edit.undo", new UndoAction(mainFrame));
+		put("edit.redo", new RedoAction(mainFrame));
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
 		put("edit.removeGaps", new RemoveGapsAction(mainFrame));
-		// TODO Links adden
+		put("edit.addCharSet", new AddCharSetAction(mainFrame));
+		put("edit.deleteCharSet", new DeleteCharSetAction(mainFrame));
+		put("edit.addcurrendCharSet", new AddColumnsToCharSetAction(mainFrame));
+		put("edit.removecurrendCharSet", new RemoveCurrentSelectedCharSet(mainFrame));
+		put("edit.changecolorCharSet", new ChangeCharSetColorAction(mainFrame));
+		put("edit.renameCharSet", new RenameCharSetAction(mainFrame));
+		
+		
+		// TODO add Links
 		put("help.about", new AboutAction(mainFrame));
 		put("help.contents", new BioinfWebMainPageAction());
 		put("help.index", new PhyDEMainPageAction());

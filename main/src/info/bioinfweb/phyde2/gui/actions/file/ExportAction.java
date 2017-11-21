@@ -107,7 +107,7 @@ public class ExportAction extends AbstractFileAction{
 		try {
 			if (promptexportFileName()) {
 				JPhyloIOEventReader eventReader = factory.guessReader(getExportFileChooser().getSelectedFile(), new ReadWriteParameterMap());
-				writeFile(getMainFrame().getFile(), eventReader.getFormatID());
+				writeFile(getMainFrame().getDocument().getFile(), eventReader.getFormatID());
 			}
 		}
 		catch (Exception ex){
@@ -121,7 +121,7 @@ public class ExportAction extends AbstractFileAction{
 		boolean result = (getExportFileChooser().showDialog(getMainFrame().getFrame(), "Export") == JFileChooser.APPROVE_OPTION);
 		
 		if (result) {
-	    	getMainFrame().setFile(getExportFileChooser().getSelectedFile());
+	    	getMainFrame().getDocument().setFile(getExportFileChooser().getSelectedFile());
 		}
 		
 		return result;

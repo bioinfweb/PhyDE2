@@ -16,42 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.help;
-
+package info.bioinfweb.phyde2.gui.actions.edit;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-import info.bioinfweb.phyde2.gui.dialogs.AboutDialog;
-
-
 
 @SuppressWarnings("serial")
-public class AboutAction extends AbstractPhyDEAction {
-	private AboutDialog dialog = null;
-	
-	
-	public AboutAction(MainFrame mainframe) {
-		super(mainframe);
-		putValue(Action.NAME, "About..."); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-		loadSymbols("Help");
+public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
+
+	public DeleteCharSetAction(MainFrame mainFrame) {
+		super(mainFrame);
+		putValue(Action.NAME, "Delete character set"); 
 	}
 
-
-	private AboutDialog getDialog() {
-		if (dialog == null) {
-			dialog = new AboutDialog(MainFrame.getInstance());
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		CharSetDataModel model = new CharSetDataModel();
+		int id = getMainFrame().getCharSetArea().getSelectedIndex();
+		
+		if (id == -1) {
+			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set which you want to delete.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
-		return dialog;
+		
+		model = getMainFrame().getCharSetArea().getModel();
+		CharSet charSet = model.get(model.get(id));
+		charSet.setName(null);
+		model.remove(id);
 	}
-	
-	
-	public void actionPerformed(ActionEvent e) {
-		getDialog().setVisible(true);
-	}
+
 }

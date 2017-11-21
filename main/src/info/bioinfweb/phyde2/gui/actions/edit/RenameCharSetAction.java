@@ -16,42 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.help;
-
+package info.bioinfweb.phyde2.gui.actions.edit;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-import info.bioinfweb.phyde2.gui.dialogs.AboutDialog;
-
-
 
 @SuppressWarnings("serial")
-public class AboutAction extends AbstractPhyDEAction {
-	private AboutDialog dialog = null;
-	
-	
-	public AboutAction(MainFrame mainframe) {
+public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
+
+	private String name = null;
+	public RenameCharSetAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "About..."); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-		loadSymbols("Help");
+		putValue(Action.NAME, "Rename character set"); 
 	}
 
-
-	private AboutDialog getDialog() {
-		if (dialog == null) {
-			dialog = new AboutDialog(MainFrame.getInstance());
-		}
-		return dialog;
-	}
-	
-	
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		getDialog().setVisible(true);
+		CharSetDataModel model = new CharSetDataModel();
+		int index = getMainFrame().getCharSetArea().getSelectedIndex();
+		
+		if (index == -1) {
+			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want change the color.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			model = getMainFrame().getCharSetArea().getModel();
+			CharSet charSet = model.get(model.get(index));
+			name = JOptionPane.showInputDialog("New character set name:");
+			if (name != null) {
+				charSet.setName(name);
+			}
+		}
+		
 	}
+
 }

@@ -45,7 +45,7 @@ public class SaveAction extends AbstractFileAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (getMainFrame().getFile() == null) {
+		if (getMainFrame().getDocument().getFile() == null) {
 			save();
 		}
 		else {

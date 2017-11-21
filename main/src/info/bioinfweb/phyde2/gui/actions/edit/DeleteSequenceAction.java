@@ -39,7 +39,7 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 		putValue(Action.NAME, "Delete sequence"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_D);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('D', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		//loadSymbols("Replace");
+		loadSymbols("Delete");
 	}
 
 

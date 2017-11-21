@@ -1,10 +1,27 @@
+/*
+ * PhyDE 2 - An alignment editor for phylogenetic purposes
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * <http://bioinfweb.info/PhyDE2>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package info.bioinfweb.phyde2.gui;
 
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -15,50 +32,43 @@ import javax.swing.JPanel;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.alignmentarea.tokenpainter.NucleotideTokenPainter;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
-import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
-import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
-import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
-import info.bioinfweb.libralign.model.events.TokenChangeEvent;
-import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
-import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
+import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
+
 
 
 //TODO: change class header to ... extends Main for remove getInstance method
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-
-	public static final String APPLICATION_NAME = "PhyDE 2";
-	public static final String APPLICATION_VERSION = "0.0.0";
-	public static final String APPLICATION_URL = "http://bioinfweb.info/PhyDE2";
-	
-	private JPanel jContentPane = null;
-	//private JFrame frame;
-	
-	private ActionManagement actionManagement = new ActionManagement(this);
-	private JMenuBar mainMenu = null;
-	private JMenu fileMenu = null;
-	private JMenu editMenu = null;
-	private JMenu helpMenu = null;
-	
-	// Create actions:
-	private SaveAction saveAction = new SaveAction(this);
-	
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	
 	private static MainFrame firstInstance = null;
 	
-	AlignmentArea mainArea = null;
-	public MultipleAlignmentsContainer container = null;
+	private Document document = new Document();
 	
-	private File file = null;
-	private boolean changed = false;
+	private ActionManagement actionManagement = new ActionManagement(this);
+	
+	private JPanel jContentPane = null;
+	
+	private JMenuBar mainMenu = null;
+	private JMenu fileMenu = null;
+	private JMenu editMenu = null;
+	private JMenu helpMenu = null;
+	private JPanel toolBarPanel = null;
+	
+	// Alignment views:
+	private AlignmentArea mainArea = null;
+	private MultipleAlignmentsContainer container = null;
+	private AlignmentArea sequenceIndexAlignmentArea = null;
+	private AlignmentArea characterSetAlignmentArea = null;
+	private CharSetArea charSetArea = null;
 	
 	
 	/**
@@ -76,14 +86,24 @@ public class MainFrame extends JFrame {
 		}
 		return firstInstance;
 	}
-	
-	
+
+
+	public Document getDocument() {
+		return document;
+	}
+
+
+	public CharSetArea getCharSetArea() {
+		return charSetArea;
+	}
+
+
 	public JFrame getFrame() {
 		return this;
 	}
 
 
-	public MultipleAlignmentsContainer getMSAContainer() {
+	public MultipleAlignmentsContainer getMAContainer() {
 		return container;
 	}
 	
@@ -92,84 +112,55 @@ public class MainFrame extends JFrame {
 		return mainArea;
 	}
 
-
-	public File getFile() {
-		return file;
-	}
-
-
-	public void setFile(File file) {
-		this.file = file;
-		refreshWindowTitle();
-	}
-
-
-	public boolean isChanged() {
-		return changed;
-	}
-
-
-	public void setChanged(boolean changed) {
-		this.changed = changed;
-		refreshWindowTitle();
-	}
-
 	
 	public ActionManagement getActionManagement() {
 		return actionManagement;
 	}
 	
 	
-	private void refreshWindowTitle() {
+	/**
+	 * This method initializes toolBarPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getToolBarPanel() {
+		if (toolBarPanel == null) {
+			toolBarPanel = new ToolBarPanel(this);
+		}
+		return toolBarPanel;
+	}
+	
+	
+	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
-		title.append(APPLICATION_NAME);
+		title.append(Main.APPLICATION_NAME);
 		title.append(" - ");
-		if (isChanged()) {
+		if (getDocument().isChanged()) {
 			title.append("*");
 		}
-		if (getFile() != null) {
-			title.append(getFile().getAbsolutePath());
+		if (getDocument().getFile() != null) {
+			title.append(getDocument().getFile().getAbsolutePath());
 		}
 		else {
 			title.append("Unsaved");
 		}
 		setTitle(title.toString());
 	}
-
-//	protected MultipleAlignmentsContainer createContainer() {
-//		// Create main container instance (TIC component):
-//		MultipleAlignmentsContainer container = new MultipleAlignmentsContainer();
-//		
-//		// Create head and main AlignmentArea:
-//		AlignmentArea headArea = new AlignmentArea(container);
-//		AlignmentArea mainArea = new AlignmentArea(container);
-//		
-//		// Prepare heading area:
-//		headArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(headArea.getContentArea(), mainArea));
-//		container.getAlignmentAreas().add(headArea);
-//		container.getAlignmentAreas().add(mainArea);
-//		
-//		// Prepare main area:
-//		mainArea.setAlignmentModel(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), false);
-//		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
-//		container.getAlignmentAreas().add(mainArea);
-//		
-//		return container;
-//	}
+	
 	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
 		setBounds(100, 100, 450, 300);
-		setExtendedState(JFrame.NORMAL);
+		setExtendedState(JFrame.NORMAL);//MAXIMIZE_BOTH
+
 		setContentPane(getJContentPane());
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if(saveAction.handleUnsavedChanges()) {
+				if (((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges()) {
 					setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				}
 				else {
@@ -187,46 +178,29 @@ public class MainFrame extends JFrame {
 		// Create main container instance (TIC component):
 		container = new MultipleAlignmentsContainer();
 		
-		// Create head and main AlignmentArea:
-		AlignmentArea headArea = new AlignmentArea(container);
+		// out head and main AlignmentArea in container:
+		sequenceIndexAlignmentArea = new AlignmentArea(container);
+		characterSetAlignmentArea = new AlignmentArea(container);
 		mainArea = new AlignmentArea(container);
 		
+		charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
+		
 		// Prepare heading area:
-		headArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(headArea.getContentArea(), mainArea));
-		container.getAlignmentAreas().add(headArea);
+		sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
+		characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
+		container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
+		container.getAlignmentAreas().add(characterSetAlignmentArea);
 		container.getAlignmentAreas().add(mainArea);
 		
 		// Prepare main area:
-		mainArea.setAlignmentModel(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), false);
+		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);
 		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
 		container.getAlignmentAreas().add(mainArea);
 		
 		// Create Swing-specific component from TIC component:
 		JComponent swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
-		
-		// Register changes listener to know when to ask for saving changes:
-		mainArea.getAlignmentModel().getChangeListeners().add(new AlignmentModelChangeListener() {
-			@Override
-			public <T> void afterTokenChange(TokenChangeEvent<T> e) {
-				setChanged(true);
-			}
 			
-			@Override
-			public <T> void afterSequenceRenamed(SequenceRenamedEvent<T> e) {
-				setChanged(true);
-			}
-			
-			@Override
-			public <T> void afterSequenceChange(SequenceChangeEvent<T> e) {
-				setChanged(true);
-			}
-			
-			@Override
-			public <T, U> void afterProviderChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
-		});
-		
 		setJMenuBar(getMainMenu());
-		
 		
 		// Create Swing-specific component from TIC component:
 		swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
@@ -243,6 +217,7 @@ public class MainFrame extends JFrame {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
+			jContentPane.add(getToolBarPanel(), BorderLayout.PAGE_START);
 		}
 		return jContentPane;
 	}
@@ -263,9 +238,20 @@ public class MainFrame extends JFrame {
 		if (editMenu == null) {
 			editMenu = new JMenu();
 			editMenu.setText("Edit");
+			editMenu.add(getActionManagement().get("edit.undo"));
+			editMenu.add(getActionManagement().get("edit.redo"));
+			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addSequence"));
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));
 			editMenu.add(getActionManagement().get("edit.removeGaps"));
+			editMenu.addSeparator();
+			editMenu.add(getActionManagement().get("edit.addCharSet"));
+			editMenu.add(getActionManagement().get("edit.deleteCharSet"));
+			editMenu.addSeparator();
+			editMenu.add(getActionManagement().get("edit.addcurrendCharSet"));
+			editMenu.add(getActionManagement().get("edit.removecurrendCharSet"));
+			editMenu.add(getActionManagement().get("edit.changecolorCharSet"));
+			editMenu.add(getActionManagement().get("edit.renameCharSet"));
 		}
 		return editMenu;
 	}
@@ -277,6 +263,7 @@ public class MainFrame extends JFrame {
 			fileMenu.setText("File");
 			fileMenu.add(getActionManagement().get("file.new"));
 			fileMenu.add(getActionManagement().get("file.open"));
+			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.save"));
 			fileMenu.add(getActionManagement().get("file.saveAs"));
 			fileMenu.add(getActionManagement().get("file.export"));
@@ -289,6 +276,7 @@ public class MainFrame extends JFrame {
 			helpMenu = new JMenu();
 			helpMenu.setText("Help");
 			helpMenu.add(getActionManagement().get("help.about"));
+			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.index"));
 			helpMenu.add(getActionManagement().get("help.contents"));
 			helpMenu.add(getActionManagement().get("help.twitter"));
