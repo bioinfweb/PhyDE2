@@ -16,35 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.file;
+package info.bioinfweb.phyde2.document.undo.edit;
 
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import info.bioinfweb.phyde2.document.Document;
 
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
-import info.bioinfweb.phyde2.gui.MainFrame;
-
-
-
-@SuppressWarnings("serial")
-public class SaveAsAction extends AbstractFileAction{
+public class RemoveColumnsFromCharSetEdit extends AddRemoveCharSetColumns {
 	
-	public SaveAsAction(MainFrame mainFrame) {
-		super(mainFrame);
-		putValue(Action.NAME, "Save As..."); 
-		putValue(Action.SHORT_DESCRIPTION, "Save As"); 
-		KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
-		putValue(Action.ACCELERATOR_KEY, key);
-		loadSymbols("SaveAs");
+	
+	public RemoveColumnsFromCharSetEdit(Document document, String id, int FirstColumn, int LastColumn) {
+		super(document, id, FirstColumn, LastColumn);
 	}
 	
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		save();
+	public void redo() throws CannotRedoException {
+		removeColumnsFromCharSet();
+		super.redo();
+	}
+	
+	
+	@Override
+	public void undo() throws CannotUndoException {
+		undoableRemoveFromCharSet();
+		super.undo();
+	}
+	
+	
+	@Override
+	public String getPresentationName() {
+		return "Remove colums character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
 	}
 }

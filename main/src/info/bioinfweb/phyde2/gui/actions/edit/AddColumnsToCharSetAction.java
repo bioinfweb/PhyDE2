@@ -23,9 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.phyde2.document.undo.edit.AddColumnsToCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -35,22 +33,20 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 	 
 	public AddColumnsToCharSetAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Add selected character set"); 
+		putValue(Action.NAME, "Add colums to selected character set"); 
+		putValue(Action.SHORT_DESCRIPTION, "Add colums to selected char. set"); 
+		loadSymbols("AddBar");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		CharSetDataModel model = new CharSetDataModel();
-		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
-		int id = getMainFrame().getCharSetArea().getSelectedIndex();
+		String id = getSelectedCharSetID();
 		
-		if (id == -1) {
+		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want to add a bar.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		model = getMainFrame().getCharSetArea().getModel();
-		CharSet charSet = model.get(model.get(id));
-		charSet.add(selection.getFirstColumn(), selection.getLastColumn());
+		getMainFrame().getDocument().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getDocument(), id, getMainFrame().getAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getAlignmentArea().getSelection().getLastColumn()));
 	}
 
 }

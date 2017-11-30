@@ -30,7 +30,10 @@ import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
 import info.bioinfweb.libralign.model.events.TokenChangeEvent;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
+import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory;
+import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
+import info.bioinfweb.phyde2.document.undo.AlignmentModelEditFactory;
 import info.bioinfweb.phyde2.document.undo.DocumentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
@@ -42,37 +45,23 @@ public class Document {
 	private File file;
 	private boolean changed;
 	
-	private AlignmentModel<Character> alignmentModel;
+	private SwingEditFactory<Character> alignmentModelEditFactory;
+	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
 	private CharSetDataModel charSetModel;
 	
 	
 	public Document() {
+		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel());
+	}
+	
+	
+	public Document(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
 		super();
+		
 		undoManager = new UndoManager();
-		alignmentModel = new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true));
-		charSetModel =  new CharSetDataModel();
-		
-		// Register changes listener to know when to ask for saving changes:
-		alignmentModel.getChangeListeners().add(new AlignmentModelChangeListener() {
-			@Override
-			public <T> void afterTokenChange(TokenChangeEvent<T> e) {
-				setChanged(true);
-			}
-			
-			@Override
-			public <T> void afterSequenceRenamed(SequenceRenamedEvent<T> e) {
-				setChanged(true);
-			}
-			
-			@Override
-			public <T> void afterSequenceChange(SequenceChangeEvent<T> e) {
-				setChanged(true);
-			}
-			
-			@Override
-			public <T, U> void afterProviderChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
-		});
-		
+		alignmentModelEditFactory = new AlignmentModelEditFactory(this);
+		this.charSetModel = charSetModel;
+		setAlignmentModel(alignmentModel);
 	}
 	
 	
@@ -106,18 +95,46 @@ public class Document {
 
 
 	public void setChanged(boolean changed) {
-		this.changed = changed;
-		MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
+		if (this.changed != changed) {
+			this.changed = changed;
+			MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
+		}
 	}
 	
 	
-	public AlignmentModel<Character> getAlignmentModel() {
-		return alignmentModel;
+	public SwingUndoAlignmentModel<Character> getAlignmentModel() {
+		return undoAlignmentModel;
 	}
 	
 	
-	public void setAlignmentModel(AlignmentModel<Character> alignmentModel) {
-		this.alignmentModel = alignmentModel;
+	private void setAlignmentModel(AlignmentModel<Character> alignmentModel) {
+		if (alignmentModel instanceof SwingUndoAlignmentModel) {
+			this.undoAlignmentModel = (SwingUndoAlignmentModel<Character>)alignmentModel;
+		}
+		else {
+			this.undoAlignmentModel = new SwingUndoAlignmentModel<Character>(alignmentModel, undoManager, alignmentModelEditFactory);
+		}
+		
+		// Register changes listener to know when to ask for saving changes:
+		undoAlignmentModel.getChangeListeners().add(new AlignmentModelChangeListener() {
+			@Override
+			public <T> void afterTokenChange(TokenChangeEvent<T> e) {
+				setChanged(true);
+			}
+			
+			@Override
+			public <T> void afterSequenceRenamed(SequenceRenamedEvent<T> e) {
+				setChanged(true);
+			}
+			
+			@Override
+			public <T> void afterSequenceChange(SequenceChangeEvent<T> e) {
+				setChanged(true);
+			}
+			
+			@Override
+			public <T, U> void afterProviderChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
+		});
 	}
 	
 	

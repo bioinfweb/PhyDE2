@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.JColorChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.phyde2.document.undo.edit.ChangeCharSetColorEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -37,33 +37,28 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
  */
 @SuppressWarnings("serial")
 public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Action {
-
-    protected JColorChooser tcc;
-    protected JLabel banner;
+	
 	public ChangeCharSetColorAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Change character set color"); 
+		putValue(Action.SHORT_DESCRIPTION, "Change char. set color");
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		CharSetDataModel model = new CharSetDataModel();
-		int index = getMainFrame().getCharSetArea().getSelectedIndex();
+		String id = getSelectedCharSetID();
 		
-		if (index == -1) {
+		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want change the color.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
 			model = getMainFrame().getCharSetArea().getModel();
-			CharSet charSet = model.get(model.get(index));
-			Color color = JColorChooser.showDialog(getMainFrame(), "Change character-set color", charSet.getColor());
+			CharSet charSet = model.get(id);
+			Color color = JColorChooser.showDialog(getMainFrame(), "Change character set color", charSet.getColor());
 			if (color != null) {
-				charSet.setColor(color);
+				getMainFrame().getDocument().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getDocument(), getMainFrame().getCharSetArea().getModel(), id, color));
 			}
 		}
-
-		
 	}
-
-	
 }

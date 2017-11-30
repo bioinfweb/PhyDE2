@@ -18,41 +18,44 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+import java.util.Set;
 
-import java.awt.Color;
-
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.commons.collections.SimpleSequenceInterval;
 import info.bioinfweb.phyde2.document.Document;
 
-
-
-public class AddCharSetEdit extends AddDeleteCharSetEdit {
+public class AddRemoveCharSetColumns extends AbstractCharSetEdit{
+	private int firstColumn;
+	private int lastColumn;
+	private Set<SimpleSequenceInterval> previousElements;
 	
 	
-	public AddCharSetEdit(Document document, String id, String name, Color color) {
-		super(document, id, new CharSet(name, color));
+	public AddRemoveCharSetColumns(Document document, String id, int FirstColumn, int LastColumn) {
+		super(document, id);
+		this.firstColumn = FirstColumn;
+		this.lastColumn = LastColumn;
+		this.previousElements = document.getCharSetModel().get(getID()).getOverlappingElements(firstColumn, lastColumn); 
 	}
 	
-
-	@Override
-	public void redo() throws CannotRedoException {
-		addCharSet();
-		super.redo();
-	}
-
 	
-	@Override
-	public void undo() throws CannotUndoException {
-		deleteCharSet();
-		super.undo();
+	protected void addColumnsToCharSet() {
+		getDocument().getCharSetModel().get(getID()).add(firstColumn, lastColumn);
 	}
-
-
+	
+	
+	protected void undoableRemoveFromCharSet() {
+		getDocument().getCharSetModel().get(getID()).addAll(previousElements);
+	}
+	
+	
+	protected void removeColumnsFromCharSet() {
+		
+		getDocument().getCharSetModel().get(getID()).remove(firstColumn, lastColumn);
+		
+	}
+	
+	
 	@Override
 	public String getPresentationName() {
-		return "Add character set \"" + getCharSet().getName() + "\"";
+		return null;
 	}
 }

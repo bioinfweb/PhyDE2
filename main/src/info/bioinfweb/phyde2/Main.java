@@ -37,8 +37,7 @@ public class Main extends ProgramMainClass {
 	public static final String APPLICATION_NAME = "PhyDE 2"; 
 	public static final String APPLICATION_VERSION = "0.0.0";
 	public static final String APPLICATION_URL = "http://bioinfweb.info/PhyDE2";
-	//public static final String ICON_PATH = "/resources/symbols/PHyDE216.png";
-	public static final String ICON_PATH = "/resources/symbols/phyde16.png";
+	public static final String ICON_PATH = "/resources/symbols/PhyDE216.png";
 	
 	private static Main firstInstance = null;
 	
@@ -64,17 +63,19 @@ public class Main extends ProgramMainClass {
 		return firstInstance;
 	}
 	
-	public ImageIcon createImageIcon(String path) {
+	
+	public static ImageIcon createImageIcon(String path) {
 		return new ImageIcon(Toolkit.getDefaultToolkit().getClass().getResource(path)); 
 	}
 	
+	
 	private void startApplication() {
 		//Thread.setDefaultUncaughtExceptionHandler(getErrorReporter());
-		//System.setProperty("apple.laf.useScreenMenuBar", "true");
+		//System.out.println(System.setProperty("apple.laf.useScreenMenuBar", "true"));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame window = new MainFrame();
+					MainFrame window = MainFrame.getInstance();
 					//show frame
 					window.setVisible(true);
 					window.setIconImage(createImageIcon(ICON_PATH).getImage());

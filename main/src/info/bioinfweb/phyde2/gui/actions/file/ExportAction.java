@@ -51,6 +51,7 @@ public class ExportAction extends AbstractFileAction{
 		super(mainframe);
 		putValue(Action.NAME, "Export..."); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+		putValue(Action.SHORT_DESCRIPTION, "Export"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('E', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 	
@@ -111,14 +112,14 @@ public class ExportAction extends AbstractFileAction{
 			}
 		}
 		catch (Exception ex){
-			JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	
 	//show save Dialog, set File, set File format
 	protected boolean promptexportFileName() {
-		boolean result = (getExportFileChooser().showDialog(getMainFrame().getFrame(), "Export") == JFileChooser.APPROVE_OPTION);
+		boolean result = (getExportFileChooser().showDialog(getMainFrame(), "Export") == JFileChooser.APPROVE_OPTION);
 		
 		if (result) {
 	    	getMainFrame().getDocument().setFile(getExportFileChooser().getSelectedFile());

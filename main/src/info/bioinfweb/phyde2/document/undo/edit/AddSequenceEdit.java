@@ -19,40 +19,27 @@
 package info.bioinfweb.phyde2.document.undo.edit;
 
 
-import java.awt.Color;
-
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingAddSequenceEdit;
+import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingConcreteAddSequenceEdit;
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.undo.AlignmentModelEdit;
 
 
 
-public class AddCharSetEdit extends AddDeleteCharSetEdit {
-	
-	
-	public AddCharSetEdit(Document document, String id, String name, Color color) {
-		super(document, id, new CharSet(name, color));
-	}
-	
-
-	@Override
-	public void redo() throws CannotRedoException {
-		addCharSet();
-		super.redo();
-	}
-
-	
-	@Override
-	public void undo() throws CannotUndoException {
-		deleteCharSet();
-		super.undo();
+public class AddSequenceEdit extends AlignmentModelEdit implements SwingAddSequenceEdit {
+	public AddSequenceEdit(Document document, SwingConcreteAddSequenceEdit<Character> underlyingEdit) {
+		super(document, underlyingEdit);
 	}
 
 
 	@Override
-	public String getPresentationName() {
-		return "Add character set \"" + getCharSet().getName() + "\"";
+	protected SwingConcreteAddSequenceEdit<Character> getUnderlyingEdit() {
+		return (SwingConcreteAddSequenceEdit<Character>)super.getUnderlyingEdit();
+	}
+
+
+	@Override
+	public String getNewSequenceID() {
+		return "Add sequence to alignment \"" + getDocument().getAlignmentModel().getUnderlyingModel().getLabel() + "\"";
 	}
 }

@@ -39,6 +39,7 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 		putValue(Action.NAME, "Delete sequence"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_D);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('D', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		putValue(Action.SHORT_DESCRIPTION, "Delete sequence");
 		loadSymbols("Delete");
 	}
 
@@ -49,7 +50,7 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
 			String id = getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
-			getMainFrame().getAlignmentArea().getAlignmentModel().removeSequence(id);
+			getMainFrame().getDocument().getAlignmentModel().removeSequence(id);
 		}
 	}	
 }

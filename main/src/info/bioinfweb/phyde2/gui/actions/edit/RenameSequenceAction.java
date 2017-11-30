@@ -24,33 +24,29 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 @SuppressWarnings("serial")
-public class RemoveCurrentSelectedCharSet extends AbstractPhyDEAction implements Action {
+public class RenameSequenceAction extends AbstractPhyDEAction implements Action {
 
-	public RemoveCurrentSelectedCharSet(MainFrame mainframe) {
+	public RenameSequenceAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Remove selected Char-Set"); 
+		putValue(Action.NAME, "Rename sequence"); 
+		putValue(Action.SHORT_DESCRIPTION, "Rename sequence");
+		loadSymbols("Replace");
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		CharSetDataModel model = new CharSetDataModel();
-		int id = getMainFrame().getCharSetArea().getSelectedIndex();
-		
-		if (id == -1) {
-			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want to remove a bar.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
-		}
-		
+	public void actionPerformed(ActionEvent arg0) {
 		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
-		model = getMainFrame().getCharSetArea().getModel();
-		
-		CharSet charSet = model.get(model.get(id));
-		charSet.remove(selection.getFirstColumn(), selection.getLastColumn());
+		String name = JOptionPane.showInputDialog("New sequence name");
+		if (name != null) {
+			for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
+				String id = getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(row);
+				getMainFrame().getDocument().getAlignmentModel().renameSequence(id, name);
+			}
+		}
 	}
 
 }

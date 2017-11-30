@@ -24,6 +24,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.collections4.MapIterator;
+
 import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
@@ -31,6 +33,7 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
@@ -55,7 +58,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	protected static JFileChooser getFileChooser() {
 		if (fileChooser == null) {
 			fileChooser = new JFileChooser() {
-
 				@Override
 				public void approveSelection(){
 					File f = getSelectedFile();
@@ -101,9 +103,66 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	protected void writeFile() {
 		writeFile(getMainFrame().getDocument().getFile(), Main.DEFAULT_FORMAT);
 	}
-
+	
+	
+	private boolean checkForOverlappingCharSet () {
+		MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
+		//TODO Move to save related action
+		boolean overlappingCharSet = false;
+		while (it.hasNext())
+		{
+			it.next();
+			if (it.getValue().last().getLastPos() > getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength())
+			{
+				overlappingCharSet = true;
+			}
+		}
+		
+		if (overlappingCharSet) {
+			//save, saveAs and Export Action will ask if the character bars has to be saved
+			switch(JOptionPane.showConfirmDialog(getMainFrame() , "There are Character sets which are longer as the Sequences. Do you want to save the invisable bars?", "Character sets are too long!", JOptionPane.YES_NO_CANCEL_OPTION)) {
+			case JOptionPane.YES_OPTION:
+				return false;
+			case JOptionPane.NO_OPTION:
+				return true;
+			case JOptionPane.CANCEL_OPTION:
+				return true;
+			case JOptionPane.CLOSED_OPTION:
+				return true;
+			}
+			return false;
+		}
+		//	false = program do not remove overlapping bars  
+		return false;
+	}
+	
+	
 
 	protected void writeFile(File file, String formatID) {
+		if (factory.getFormatInfo(formatID).isElementModeled(EventContentType.CHARACTER_SET, false)) {
+			int maxSeqLength  = getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength();
+//			
+//			//TODO Move to save related action
+//			for (int i = 0; i <= (getMainFrame().getDocument().getCharSetModel().size()-1); ++i ) {
+//				//	check if there is a bar in the charSet which is behind the max. sequence length (invisible for the user in the alignment area)
+//				if (getMainFrame().getDocument().getCharSetModel().getValue(i).last().getLastPos() > maxSeqLength) {
+//					//TODO get all charsets where the bars are longer then the sequences
+//				}
+//			}
+			if (checkForOverlappingCharSet()) {
+				MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
+				
+				//TODO Move to save related action
+				while (it.hasNext())
+				{
+					it.next();
+					if (it.getValue().last().getLastPos() > maxSeqLength){
+						it.getValue().remove(maxSeqLength, it.getValue().last().getLastPos());
+					}
+				}
+			}
+		}
+		
 		try {
 			ReadWriteParameterMap parameters = new ReadWriteParameterMap();
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_NAME, Main.APPLICATION_NAME);
@@ -117,44 +176,39 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 					getMainFrame().getAlignmentArea().getAlignmentModel(), false));
 			factory.getWriter(Main.DEFAULT_FORMAT).writeDocument(documentAdapter, file, parameters);
 			
-			
-			
 			// Note that files containing multiple alignments or additional trees or OTU lists would be overwritten with a single alignment file here. 
 			// This problem is not handles here, to keep this example simple
 			getMainFrame().getDocument().setChanged(false);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while writing file", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while writing file", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	
 	protected boolean promptFileName() {
-
-		boolean result = (getFileChooser().showSaveDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION);
+		boolean result = (getFileChooser().showSaveDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION);
 		if (result) {
 			getMainFrame().getDocument().setFile(getFileChooser().getSelectedFile());
-			//JPhyloIOContentExtensionFileFilter filter = (JPhyloIOContentExtensionFileFilter)getFileChooser().getFileFilter();
 		}
 		return result;
 	}
 	
 	
-	   protected boolean save() {
-		   boolean result = promptFileName();
-		   if (result) {
-			   writeFile();
-		   }
-		   
-		   return result;
-	   }
-	
+	protected boolean save() {
+		boolean result = promptFileName();
+		if (result) {
+			writeFile();
+		}
+		return result;
+	}
+
 	   
 	public boolean handleUnsavedChanges() {
 		if (getMainFrame().getDocument().isChanged()) {
-            switch (JOptionPane.showConfirmDialog(getMainFrame().getFrame(), "There are unsaved changes. Do you want to save the changes?", 
-            		"Unsaved changes", JOptionPane.YES_NO_CANCEL_OPTION)) {
+            switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes. Do you want to save the changes?", 
+            		"Unsaved changes", JOptionPane.YES_NO_OPTION)) {
 	            case JOptionPane.YES_OPTION:
 	            	writeFile();
 	            	return false;

@@ -18,41 +18,44 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
-
 import java.awt.Color;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.document.Document;
 
-
-
-public class AddCharSetEdit extends AddDeleteCharSetEdit {
+public class ChangeCharSetColorEdit extends AbstractCharSetEdit {
+	private CharSetDataModel model;
+	private Color newcolor;
+	private Color oldcolor;
 	
 	
-	public AddCharSetEdit(Document document, String id, String name, Color color) {
-		super(document, id, new CharSet(name, color));
+	public ChangeCharSetColorEdit(Document document, CharSetDataModel model, String id, Color color) {
+		super(document, id);
+		this.model = model;
+		this.newcolor = color;
 	}
-	
+
 
 	@Override
 	public void redo() throws CannotRedoException {
-		addCharSet();
+		oldcolor = model.get(getID()).getColor();
+		model.get(getID()).setColor(newcolor);
 		super.redo();
 	}
 
-	
+
 	@Override
 	public void undo() throws CannotUndoException {
-		deleteCharSet();
+		model.get(getID()).setColor(oldcolor);
 		super.undo();
 	}
-
-
+	
+	
 	@Override
 	public String getPresentationName() {
-		return "Add character set \"" + getCharSet().getName() + "\"";
+		return "Change color of character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
 	}
 }

@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.gui.actions.help;
 
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
@@ -32,7 +33,7 @@ public class BioinfWebMainPageAction extends WebsiteAction {
 		putValue(Action.NAME, "Bioinfweb"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
 		putValue(Action.SHORT_DESCRIPTION, "Help Main Page"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('B', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		loadSymbols("bioinfweb");
 	}
 

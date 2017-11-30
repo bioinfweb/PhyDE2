@@ -41,6 +41,8 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 	public AddCharSetAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Add character set"); 
+		putValue(Action.SHORT_DESCRIPTION, "Add char. set");
+		loadSymbols("AddCH");
 	}
 
 	

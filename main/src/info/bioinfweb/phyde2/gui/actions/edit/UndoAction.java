@@ -29,7 +29,6 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 @SuppressWarnings("serial")
 public class UndoAction  extends AbstractPhyDEAction implements Action{
-
 	public UndoAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Undo"); 
@@ -38,9 +37,11 @@ public class UndoAction  extends AbstractPhyDEAction implements Action{
 		loadSymbols("Undo");
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (getMainFrame().getDocument().getUndoManager().canUndo()) {
+			getMainFrame().getDocument().getUndoManager().undo();
+		}
 	}
 }

@@ -24,7 +24,7 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.phyde2.document.undo.edit.DeleteCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -34,21 +34,19 @@ public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
 	public DeleteCharSetAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Delete character set"); 
+		putValue(Action.SHORT_DESCRIPTION, "Delete char. set"); 
+		loadSymbols("DeleteCH");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		CharSetDataModel model = new CharSetDataModel();
-		int id = getMainFrame().getCharSetArea().getSelectedIndex();
+		String id = getSelectedCharSetID();
 		
-		if (id == -1) {
+		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set which you want to delete.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		model = getMainFrame().getCharSetArea().getModel();
-		CharSet charSet = model.get(model.get(id));
-		charSet.setName(null);
-		model.remove(id);
+		CharSet charSet = getMainFrame().getDocument().getCharSetModel().get(id);
+		getMainFrame().getDocument().executeEdit(new DeleteCharSetEdit(getMainFrame().getDocument(), charSet, id));
 	}
 
 }

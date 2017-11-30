@@ -37,6 +37,7 @@ public class SaveAction extends AbstractFileAction {
 		super(mainframe);
 		putValue(Action.NAME, "Save"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
+		putValue(Action.SHORT_DESCRIPTION, "Save"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		loadSymbols("Save");
 	}

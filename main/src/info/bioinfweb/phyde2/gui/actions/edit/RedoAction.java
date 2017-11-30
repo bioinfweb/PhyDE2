@@ -37,10 +37,18 @@ public class RedoAction  extends AbstractPhyDEAction implements Action{
 		loadSymbols("Redo");
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		getMainFrame().getDocument().getUndoManager().redo();
 	}
 
+
+	@Override
+	public void setEnabled(boolean arg0) {
+		// TODO Auto-generated method stub
+		super.setEnabled(arg0);
+	}
+	
+	
 }

@@ -40,6 +40,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		putValue(Action.NAME, "Add sequence"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('A', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		putValue(Action.SHORT_DESCRIPTION, "Add sequence");
 		loadSymbols("Add");
 	}
 
@@ -48,7 +49,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	public void actionPerformed(ActionEvent e) {
 		String name = JOptionPane.showInputDialog("New sequence name");
 		if (name != null) {
-			getMainFrame().getAlignmentArea().getAlignmentModel().addSequence(name);
+			getMainFrame().getDocument().getAlignmentModel().addSequence(name);
 		}
 	}
 }

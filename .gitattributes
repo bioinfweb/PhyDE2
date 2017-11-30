@@ -14,9 +14,21 @@ main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/pl
 main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEDocumentDataAdapter.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEditFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/DocumentEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/AddColumnsToCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/AddDeleteCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/AddRemoveCharSetColumns.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/AddSequenceEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/ChangeCharSetColorEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/ToolBarPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/ActionManagement.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddCharSetAction.java -text svneol=unset#text/plain
@@ -26,9 +38,10 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/ChangeCharSetColorAction.java -t
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RedoAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveCurrentSelectedCharSet.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveColumnsFromCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveGapsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RenameCharSetAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/RenameSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/AbstractFileAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/ExportAction.java -text svneol=unset#text/plain
@@ -45,8 +58,16 @@ main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#t
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
 main/src/resources/symbols/Add16.png -text
 main/src/resources/symbols/Add22.png -text
+main/src/resources/symbols/AddBar16.png -text
+main/src/resources/symbols/AddBar22.png -text
+main/src/resources/symbols/AddCH16.png -text
+main/src/resources/symbols/AddCH22.png -text
 main/src/resources/symbols/Delete16.png -text
 main/src/resources/symbols/Delete22.png -text
+main/src/resources/symbols/DeleteBar16.png -text
+main/src/resources/symbols/DeleteBar22.png -text
+main/src/resources/symbols/DeleteCH16.png -text
+main/src/resources/symbols/DeleteCH22.png -text
 main/src/resources/symbols/Help16.png -text
 main/src/resources/symbols/Help22.png -text
 main/src/resources/symbols/NewDocument16.png -text
@@ -55,6 +76,8 @@ main/src/resources/symbols/Open16.png -text
 main/src/resources/symbols/Open22.png -text
 main/src/resources/symbols/PHyDE216.png -text
 main/src/resources/symbols/PHyDE222.png -text
+main/src/resources/symbols/PhyDE216.png -text
+main/src/resources/symbols/PhyDE222.png -text
 main/src/resources/symbols/Redo16.png -text
 main/src/resources/symbols/Redo22.png -text
 main/src/resources/symbols/Remove16.png -text
@@ -71,4 +94,3 @@ main/src/resources/symbols/Undo16.png -text
 main/src/resources/symbols/Undo22.png -text
 main/src/resources/symbols/bioinfweb16.png -text
 main/src/resources/symbols/bioinfweb22.png -text
-main/src/resources/symbols/phyde16.png -text

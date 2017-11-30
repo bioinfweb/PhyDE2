@@ -16,35 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.file;
+package info.bioinfweb.phyde2.document.undo.edit;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
-import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.phyde2.document.Document;
 
 
 
-@SuppressWarnings("serial")
-public class SaveAsAction extends AbstractFileAction{
+public class DeleteCharSetEdit extends AddDeleteCharSetEdit {
 	
-	public SaveAsAction(MainFrame mainFrame) {
-		super(mainFrame);
-		putValue(Action.NAME, "Save As..."); 
-		putValue(Action.SHORT_DESCRIPTION, "Save As"); 
-		KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
-		putValue(Action.ACCELERATOR_KEY, key);
-		loadSymbols("SaveAs");
+	
+	public DeleteCharSetEdit(Document document, CharSet charSet, String id) {
+		super(document, id, charSet);
 	}
 	
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		save();
+	public void redo() throws CannotRedoException {
+		deleteCharSet();
+		super.redo();
+	}
+	
+	
+	@Override
+	public void undo() throws CannotUndoException {
+		addCharSet();
+		super.undo();
+	}
+	
+	
+	@Override
+	public String getPresentationName() {
+		return "Delete character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
 	}
 }

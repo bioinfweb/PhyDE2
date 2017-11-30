@@ -46,7 +46,7 @@ import info.bioinfweb.tic.SwingComponentFactory;
 //TODO: change class header to ... extends Main for remove getInstance method
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame { 
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	
 	private static MainFrame firstInstance = null;
@@ -70,11 +70,11 @@ public class MainFrame extends JFrame {
 	private AlignmentArea characterSetAlignmentArea = null;
 	private CharSetArea charSetArea = null;
 	
-	
+
 	/**
 	 * Create the application.
 	 */
-	public MainFrame() {
+	private MainFrame() {
 		super();
 		initialize();
 	}
@@ -86,7 +86,7 @@ public class MainFrame extends JFrame {
 		}
 		return firstInstance;
 	}
-
+	
 
 	public Document getDocument() {
 		return document;
@@ -95,16 +95,6 @@ public class MainFrame extends JFrame {
 
 	public CharSetArea getCharSetArea() {
 		return charSetArea;
-	}
-
-
-	public JFrame getFrame() {
-		return this;
-	}
-
-
-	public MultipleAlignmentsContainer getMAContainer() {
-		return container;
 	}
 	
 	
@@ -152,7 +142,7 @@ public class MainFrame extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		setBounds(100, 100, 450, 300);
+		setBounds(200, 200, 550, 500);
 		setExtendedState(JFrame.NORMAL);//MAXIMIZE_BOTH
 
 		setContentPane(getJContentPane());
@@ -182,19 +172,20 @@ public class MainFrame extends JFrame {
 		sequenceIndexAlignmentArea = new AlignmentArea(container);
 		characterSetAlignmentArea = new AlignmentArea(container);
 		mainArea = new AlignmentArea(container);
-		
 		charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
 		
 		// Prepare heading area:
 		sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
 		characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
+		
 		container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
 		container.getAlignmentAreas().add(characterSetAlignmentArea);
-		container.getAlignmentAreas().add(mainArea);
+//		container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
 		
 		// Prepare main area:
-		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);
+		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
 		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
+		
 		container.getAlignmentAreas().add(mainArea);
 		
 		// Create Swing-specific component from TIC component:
@@ -206,10 +197,9 @@ public class MainFrame extends JFrame {
 		swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		
+		getContentPane().add(getToolBarPanel(), BorderLayout.PAGE_START);
 		// Add Swing component to GUI:
 		getContentPane().add(swingContainer, BorderLayout.CENTER);
-		
 	}
 	
 	
@@ -217,7 +207,6 @@ public class MainFrame extends JFrame {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getToolBarPanel(), BorderLayout.PAGE_START);
 		}
 		return jContentPane;
 	}
@@ -243,6 +232,7 @@ public class MainFrame extends JFrame {
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addSequence"));
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));
+			editMenu.add(getActionManagement().get("edit.renameSequence"));
 			editMenu.add(getActionManagement().get("edit.removeGaps"));
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addCharSet"));

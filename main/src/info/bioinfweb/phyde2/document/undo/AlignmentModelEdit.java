@@ -16,43 +16,48 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo.edit;
+package info.bioinfweb.phyde2.document.undo;
 
-
-import java.awt.Color;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.model.implementations.swingundo.edits.LibrAlignSwingAlignmentEdit;
 import info.bioinfweb.phyde2.document.Document;
 
 
 
-public class AddCharSetEdit extends AddDeleteCharSetEdit {
+public class AlignmentModelEdit extends DocumentEdit {
+	private LibrAlignSwingAlignmentEdit<Character> underlyingEdit;
+
 	
-	
-	public AddCharSetEdit(Document document, String id, String name, Color color) {
-		super(document, id, new CharSet(name, color));
+	public AlignmentModelEdit(Document document, LibrAlignSwingAlignmentEdit<Character> underlyingEdit) {
+		super(document);
+		this.underlyingEdit = underlyingEdit;
 	}
-	
+
+
+	protected LibrAlignSwingAlignmentEdit<Character> getUnderlyingEdit() {
+		return underlyingEdit;
+	}
+
 
 	@Override
 	public void redo() throws CannotRedoException {
-		addCharSet();
+		underlyingEdit.redo();
 		super.redo();
 	}
 
-	
+
 	@Override
 	public void undo() throws CannotUndoException {
-		deleteCharSet();
+		underlyingEdit.undo();
 		super.undo();
 	}
-
-
+	
+	
 	@Override
 	public String getPresentationName() {
-		return "Add character set \"" + getCharSet().getName() + "\"";
+		return underlyingEdit.getPresentationName();
 	}
 }

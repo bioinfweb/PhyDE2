@@ -122,13 +122,13 @@ public class NewCharSetDialog extends OkCancelApplyHelpDialog {
 	@Override
 	protected boolean apply() {
 		if (getName().equals("")) {
-			switch(JOptionPane.showConfirmDialog(this, "There is no name for the character set. Do you want to set some?", "Missing Name!", JOptionPane.YES_NO_OPTION)) {
+			switch(JOptionPane.showConfirmDialog(this, "There is no name for the character set. Do you want add it anyway?", "Missing Name!", JOptionPane.YES_NO_OPTION)) {
 			case JOptionPane.YES_OPTION:
-				return false;
+				return true;
 			case JOptionPane.NO_OPTION:
-				return true;
+				return false;
 			case JOptionPane.CLOSED_OPTION:
-				return true;
+				return false;
 			}
 		}
 		return true;
@@ -153,42 +153,4 @@ public class NewCharSetDialog extends OkCancelApplyHelpDialog {
 	public void setSelectedColor(Color color) {
 		getColorChooser().setColor(color);
 	}
-	
-    
-//	protected void createAndShowGUI() {
-//		
-//
-//
-//		//Set up the banner at the top of the window
-//		//banner = new JLabel(name ,JLabel.CENTER); 
-//        banner.setForeground(Color.yellow);
-//        banner.setBackground(Color.blue);
-//        banner.setOpaque(true);
-//        banner.setFont(new Font("SansSerif", Font.BOLD, 24));
-//        banner.setPreferredSize(new Dimension(100, 65));
-//
-//        JPanel bannerPanel = new JPanel(new BorderLayout());
-//        bannerPanel.add(banner, BorderLayout.CENTER);
-//        bannerPanel.setBorder(BorderFactory.createTitledBorder("Character name"));
-//
-//        //Set up color chooser for setting text color
-//        colorChooser = new JColorChooser(banner.getForeground());
-//        colorChooser.getSelectionModel().addChangeListener(this);
-//        colorChooser.setBorder(BorderFactory.createTitledBorder(
-//                                             "Choose Character Color"));
-//        
-//        //Create and set up the content pane.
-//        //JComponent newContentPane = new ColorChooser();
-//        colorChooser.setOpaque(true); //content panes must be opaque
-//        
-//        
-//        getColorChooser();
-//		
-//        add(bannerPanel, BorderLayout.CENTER);
-//        add(colorChooser, BorderLayout.PAGE_END);
-//        
-//        //Display the window.
-////        this.pack();
-////        this.setVisible(true);
-//    }
 }

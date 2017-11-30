@@ -18,40 +18,34 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
-import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.undo.edit.RenameCharSetEdit;
+import info.bioinfweb.phyde2.document.undo.edit.RemoveColumnsFromCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
-
-
 @SuppressWarnings("serial")
-public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
-	public RenameCharSetAction(MainFrame mainframe) {
+public class RemoveColumnsFromCharSetAction extends AbstractPhyDEAction implements Action {
+
+	public RemoveColumnsFromCharSetAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Rename character set"); 
-		putValue(Action.SHORT_DESCRIPTION, "Rename char. set");
+		putValue(Action.NAME, "Remove columns from character set"); 
+		putValue(Action.SHORT_DESCRIPTION, "Remove columns from char. set");
+		loadSymbols("DeleteBar");
 	}
 
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String id = getSelectedCharSetID();
+		
 		if (id == null) {
-			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set that should renamed.", "Character set not found.", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set area where you want to remove bar's.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
-		else {
-			String name = JOptionPane.showInputDialog("New character set name:");
-			if (name != null) {
-				Document document = getMainFrame().getDocument();
-				document.executeEdit(new RenameCharSetEdit(document, id, name));
-			}
-		}
+		
+		getMainFrame().getDocument().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getDocument(), id, getMainFrame().getAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getAlignmentArea().getSelection().getLastColumn()));
 	}
+
 }

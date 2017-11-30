@@ -16,35 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.file;
+package info.bioinfweb.phyde2.document.undo.edit;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
-import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.undo.DocumentEdit;
 
 
 
-@SuppressWarnings("serial")
-public class SaveAsAction extends AbstractFileAction{
+public abstract class AbstractCharSetEdit extends DocumentEdit {
+	private String id;
 	
-	public SaveAsAction(MainFrame mainFrame) {
-		super(mainFrame);
-		putValue(Action.NAME, "Save As..."); 
-		putValue(Action.SHORT_DESCRIPTION, "Save As"); 
-		KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
-		putValue(Action.ACCELERATOR_KEY, key);
-		loadSymbols("SaveAs");
+	
+	public AbstractCharSetEdit(Document document, String id) {
+		super(document);
+		this.id = id;
 	}
 	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		save();
+
+	public String getID() {
+		return id;
 	}
 }

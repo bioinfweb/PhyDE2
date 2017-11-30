@@ -39,6 +39,7 @@ public class NewAction extends AbstractFileAction {
 		super(mainFrame);
 		putValue(Action.NAME, "New"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+		putValue(Action.SHORT_DESCRIPTION, "New"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('N', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		loadSymbols("NewDocument");
 	}

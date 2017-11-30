@@ -54,6 +54,7 @@ public class OpenAction extends AbstractFileAction {
 		super(mainFrame);
 		putValue(Action.NAME, "Open..."); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
+		putValue(Action.SHORT_DESCRIPTION, "Open"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		loadSymbols("Open");
 	}
@@ -86,14 +87,14 @@ public class OpenAction extends AbstractFileAction {
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
 			try {
-				if (getOpenFileChooser().showOpenDialog(getMainFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
+				if (getOpenFileChooser().showOpenDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION) {
 					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
 					PhyDEAlignmentDataReader mainReader = new PhyDEAlignmentDataReader(eventReader);
 					mainReader.readAll();
 					
 					// File does not contain any alignments
 					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {
-						JOptionPane.showMessageDialog(getMainFrame().getFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
+						JOptionPane.showMessageDialog(getMainFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
 								"\" does not contain any alignments.", "Error while loading file", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
@@ -106,7 +107,7 @@ public class OpenAction extends AbstractFileAction {
 
 							// File contains more than one alignment --> just the first one was loaded
 							if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
-								JOptionPane.showMessageDialog(getMainFrame().getFrame(),
+								JOptionPane.showMessageDialog(getMainFrame(),
 										"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
 							}
 						}
@@ -118,7 +119,7 @@ public class OpenAction extends AbstractFileAction {
 			catch (Exception ex) {
 				//TODO: Throws Exception while opening a NexML file: "The symbol("-")of a standard data token definition must be of type Integer."
 				ex.printStackTrace();
-				JOptionPane.showMessageDialog(getMainFrame().getFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

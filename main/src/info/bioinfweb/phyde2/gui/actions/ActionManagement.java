@@ -33,9 +33,10 @@ import info.bioinfweb.phyde2.gui.actions.edit.ChangeCharSetColorAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoAction;
-import info.bioinfweb.phyde2.gui.actions.edit.RemoveCurrentSelectedCharSet;
+import info.bioinfweb.phyde2.gui.actions.edit.RemoveColumnsFromCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RenameCharSetAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RenameSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoAction;
 import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
 import info.bioinfweb.phyde2.gui.actions.file.NewAction;
@@ -51,7 +52,7 @@ import info.bioinfweb.phyde2.gui.actions.help.TwitterAction;
 
 
 public class ActionManagement extends AbstractUndoActionManagement {
-	private MainFrame mainFrame = null;
+	private MainFrame mainFrame;
 //	private Vector<Action> popupActions = new Vector<Action>();
 //	private JPopupMenu popupMenu = new JPopupMenu();
 	
@@ -74,11 +75,12 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.redo", new RedoAction(mainFrame));
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
+		put("edit.renameSequence", new RenameSequenceAction(mainFrame));
 		put("edit.removeGaps", new RemoveGapsAction(mainFrame));
 		put("edit.addCharSet", new AddCharSetAction(mainFrame));
 		put("edit.deleteCharSet", new DeleteCharSetAction(mainFrame));
 		put("edit.addcurrendCharSet", new AddColumnsToCharSetAction(mainFrame));
-		put("edit.removecurrendCharSet", new RemoveCurrentSelectedCharSet(mainFrame));
+		put("edit.removecurrendCharSet", new RemoveColumnsFromCharSetAction(mainFrame));
 		put("edit.changecolorCharSet", new ChangeCharSetColorAction(mainFrame));
 		put("edit.renameCharSet", new RenameCharSetAction(mainFrame));
 		
