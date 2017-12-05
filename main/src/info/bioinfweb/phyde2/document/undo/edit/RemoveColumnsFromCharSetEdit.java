@@ -18,16 +18,17 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.phyde2.document.Document;
 
+
+
 public class RemoveColumnsFromCharSetEdit extends AddRemoveCharSetColumns {
-	
-	
-	public RemoveColumnsFromCharSetEdit(Document document, String id, int FirstColumn, int LastColumn) {
-		super(document, id, FirstColumn, LastColumn);
+	public RemoveColumnsFromCharSetEdit(Document document, String id, int firstColumn, int lastColumn) {
+		super(document, id, firstColumn, lastColumn);
 	}
 	
 	
@@ -40,13 +41,13 @@ public class RemoveColumnsFromCharSetEdit extends AddRemoveCharSetColumns {
 	
 	@Override
 	public void undo() throws CannotUndoException {
-		undoableRemoveFromCharSet();
+		restoreColumns();
 		super.undo();
 	}
 	
 	
 	@Override
 	public String getPresentationName() {
-		return "Remove colums character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
+		return "Remove columns character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
 	}
 }

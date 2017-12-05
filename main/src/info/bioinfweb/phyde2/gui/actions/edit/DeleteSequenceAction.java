@@ -27,6 +27,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -52,5 +53,11 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 			String id = getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
 			getMainFrame().getDocument().getAlignmentModel().removeSequence(id);
 		}
+	}
+
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled(document.getAlignmentModel().getSequenceCount() != 0);
 	}	
 }

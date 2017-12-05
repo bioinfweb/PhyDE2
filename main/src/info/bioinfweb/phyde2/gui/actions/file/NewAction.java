@@ -26,9 +26,11 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -53,9 +55,14 @@ public class NewAction extends AbstractFileAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
-			getMainFrame().getAlignmentArea().setAlignmentModel(createAlignmentModel(), true);
+			getMainFrame().setDocument(new Document(createAlignmentModel(),new CharSetDataModel()));
+			//getMainFrame().getAlignmentArea().setAlignmentModel(createAlignmentModel(), true);
 			getMainFrame().getDocument().setFile(null);
 			getMainFrame().getDocument().setChanged(false);
 		}
 	}
+
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {}
 }

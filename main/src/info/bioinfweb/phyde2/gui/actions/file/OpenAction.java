@@ -38,6 +38,8 @@ import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -86,6 +88,10 @@ public class OpenAction extends AbstractFileAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
+			//	create new Document:
+			getMainFrame().setDocument(new Document(NewAction.createAlignmentModel(),new CharSetDataModel()));
+			
+			//	File reading:
 			try {
 				if (getOpenFileChooser().showOpenDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION) {
 					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
@@ -111,9 +117,7 @@ public class OpenAction extends AbstractFileAction {
 										"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
 							}
 						}
-						
 					}
-					
 				}
 			}
 			catch (Exception ex) {
@@ -123,5 +127,8 @@ public class OpenAction extends AbstractFileAction {
 			}
 		}
 	}
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {}
 
 }

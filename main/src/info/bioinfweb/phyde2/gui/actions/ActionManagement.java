@@ -19,12 +19,15 @@
 package info.bioinfweb.phyde2.gui.actions;
 
 
+import java.util.Iterator;
+
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.commons.swing.AbstractUndoActionManagement;
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.edit.AddCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddColumnsToCharSetAction;
@@ -33,11 +36,13 @@ import info.bioinfweb.phyde2.gui.actions.edit.ChangeCharSetColorAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RedoToAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveColumnsFromCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RenameCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RenameSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoAction;
+import info.bioinfweb.phyde2.gui.actions.edit.UndoToAction;
 import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
 import info.bioinfweb.phyde2.gui.actions.file.NewAction;
 import info.bioinfweb.phyde2.gui.actions.file.OpenAction;
@@ -95,35 +100,59 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	@Override
 	protected AccessibleUndoManager getUndoManager() {
-		// TODO Auto-generated method stub
-		return null;
+		return mainFrame.getDocument().getUndoManager();
 	}
 	
 
 	@Override
 	protected JMenu getUndoMenu() {
-		// TODO Auto-generated method stub
-		return null;
+		return mainFrame.getUndoMenu();
 	}
 
 	
 	@Override
 	protected JMenu getRedoMenu() {
-		// TODO Auto-generated method stub
-		return null;
+		return mainFrame.getRedoMenu();
 	}
 	
 
 	@Override
 	protected Action createUndoAction(UndoableEdit edit) {
-		// TODO Auto-generated method stub
-		return null;
+		return new UndoToAction(mainFrame, edit);
 	}
 
 	
 	@Override
 	protected Action createRedoAction(UndoableEdit edit) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RedoToAction(mainFrame, edit);
 	}
+	
+	
+	private void setActionStatusBySelection(Document document, MainFrame mainframe) {
+		
+		Iterator<Action> iterator = getMap().values().iterator();
+		while (iterator.hasNext()) {
+			Action action = iterator.next();
+			if (action instanceof AbstractPhyDEAction) {
+				((AbstractPhyDEAction)action).setEnabled(document, mainframe);
+			}
+		}
+	}
+	
+	
+	public void refreshActionStatus() {
+		Document document = mainFrame.getDocument();
+		setActionStatusBySelection(document, mainFrame);
+		
+		editUndoRedoMenus();
+		get("edit.undo").setEnabled(mainFrame.getDocument().getUndoManager().canUndo());
+		get("edit.redo").setEnabled(mainFrame.getDocument().getUndoManager().canRedo());
+		
+//			Test:
+//		get("edit.undo").setEnabled(false);
+//		get("edit.redo").setEnabled(false);
+//		getUndoMenu().setEnabled(false);
+//		getRedoMenu().setEnabled(false);
+	}
+	
 }

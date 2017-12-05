@@ -23,6 +23,7 @@ import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.commons.swing.AbstractDocumentEdit;
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
@@ -43,7 +44,6 @@ public abstract class DocumentEdit extends AbstractDocumentEdit implements Undoa
 
 	@Override
 	protected void registerDocumentChange() {
-		// TODO Auto-generated method stub
-		
+		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO Replace this call by DocumentChangeEvent processing in the future.
 	}
 }

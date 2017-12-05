@@ -20,17 +20,22 @@ package info.bioinfweb.phyde2.gui;
 
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import info.bioinfweb.commons.events.GenericEventObject;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionListener;
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.alignmentarea.tokenpainter.NucleotideTokenPainter;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
@@ -61,6 +66,8 @@ public class MainFrame extends JFrame {
 	private JMenu fileMenu = null;
 	private JMenu editMenu = null;
 	private JMenu helpMenu = null;
+	private JMenu undoMenu = null;
+	private JMenu redoMenu = null;
 	private JPanel toolBarPanel = null;
 	
 	// Alignment views:
@@ -87,6 +94,13 @@ public class MainFrame extends JFrame {
 		return firstInstance;
 	}
 	
+
+	public void setDocument(Document document) {
+		this.document = document;
+		mainArea.setAlignmentModel(document.getAlignmentModel(), true);
+		charSetArea.setModel(document.getCharSetModel());
+	}
+
 
 	public Document getDocument() {
 		return document;
@@ -173,6 +187,12 @@ public class MainFrame extends JFrame {
 		characterSetAlignmentArea = new AlignmentArea(container);
 		mainArea = new AlignmentArea(container);
 		charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
+		charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
+			@Override
+			public void selectionChanged(GenericEventObject<CharSetArea> event) {
+				getActionManagement().refreshActionStatus();
+			}
+		});
 		
 		// Prepare heading area:
 		sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
@@ -185,6 +205,12 @@ public class MainFrame extends JFrame {
 		// Prepare main area:
 		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
 		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
+		mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
+			@Override
+			public void selectionChanged(GenericEventObject<SelectionModel> event) {
+				getActionManagement().refreshActionStatus();
+			}
+		});
 		
 		container.getAlignmentAreas().add(mainArea);
 		
@@ -200,6 +226,13 @@ public class MainFrame extends JFrame {
 		getContentPane().add(getToolBarPanel(), BorderLayout.PAGE_START);
 		// Add Swing component to GUI:
 		getContentPane().add(swingContainer, BorderLayout.CENTER);
+		
+		refreshMenue();
+	}
+	
+	
+	public void refreshMenue() {
+		getActionManagement().refreshActionStatus();
 	}
 	
 	
@@ -227,8 +260,8 @@ public class MainFrame extends JFrame {
 		if (editMenu == null) {
 			editMenu = new JMenu();
 			editMenu.setText("Edit");
-			editMenu.add(getActionManagement().get("edit.undo"));
-			editMenu.add(getActionManagement().get("edit.redo"));
+			editMenu.add(getUndoMenu());
+			editMenu.add(getRedoMenu());
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addSequence"));
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));
@@ -261,6 +294,7 @@ public class MainFrame extends JFrame {
 		return fileMenu;
 	}
 	
+	
 	private JMenu getHelpMenu() {
 		if (helpMenu == null) {
 			helpMenu = new JMenu();
@@ -275,4 +309,35 @@ public class MainFrame extends JFrame {
 		return helpMenu;
 	}
 
+	
+	/**
+	 * This method initializes undoMenu	
+	 * 	
+	 * @return javax.swing.JMenu	
+	 */
+	public JMenu getUndoMenu() {
+		if (undoMenu == null) {
+			undoMenu = new JMenu();
+			undoMenu.setText("Undo");
+			undoMenu.setMnemonic(KeyEvent.VK_U);
+			undoMenu.setIcon(new ImageIcon(Object.class.getResource("/resources/symbols/Undo16.png")));
+		}
+		return undoMenu;
+	}
+
+
+	/**
+	 * This method initializes redoMenu	
+	 * 	
+	 * @return javax.swing.JMenu	
+	 */
+	public JMenu getRedoMenu() {
+		if (redoMenu == null) {
+			redoMenu = new JMenu();
+			redoMenu.setText("Redo");
+			redoMenu.setMnemonic(KeyEvent.VK_R);
+			redoMenu.setIcon(new ImageIcon(Object.class.getResource("/resources/symbols/Redo16.png")));
+		}
+		return redoMenu;
+	}
 }

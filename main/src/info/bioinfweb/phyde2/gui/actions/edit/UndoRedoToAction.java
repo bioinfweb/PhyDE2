@@ -19,43 +19,29 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.Action;
-import javax.swing.JOptionPane;
+import javax.swing.undo.UndoableEdit;
 
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.undo.edit.DeleteCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 
 
 @SuppressWarnings("serial")
-public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
-	public DeleteCharSetAction(MainFrame mainFrame) {
-		super(mainFrame);
-		putValue(Action.NAME, "Delete character set"); 
-		putValue(Action.SHORT_DESCRIPTION, "Delete char. set"); 
-		loadSymbols("DeleteCH");
+public abstract class UndoRedoToAction extends AbstractPhyDEAction {
+	protected UndoableEdit edit;
+	
+	
+	public UndoRedoToAction(MainFrame mainframe, UndoableEdit edit) {
+		super(mainframe);
+		this.edit = edit;
+		putValue(Action.NAME, edit.getPresentationName()); 
 	}
 
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		String id = getSelectedCharSetID();
-		
-		if (id == null) {
-			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set which you want to delete.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
-		}
-		CharSet charSet = getMainFrame().getDocument().getCharSetModel().get(id);
-		getMainFrame().getDocument().executeEdit(new DeleteCharSetEdit(getMainFrame().getDocument(), charSet, id));
-	}
-	
-	
+
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled(getSelectedCharSetID() != null);
+		setEnabled((document != null) && document.getUndoManager().contains(edit));
 	}
 }

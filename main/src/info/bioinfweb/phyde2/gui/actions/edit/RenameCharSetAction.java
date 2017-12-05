@@ -54,4 +54,12 @@ public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
 			}
 		}
 	}
+	
+	
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled(getSelectedCharSetID() != null);
+	}	
+	
+	
 }

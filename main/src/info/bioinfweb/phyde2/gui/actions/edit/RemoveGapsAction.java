@@ -27,6 +27,7 @@ import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -65,4 +66,12 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 			}				
 		}
 	}
+	
+	
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled(document.getAlignmentModel().getSequenceCount() != 0);
+	}	
+	
+	
 }

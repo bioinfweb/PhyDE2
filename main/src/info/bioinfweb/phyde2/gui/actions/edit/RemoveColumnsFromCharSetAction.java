@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.undo.edit.RemoveColumnsFromCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -42,10 +43,15 @@ public class RemoveColumnsFromCharSetAction extends AbstractPhyDEAction implemen
 		String id = getSelectedCharSetID();
 		
 		if (id == null) {
-			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set area where you want to remove bar's.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set area where you want to remove columns.","Character set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		getMainFrame().getDocument().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getDocument(), id, getMainFrame().getAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getAlignmentArea().getSelection().getLastColumn()));
+	}
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled(getSelectedCharSetID() != null);
 	}
 
 }

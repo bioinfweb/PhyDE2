@@ -20,37 +20,24 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.undo.UndoableEdit;
 
-import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 
 
 @SuppressWarnings("serial")
-public class RedoAction  extends AbstractPhyDEAction implements Action{
-	public RedoAction(MainFrame mainframe) {
-		super(mainframe);
-		putValue(Action.NAME, "Redo"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Y);
-		putValue(Action.SHORT_DESCRIPTION, "Redo"); 
-		loadSymbols("Redo");
+public class UndoToAction extends UndoRedoToAction {
+	public UndoToAction(MainFrame mainframe, UndoableEdit edit) {
+		super(mainframe, edit);
+		putValue(Action.NAME, edit.getUndoPresentationName()); 
 	}
 
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		if (getMainFrame().getDocument().getUndoManager().canRedo()) {
-			getMainFrame().getDocument().getUndoManager().redo();
-		}
-	}
-
-
-	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled(!getMainFrame().getDocument().getUndoManager().canRedo());	
+	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getDocument().getUndoManager().undoTo(edit);
 	}
 }

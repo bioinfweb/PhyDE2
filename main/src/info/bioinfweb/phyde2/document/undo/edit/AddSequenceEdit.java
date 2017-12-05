@@ -40,6 +40,6 @@ public class AddSequenceEdit extends AlignmentModelEdit implements SwingAddSeque
 
 	@Override
 	public String getNewSequenceID() {
-		return "Add sequence to alignment \"" + getDocument().getAlignmentModel().getUnderlyingModel().getLabel() + "\"";
+		return getUnderlyingEdit().getNewSequenceID();
 	}
 }

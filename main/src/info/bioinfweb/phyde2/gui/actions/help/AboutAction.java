@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import info.bioinfweb.phyde2.gui.dialogs.AboutDialog;
@@ -53,4 +54,8 @@ public class AboutAction extends AbstractPhyDEAction {
 	public void actionPerformed(ActionEvent e) {
 		getDialog().setVisible(true);
 	}
+
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {}
 }

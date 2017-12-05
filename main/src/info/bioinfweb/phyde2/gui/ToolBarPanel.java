@@ -73,7 +73,6 @@ public class ToolBarPanel extends JPanel{
 			upperToolBar.add(getActionManagement().get("file.new"));
 			upperToolBar.add(getActionManagement().get("file.open"));
 			upperToolBar.add(getActionManagement().get("file.save"));
-			upperToolBar.add(getActionManagement().get("file.saveAs"));
 			upperToolBar.addSeparator();
 			upperToolBar.add(getActionManagement().get("edit.undo"));
 			upperToolBar.add(getActionManagement().get("edit.redo"));

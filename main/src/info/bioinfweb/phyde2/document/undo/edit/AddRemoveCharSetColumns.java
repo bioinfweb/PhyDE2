@@ -18,12 +18,15 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+
 import java.util.Set;
 
 import info.bioinfweb.commons.collections.SimpleSequenceInterval;
 import info.bioinfweb.phyde2.document.Document;
 
-public class AddRemoveCharSetColumns extends AbstractCharSetEdit{
+
+
+public abstract class AddRemoveCharSetColumns extends AbstractCharSetEdit {
 	private int firstColumn;
 	private int lastColumn;
 	private Set<SimpleSequenceInterval> previousElements;
@@ -42,20 +45,12 @@ public class AddRemoveCharSetColumns extends AbstractCharSetEdit{
 	}
 	
 	
-	protected void undoableRemoveFromCharSet() {
+	protected void restoreColumns() {
 		getDocument().getCharSetModel().get(getID()).addAll(previousElements);
 	}
 	
 	
 	protected void removeColumnsFromCharSet() {
-		
 		getDocument().getCharSetModel().get(getID()).remove(firstColumn, lastColumn);
-		
-	}
-	
-	
-	@Override
-	public String getPresentationName() {
-		return null;
 	}
 }

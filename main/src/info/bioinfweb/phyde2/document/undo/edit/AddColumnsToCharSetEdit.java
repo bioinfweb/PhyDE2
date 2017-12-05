@@ -28,8 +28,6 @@ import info.bioinfweb.phyde2.document.Document;
 
 
 public class AddColumnsToCharSetEdit extends AddRemoveCharSetColumns {
-	
-	
 	public AddColumnsToCharSetEdit(Document document, String id, int FirstColumn, int LastColumn) {
 		super(document, id, FirstColumn, LastColumn);
 	}
@@ -45,15 +43,13 @@ public class AddColumnsToCharSetEdit extends AddRemoveCharSetColumns {
 	@Override
 	public void undo() throws CannotUndoException {
 		removeColumnsFromCharSet();
+		restoreColumns();
 		super.undo();
 	}
 
 	
 	@Override
 	public String getPresentationName() {
-		return "Add colums to character set \"" + getDocument().getCharSetModel().get(getID()) + "\"";
+		return "Add columns to character set \"" + getDocument().getCharSetModel().get(getID()) + "\"";
 	}
-	
-	
-	
 }

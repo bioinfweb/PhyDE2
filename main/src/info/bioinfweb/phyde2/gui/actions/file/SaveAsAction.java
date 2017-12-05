@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -47,4 +48,15 @@ public class SaveAsAction extends AbstractFileAction{
 	public void actionPerformed(ActionEvent e) {
 		save();
 	}
+
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled((document != null) && (document.isChanged()));
+	}
+	
+	
+	
+	
+	
 }

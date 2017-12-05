@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -32,7 +33,7 @@ public class UndoAction  extends AbstractPhyDEAction implements Action{
 	public UndoAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Undo"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_U);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Z);
 		putValue(Action.SHORT_DESCRIPTION, "Undo"); 
 		loadSymbols("Undo");
 	}
@@ -43,5 +44,11 @@ public class UndoAction  extends AbstractPhyDEAction implements Action{
 		if (getMainFrame().getDocument().getUndoManager().canUndo()) {
 			getMainFrame().getDocument().getUndoManager().undo();
 		}
+	}
+
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled(!getMainFrame().getDocument().getUndoManager().canUndo());
 	}
 }

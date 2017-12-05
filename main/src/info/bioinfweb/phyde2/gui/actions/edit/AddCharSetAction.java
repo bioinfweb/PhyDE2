@@ -25,6 +25,7 @@ import javax.swing.Action;
 
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.commons.graphics.UniqueColorLister;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.undo.edit.AddCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -53,5 +54,11 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 		if (dialog.execute()) {
 			getMainFrame().getDocument().executeEdit(new AddCharSetEdit(getMainFrame().getDocument(), "cs" + idManager.createNewID(), dialog.getName(), dialog.getSelectedColor()));
 		}
+	}
+
+
+	@Override
+	public void setEnabled(Document document, MainFrame mainframe) {
+		setEnabled((document != null) && (mainframe.getCharSetArea() != null));
 	}
 }

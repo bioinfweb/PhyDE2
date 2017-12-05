@@ -21,8 +21,7 @@ package info.bioinfweb.phyde2.document;
 
 import java.io.File;
 
-import javax.swing.undo.UndoManager;
-
+import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
@@ -40,7 +39,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 public class Document {
-	private UndoManager undoManager;
+	private AccessibleUndoManager undoManager;
 	
 	private File file;
 	private boolean changed;
@@ -58,7 +57,7 @@ public class Document {
 	public Document(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
 		super();
 		
-		undoManager = new UndoManager();
+		undoManager = new AccessibleUndoManager();
 		alignmentModelEditFactory = new AlignmentModelEditFactory(this);
 		this.charSetModel = charSetModel;
 		setAlignmentModel(alignmentModel);
@@ -73,7 +72,7 @@ public class Document {
 	}
 	
 	
-	public UndoManager getUndoManager() {
+	public AccessibleUndoManager getUndoManager() {
 		return undoManager;
 	}
 	

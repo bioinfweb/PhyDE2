@@ -38,11 +38,14 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/ChangeCharSetColorAction.java -t
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RedoAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/RedoToAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveColumnsFromCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveGapsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RenameCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RenameSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoRedoToAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoToAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/AbstractFileAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/ExportAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/NewAction.java -text svneol=unset#text/plain
@@ -74,8 +77,6 @@ main/src/resources/symbols/NewDocument16.png -text
 main/src/resources/symbols/NewDocument22.png -text
 main/src/resources/symbols/Open16.png -text
 main/src/resources/symbols/Open22.png -text
-main/src/resources/symbols/PHyDE216.png -text
-main/src/resources/symbols/PHyDE222.png -text
 main/src/resources/symbols/PhyDE216.png -text
 main/src/resources/symbols/PhyDE222.png -text
 main/src/resources/symbols/Redo16.png -text
