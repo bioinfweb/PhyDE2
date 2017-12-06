@@ -98,7 +98,7 @@ public class MainFrame extends JFrame {
 	public void setDocument(Document document) {
 		this.document = document;
 		mainArea.setAlignmentModel(document.getAlignmentModel(), true);
-		charSetArea.setModel(document.getCharSetModel());
+		charSetArea.setModel(document.getCharSetModel(), true);
 	}
 
 

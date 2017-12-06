@@ -132,7 +132,7 @@ public class Document {
 			}
 			
 			@Override
-			public <T, U> void afterProviderChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
+			public <T, U> void afterModelChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
 		});
 	}
 	
