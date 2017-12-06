@@ -39,6 +39,9 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 public class Document {
+	public static final int UNDO_LIMIT = 50;
+	
+	
 	private AccessibleUndoManager undoManager;
 	
 	private File file;
@@ -58,6 +61,7 @@ public class Document {
 		super();
 		
 		undoManager = new AccessibleUndoManager();
+		undoManager.setLimit(UNDO_LIMIT);
 		alignmentModelEditFactory = new AlignmentModelEditFactory(this);
 		this.charSetModel = charSetModel;
 		setAlignmentModel(alignmentModel);
