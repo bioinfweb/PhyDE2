@@ -22,18 +22,16 @@ import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.phyde2.document.Document;
 
 public class AddDeleteCharSetEdit extends AbstractCharSetEdit {
-	private CharSet charSet;
-	
+	private CharSet newcharSet;
 	
 	public AddDeleteCharSetEdit(Document document, String id, CharSet charSet) {
 		super(document, id);
-		this.charSet = charSet;
+		this.newcharSet = charSet;
 	}
 	
 	
-	
 	protected void addCharSet () {
-		getDocument().getCharSetModel().put(getID(), charSet);
+		getDocument().getCharSetModel().put(getID(), newcharSet);
 	}
 	
 	
@@ -41,15 +39,14 @@ public class AddDeleteCharSetEdit extends AbstractCharSetEdit {
 		getDocument().getCharSetModel().remove(getID());
 	}
 	
+	
 	protected CharSet getCharSet() {
-		return charSet;
+		return newcharSet;
 	}
-
 
 
 	@Override
 	public String getPresentationName() {
 		return null;
 	}
-
 }

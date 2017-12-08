@@ -34,6 +34,8 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetEventReader;
+import info.bioinfweb.libralign.model.io.AlignmentDataReader;
 import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
@@ -141,7 +143,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	protected void writeFile(File file, String formatID) {
 		if (factory.getFormatInfo(formatID).isElementModeled(EventContentType.CHARACTER_SET, false)) {
 			int maxSeqLength  = getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength();
-//			
+			
 //			//TODO Move to save related action
 //			for (int i = 0; i <= (getMainFrame().getDocument().getCharSetModel().size()-1); ++i ) {
 //				//	check if there is a bar in the charSet which is behind the max. sequence length (invisible for the user in the alignment area)
@@ -151,7 +153,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 //			}
 			if (checkForOverlappingCharSet()) {
 				MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
-				
 				//TODO Move to save related action
 				while (it.hasNext())
 				{

@@ -39,6 +39,7 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
@@ -88,8 +89,6 @@ public class OpenAction extends AbstractFileAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
-			//	create new Document:
-			getMainFrame().setDocument(new Document(NewAction.createAlignmentModel(),new CharSetDataModel()));
 			
 			//	File reading:
 			try {
@@ -98,18 +97,16 @@ public class OpenAction extends AbstractFileAction {
 					PhyDEAlignmentDataReader mainReader = new PhyDEAlignmentDataReader(eventReader);
 					mainReader.readAll();
 					
-					// File does not contain any alignments
-					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {
+					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {  // File does not contain any alignments.
 						JOptionPane.showMessageDialog(getMainFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
 								"\" does not contain any alignments.", "Error while loading file", JOptionPane.ERROR_MESSAGE);
 					}
-					else {
-						// File contains one alignment
-						getMainFrame().getAlignmentArea().setAlignmentModel(mainReader.getAlignmentModelReader().getCompletedModels().get(0), true);
+					else {  // File contains at least one alignment.
+						//	create new Document:
+						getMainFrame().setDocument(new Document((AlignmentModel<Character>) mainReader.getAlignmentModelReader().getCompletedModels().get(0), new CharSetDataModel()));
 						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 							getMainFrame().getDocument().setFile(getOpenFileChooser().getSelectedFile());
 							getMainFrame().getDocument().setChanged(false);
-
 
 							// File contains more than one alignment --> just the first one was loaded
 							if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {

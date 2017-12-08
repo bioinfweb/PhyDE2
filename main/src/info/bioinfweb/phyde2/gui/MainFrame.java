@@ -99,6 +99,7 @@ public class MainFrame extends JFrame {
 		this.document = document;
 		mainArea.setAlignmentModel(document.getAlignmentModel(), true);
 		charSetArea.setModel(document.getCharSetModel(), true);
+		getActionManagement().refreshActionStatus();
 	}
 
 

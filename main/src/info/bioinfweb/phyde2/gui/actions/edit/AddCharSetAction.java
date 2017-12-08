@@ -35,7 +35,7 @@ import info.bioinfweb.phyde2.gui.dialogs.NewCharSetDialog;
 @SuppressWarnings("serial")
 public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 	private IntegerIDManager idManager = new IntegerIDManager();
-	private UniqueColorLister colorLister = new UniqueColorLister();
+	private UniqueColorLister colorLister = new UniqueColorLister();  //TODO This class should ideally be reset after a new document is created or opened. 
 	private NewCharSetDialog dialog = new NewCharSetDialog(getMainFrame());
 	
 
