@@ -12,6 +12,7 @@ main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/Main.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEDocumentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEdit.java -text svneol=unset#text/plain

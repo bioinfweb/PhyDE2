@@ -19,29 +19,24 @@
 package info.bioinfweb.phyde2.gui.actions.file;
 
 
+import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
+import info.bioinfweb.jphyloio.ReadWriteParameterMap;
+import info.bioinfweb.jphyloio.events.type.EventContentType;
+import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
+import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
+import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
+import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.collections4.MapIterator;
-
-import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
-import info.bioinfweb.jphyloio.ReadWriteParameterMap;
-import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
-import info.bioinfweb.jphyloio.events.type.EventContentType;
-import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
-import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
-import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetEventReader;
-import info.bioinfweb.libralign.model.io.AlignmentDataReader;
-import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
-import info.bioinfweb.phyde2.Main;
-import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
-import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-
 
 
 
@@ -170,15 +165,9 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, Main.APPLICATION_VERSION);
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			
-			//IOTools.writeSingleAlignment(getMainFrame().getAlignmentArea().getAlignmentModel(), null, file, formatID, parameters);
-			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter();
-			documentAdapter.getMatrices().add(new AlignmentModelDataAdapter("", 
-					new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, "Alignment0", null, null), 
-					getMainFrame().getAlignmentArea().getAlignmentModel(), false));
+			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getDocument());
 			factory.getWriter(Main.DEFAULT_FORMAT).writeDocument(documentAdapter, file, parameters);
 			
-			// Note that files containing multiple alignments or additional trees or OTU lists would be overwritten with a single alignment file here. 
-			// This problem is not handles here, to keep this example simple
 			getMainFrame().getDocument().setChanged(false);
 		}
 		catch (Exception ex) {
