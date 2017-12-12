@@ -22,6 +22,7 @@ package info.bioinfweb.phyde2.gui.actions.file;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -40,6 +41,7 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.io.DataModelKey;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
@@ -103,15 +105,35 @@ public class OpenAction extends AbstractFileAction {
 					}
 					else {  // File contains at least one alignment.
 						//	create new Document:
-						getMainFrame().setDocument(new Document((AlignmentModel<Character>) mainReader.getAlignmentModelReader().getCompletedModels().get(0), new CharSetDataModel()));
+						AlignmentModel<Character> alignmentModel = (AlignmentModel<Character>)mainReader.getAlignmentModelReader().getCompletedModels().get(0);
+						Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+						CharSetDataModel charSetModel;
+						if (charSetModels.isEmpty()) {
+							charSetModel = new CharSetDataModel();
+						}
+						else {
+							charSetModel = charSetModels.iterator().next();
+						}
+						
+						getMainFrame().setDocument(new Document(alignmentModel, charSetModel));
 						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 							getMainFrame().getDocument().setFile(getOpenFileChooser().getSelectedFile());
 							getMainFrame().getDocument().setChanged(false);
 
-							// File contains more than one alignment --> just the first one was loaded
+							// File contains more than one alignment or character set:
+							String message = "";
 							if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
+								message = "The file contained more than one alignment. Only the first one was loaded.";
+							}
+							if (charSetModels.size() > 1) {
+								if (message.length() > 0) {
+									message += "\n";
+								}
+								message += "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
+							}
+							if (message.length() > 0) {
 								JOptionPane.showMessageDialog(getMainFrame(),
-										"The file contained more than one alignment. Only the first one was loaded.", "Multiple alignments found", JOptionPane.WARNING_MESSAGE);
+										message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);
 							}
 						}
 					}

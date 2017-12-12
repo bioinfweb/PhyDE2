@@ -27,6 +27,7 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.events.type.EventType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetEventReader;
 import info.bioinfweb.libralign.model.factory.BioPolymerCharAlignmentModelFactory;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
 
@@ -36,11 +37,14 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	private JPhyloIOEventReader reader;
 	private FormatVersion formatVersion = null;;
 	private ApplicationVersion applicationVersion = null;
+	private CharSetEventReader charSetReader;
 	
 	
 	public PhyDEAlignmentDataReader(JPhyloIOEventReader reader) {
 		super(reader, new BioPolymerCharAlignmentModelFactory('?', true));
 		this.reader = reader;
+		charSetReader = new CharSetEventReader(this, null);  //TODO Specify color predicate here and for writing.
+		addDataModelReader(charSetReader);
 	}
 
 	
@@ -51,6 +55,11 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 
 	public ApplicationVersion getApplicationVersion() {
 		return applicationVersion;
+	}
+
+
+	public CharSetEventReader getCharSetReader() {
+		return charSetReader;
 	}
 
 
