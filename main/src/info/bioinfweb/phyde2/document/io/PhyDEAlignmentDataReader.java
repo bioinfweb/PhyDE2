@@ -23,6 +23,7 @@ import info.bioinfweb.commons.appversion.ApplicationVersion;
 import info.bioinfweb.commons.io.FormatVersion;
 import info.bioinfweb.jphyloio.JPhyloIOEventReader;
 import info.bioinfweb.jphyloio.events.JPhyloIOEvent;
+import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.events.type.EventType;
@@ -43,7 +44,7 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	public PhyDEAlignmentDataReader(JPhyloIOEventReader reader) {
 		super(reader, new BioPolymerCharAlignmentModelFactory('?', true));
 		this.reader = reader;
-		charSetReader = new CharSetEventReader(this, null);  //TODO Specify color predicate here and for writing.
+		charSetReader = new CharSetEventReader(this, new URIOrStringIdentifier(null, PREDICATE_COLOR));
 		addDataModelReader(charSetReader);
 	}
 

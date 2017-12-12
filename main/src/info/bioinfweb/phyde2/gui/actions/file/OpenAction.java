@@ -36,6 +36,7 @@ import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
 import info.bioinfweb.commons.io.ExtensionFileFilter;
 import info.bioinfweb.jphyloio.JPhyloIOEventReader;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
+import info.bioinfweb.jphyloio.ReadWriteParameterNames;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
@@ -95,7 +96,9 @@ public class OpenAction extends AbstractFileAction {
 			//	File reading:
 			try {
 				if (getOpenFileChooser().showOpenDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION) {
-					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), new ReadWriteParameterMap());
+					ReadWriteParameterMap parameters = new ReadWriteParameterMap();
+					parameters.put(ReadWriteParameterNames.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
+					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), parameters);
 					PhyDEAlignmentDataReader mainReader = new PhyDEAlignmentDataReader(eventReader);
 					mainReader.readAll();
 					

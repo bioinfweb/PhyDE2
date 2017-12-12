@@ -22,6 +22,7 @@ package info.bioinfweb.phyde2.document.io;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.dataadapters.ObjectListDataAdapter;
 import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
+import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataAdapter;
 import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
@@ -33,7 +34,7 @@ import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
  * 
  * @author Ben St&ouml;ver
  */
-public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Character> {
+public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Character> implements IOConstants {
 	private PhyDEDocumentDataAdapter parent;
 	
 	
@@ -47,6 +48,7 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 	@Override
 	public ObjectListDataAdapter<LinkedLabeledIDEvent> getCharacterSets(ReadWriteParameterMap parameters) {
 		return new CharSetDataAdapter(getIDPrefix(), parent.getDocument().getCharSetModel(), 
-				PhyDEDocumentDataAdapter.ALIGNMENT_ID);
+				PhyDEDocumentDataAdapter.ALIGNMENT_ID, new URIOrStringIdentifier(null, PREDICATE_COLOR), 
+				new URIOrStringIdentifier(null, DATA_TYPE_COLOR));
 	}
 }

@@ -33,7 +33,6 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 @SuppressWarnings("serial")
 public class SaveAsAction extends AbstractFileAction{
-	
 	public SaveAsAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Save As..."); 
@@ -52,11 +51,6 @@ public class SaveAsAction extends AbstractFileAction{
 
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled((document != null) && (document.isChanged()));
+		setEnabled(document != null);
 	}
-	
-	
-	
-	
-	
 }

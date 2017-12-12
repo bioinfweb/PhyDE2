@@ -25,8 +25,11 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
+import info.bioinfweb.jphyloio.objecttranslation.ObjectTranslatorFactory;
+import info.bioinfweb.jphyloio.objecttranslation.implementations.ColorTranslator;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -46,6 +49,14 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	private static JFileChooser fileChooser = null;
 
 
+	public static ObjectTranslatorFactory createTranslatorFactory() {
+		ObjectTranslatorFactory result = new ObjectTranslatorFactory();
+		result.addXSDTranslators(true);
+		result.addJPhyloIOTranslators(true);
+		result.addTranslator(new ColorTranslator(), true, IOConstants.DATA_TYPE_COLOR);
+		return result;
+	}
+	
 
 	public AbstractFileAction(MainFrame mainframe) {
 		super(mainframe);
@@ -164,6 +175,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_NAME, Main.APPLICATION_NAME);
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, Main.APPLICATION_VERSION);
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
+			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
 			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getDocument());
 			factory.getWriter(Main.DEFAULT_FORMAT).writeDocument(documentAdapter, file, parameters);

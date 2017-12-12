@@ -43,7 +43,6 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 	public PhyDEDocumentDataAdapter(Document document) {
 		super();
 		this.document = document;
-		System.out.println(document);
 		getMatrices().add(new PhyDEAlignmentDataAdapter(this));
 	}
 

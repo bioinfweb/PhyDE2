@@ -132,6 +132,6 @@ public class ExportAction extends AbstractFileAction{
 
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled((document != null) && (document.isChanged()));
+		setEnabled(document != null);
 	}
 }
