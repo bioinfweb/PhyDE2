@@ -30,8 +30,6 @@ import info.bioinfweb.phyde2.document.Document;
 
 
 public class AddCharSetEdit extends AddDeleteCharSetEdit {
-	
-	
 	public AddCharSetEdit(Document document, String id, String name, Color color) {
 		super(document, id, new CharSet(name, color));
 	}

@@ -28,10 +28,11 @@ import info.bioinfweb.phyde2.document.Document;
 
 
 public class DeleteCharSetEdit extends AddDeleteCharSetEdit {
-	
+	String name;
 	
 	public DeleteCharSetEdit(Document document, CharSet charSet, String id) {
 		super(document, id, charSet);
+		this.name = charSet.getName();
 	}
 	
 	
@@ -51,6 +52,6 @@ public class DeleteCharSetEdit extends AddDeleteCharSetEdit {
 	
 	@Override
 	public String getPresentationName() {
-		return "Delete character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
+		return "Delete character set \"" + name + "\"";
 	}
 }

@@ -30,8 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
-import info.bioinfweb.jphyloio.JPhyloIOEventReader;
-import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
@@ -84,9 +82,9 @@ public class ExportAction extends AbstractFileAction{
 			            }
 			        }
 			        super.approveSelection();  
-			        
 			    }
 			};
+			//can not save in "all supported formats" option
 			exportfileChooser.setAcceptAllFileFilterUsed(false);
 			
 	        for (String formatID : factory.getFormatIDsSet()) {
@@ -97,9 +95,7 @@ public class ExportAction extends AbstractFileAction{
 				}
 			}
 	        exportfileChooser.setDialogTitle("Export File");
-
 		} 
-	
 		return exportfileChooser;
 	}
 	
@@ -107,25 +103,26 @@ public class ExportAction extends AbstractFileAction{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		try {
-			if (promptexportFileName()) {
-				JPhyloIOEventReader eventReader = factory.guessReader(getExportFileChooser().getSelectedFile(), new ReadWriteParameterMap());
-				writeFile(getMainFrame().getDocument().getFile(), eventReader.getFormatID());
+			if (promptExportFileName()) {
+//				JPhyloIOEventReader eventReader = factory.guessReader(getExportFileChooser().getSelectedFile(), new ReadWriteParameterMap());
+//				System.out.println(((JPhyloIOContentExtensionFileFilter)getExportFileChooser().getFileFilter()).getFormatID());
+				writeFile(getExportFileChooser().getSelectedFile(), ((JPhyloIOContentExtensionFileFilter)getExportFileChooser().getFileFilter()).getFormatID());
 			}
 		}
 		catch (Exception ex){
+			ex.printStackTrace();
 			JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	
 	//show save Dialog, set File, set File format
-	protected boolean promptexportFileName() {
+	protected boolean promptExportFileName() {
 		boolean result = (getExportFileChooser().showDialog(getMainFrame(), "Export") == JFileChooser.APPROVE_OPTION);
-		
+//		System.out.println("export file filter: "+exportfileChooser);
 		if (result) {
 	    	getMainFrame().getDocument().setFile(getExportFileChooser().getSelectedFile());
 		}
-		
 		return result;
 	}
 

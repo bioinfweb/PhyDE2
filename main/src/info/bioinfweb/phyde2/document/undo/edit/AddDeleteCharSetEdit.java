@@ -18,11 +18,15 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.phyde2.document.Document;
 
+
+
 public class AddDeleteCharSetEdit extends AbstractCharSetEdit {
 	private CharSet newcharSet;
+	
 	
 	public AddDeleteCharSetEdit(Document document, String id, CharSet charSet) {
 		super(document, id);

@@ -74,7 +74,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 						f = new File(f.getAbsolutePath() + "." + filter.getDefaultExtension());
 						setSelectedFile(f);
 					}
-
+					
 					if(f.exists()) {
 						switch(JOptionPane.showConfirmDialog(this, "The file already exists. Do you want to overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION)) {
 						case JOptionPane.YES_OPTION:
@@ -117,12 +117,11 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
 		//TODO Move to save related action
 		boolean overlappingCharSet = false;
-		while (it.hasNext())
-		{
+		while (it.hasNext()) {
 			it.next();
-			if (it.getValue().last().getLastPos() > getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength())
-			{
+			if (it.getValue().isEmpty() && it.getValue().last().getLastPos() > getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength()) {
 				overlappingCharSet = true;
+				break;
 			}
 		}
 		
@@ -150,13 +149,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		if (factory.getFormatInfo(formatID).isElementModeled(EventContentType.CHARACTER_SET, false)) {
 			int maxSeqLength  = getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength();
 			
-//			//TODO Move to save related action
-//			for (int i = 0; i <= (getMainFrame().getDocument().getCharSetModel().size()-1); ++i ) {
-//				//	check if there is a bar in the charSet which is behind the max. sequence length (invisible for the user in the alignment area)
-//				if (getMainFrame().getDocument().getCharSetModel().getValue(i).last().getLastPos() > maxSeqLength) {
-//					//TODO get all charsets where the bars are longer then the sequences
-//				}
-//			}
 			if (checkForOverlappingCharSet()) {
 				MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
 				//TODO Move to save related action
@@ -178,7 +170,8 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
 			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getDocument());
-			factory.getWriter(Main.DEFAULT_FORMAT).writeDocument(documentAdapter, file, parameters);
+//			System.out.println("FormatID: " + formatID + " documentAdapter: " + documentAdapter + " file: " + file + " parameters " + parameters );
+			factory.getWriter(formatID).writeDocument(documentAdapter, file, parameters);
 			
 			getMainFrame().getDocument().setChanged(false);
 		}
