@@ -93,12 +93,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 				}
 			};
 			fileChooser.setAcceptAllFileFilterUsed(false);
-
-			JPhyloIOFormatInfo info = factory.getFormatInfo(MainFrame.DEFAULT_FORMAT);
-			if (info.isElementModeled(EventContentType.ALIGNMENT, true)) {
-				JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
-				fileChooser.addChoosableFileFilter(filter);
-			}
+			fileChooser.addChoosableFileFilter(factory.getFormatInfo(MainFrame.DEFAULT_FORMAT).createFileFilter(TestStrategy.BOTH));
 
 			fileChooser.setDialogTitle("Save File");
 			fileChooser.setToolTipText("Save File in NeXML format.");
@@ -170,7 +165,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
 			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getDocument());
-//			System.out.println("FormatID: " + formatID + " documentAdapter: " + documentAdapter + " file: " + file + " parameters " + parameters );
 			factory.getWriter(formatID).writeDocument(documentAdapter, file, parameters);
 			
 			getMainFrame().getDocument().setChanged(false);

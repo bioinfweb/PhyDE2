@@ -89,7 +89,7 @@ public class ExportAction extends AbstractFileAction{
 			
 	        for (String formatID : factory.getFormatIDsSet()) {
 				JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
-				if (info.isElementModeled(EventContentType.ALIGNMENT, true)) {
+				if (info.isElementModeled(EventContentType.ALIGNMENT, false)) {
 					JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
 					exportfileChooser.addChoosableFileFilter(filter);
 				}
@@ -104,8 +104,6 @@ public class ExportAction extends AbstractFileAction{
 	public void actionPerformed(ActionEvent arg0) {
 		try {
 			if (promptExportFileName()) {
-//				JPhyloIOEventReader eventReader = factory.guessReader(getExportFileChooser().getSelectedFile(), new ReadWriteParameterMap());
-//				System.out.println(((JPhyloIOContentExtensionFileFilter)getExportFileChooser().getFileFilter()).getFormatID());
 				writeFile(getExportFileChooser().getSelectedFile(), ((JPhyloIOContentExtensionFileFilter)getExportFileChooser().getFileFilter()).getFormatID());
 			}
 		}
@@ -119,7 +117,6 @@ public class ExportAction extends AbstractFileAction{
 	//show save Dialog, set File, set File format
 	protected boolean promptExportFileName() {
 		boolean result = (getExportFileChooser().showDialog(getMainFrame(), "Export") == JFileChooser.APPROVE_OPTION);
-//		System.out.println("export file filter: "+exportfileChooser);
 		if (result) {
 	    	getMainFrame().getDocument().setFile(getExportFileChooser().getSelectedFile());
 		}

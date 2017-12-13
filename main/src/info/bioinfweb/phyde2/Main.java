@@ -41,18 +41,12 @@ public class Main extends ProgramMainClass {
 	
 	private static Main firstInstance = null;
 	
-	//TODO Error report, problem with import of and create URL
-	//private SwingErrorReporter errorReporter;
-	//public static final String PHYDE2_URL = "http://phyde2.bioinfweb.info/";
-	//public static final String ERROR_URL = PHYDE2_URL + "errorreport/ApplicationReport.jsp";
-	
 	
 	/**
 	 * Launch the application.
 	 */
 	public Main(){
 		super(new ApplicationVersion(0, 0, 0, 0, ApplicationType.ALPHA));
-		//errorReporter = new SwingErrorReporter(ERROR_URL, getVersion());
 	}
 	
 	
@@ -70,8 +64,6 @@ public class Main extends ProgramMainClass {
 	
 	
 	private void startApplication() {
-		//Thread.setDefaultUncaughtExceptionHandler(getErrorReporter());
-		//System.out.println(System.setProperty("apple.laf.useScreenMenuBar", "true"));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -79,15 +71,12 @@ public class Main extends ProgramMainClass {
 					//show frame
 					window.setVisible(true);
 					window.setIconImage(createImageIcon(ICON_PATH).getImage());
-					//window.swingContainer.assignSize();
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		//customizeSpashScreen();
-		//cmdProcessor.process(new CommandLineReader(args));
 	}
 	
 	

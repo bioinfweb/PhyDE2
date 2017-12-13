@@ -201,7 +201,7 @@ public class MainFrame extends JFrame {
 		
 		container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
 		container.getAlignmentAreas().add(characterSetAlignmentArea);
-//		container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
+		//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
 		
 		// Prepare main area:
 		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
