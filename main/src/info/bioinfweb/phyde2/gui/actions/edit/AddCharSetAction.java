@@ -59,6 +59,6 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled((document != null) && (mainframe.getCharSetArea() != null));
+		setEnabled(document != null);
 	}
 }

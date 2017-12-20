@@ -138,6 +138,7 @@ public class Document {
 			@Override
 			public <T, U> void afterModelChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
 		});
+		//TODO The same needs to be done for the character set model as well!
 	}
 	
 	
