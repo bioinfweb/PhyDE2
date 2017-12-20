@@ -205,7 +205,6 @@ public class MainFrame extends JFrame {
 		
 		// Prepare main area:
 		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
-		mainArea.getPaintSettings().getTokenPainterList().set(0, new NucleotideTokenPainter());  // Define how sequences shall be painted
 		mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
 			@Override
 			public void selectionChanged(GenericEventObject<SelectionModel> event) {
