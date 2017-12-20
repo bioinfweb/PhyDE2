@@ -19,6 +19,20 @@
 package info.bioinfweb.phyde2.gui;
 
 
+import info.bioinfweb.commons.events.GenericEventObject;
+import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
+import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionListener;
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
+import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
+import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
+import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.gui.actions.ActionManagement;
+import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
+import info.bioinfweb.tic.SwingComponentFactory;
+
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -31,21 +45,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import info.bioinfweb.commons.events.GenericEventObject;
-import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
-import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionListener;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.alignmentarea.tokenpainter.NucleotideTokenPainter;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
-import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
-import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
-import info.bioinfweb.phyde2.Main;
-import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.gui.actions.ActionManagement;
-import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
-import info.bioinfweb.tic.SwingComponentFactory;
-
 
 
 //TODO: change class header to ... extends Main for remove getInstance method
@@ -54,10 +53,11 @@ import info.bioinfweb.tic.SwingComponentFactory;
 public class MainFrame extends JFrame { 
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	
+	
 	private static MainFrame firstInstance = null;
 	
-	private Document document = new Document();
 	
+	private Document document = new Document();
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JPanel jContentPane = null;
