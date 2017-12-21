@@ -45,7 +45,7 @@ public class SaveAsAction extends AbstractFileAction{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		save();
+		saveAs();
 	}
 
 

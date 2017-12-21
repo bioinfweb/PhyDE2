@@ -114,7 +114,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		boolean overlappingCharSet = false;
 		while (it.hasNext()) {
 			it.next();
-			if (it.getValue().isEmpty() && it.getValue().last().getLastPos() > getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength()) {
+			if (!it.getValue().isEmpty() && (it.getValue().last().getLastPos() > getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength())) {
 				overlappingCharSet = true;
 				break;
 			}
@@ -185,22 +185,32 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	}
 	
 	
-	protected boolean save() {
+	protected boolean saveAs() {
 		boolean result = promptFileName();
 		if (result) {
 			writeFile();
 		}
 		return result;
 	}
+	
 
+	protected boolean save() {
+		if (getMainFrame().getDocument().getFile() == null) {
+			return saveAs();
+		}
+		else {
+			writeFile();
+			return true;
+		}
+	}
+	
 	   
 	public boolean handleUnsavedChanges() {
 		if (getMainFrame().getDocument().isChanged()) {
             switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes. Do you want to save the changes?", 
             		"Unsaved changes", JOptionPane.YES_NO_OPTION)) {
 	            case JOptionPane.YES_OPTION:
-	            	writeFile();
-	            	return false;
+	            	return save();
 	            case JOptionPane.NO_OPTION:
 	            	return true;
             }
