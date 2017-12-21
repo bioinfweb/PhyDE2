@@ -4,8 +4,13 @@ main/.project -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 main/MANIFEST.MF -text svneol=unset#text/plain
+main/include/lib/commons-beanutils-1.9.2.jar -text
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
+main/include/lib/core-1.9.2.jar -text
+main/include/lib/guava-20.0.jar -text
+main/include/lib/owlapi-XMLUtils-4.1.4.jar -text
+main/include/lib/sequencing-1.9.2.jar -text
 main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
 main/src/GPL.html -text svneol=unset#text/plain
 main/src/GPL.txt -text svneol=unset#text/plain

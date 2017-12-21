@@ -11,3 +11,9 @@ Class-Path: lib/bioinfweb-commons-java-bio-2.5.0-preview1.jar
             lib/libralign-swing-0.6.0-preview1.jar
             lib/commons-lang3-3.1.jar
             lib/commons-collections4-4.1.jar
+            lib/commons-beanutils-1.9.2.jar
+            lib/core-1.9.2.jar
+            lib/guava-20.0.jar
+            lib/tic-swing-3.1.0-preview1.jar
+            lib/owlapi-XMLUtils-4.1.4.jar
+            lib/sequencing-1.9.2.jar
