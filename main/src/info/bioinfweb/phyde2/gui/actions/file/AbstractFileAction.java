@@ -160,7 +160,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		try {
 			ReadWriteParameterMap parameters = new ReadWriteParameterMap();
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_NAME, Main.APPLICATION_NAME);
-			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, Main.APPLICATION_VERSION);
+			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_VERSION, Main.getInstance().getVersion());
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			

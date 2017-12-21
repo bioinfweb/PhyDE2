@@ -35,7 +35,6 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 public class Main extends ProgramMainClass {
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	public static final String APPLICATION_NAME = "PhyDE 2"; 
-	public static final String APPLICATION_VERSION = "0.0.13";
 	public static final String APPLICATION_URL = "http://bioinfweb.info/PhyDE2";
 	public static final String ICON_PATH = "/resources/symbols/phyde_2.png";
 	
@@ -46,7 +45,7 @@ public class Main extends ProgramMainClass {
 	 * Launch the application.
 	 */
 	public Main(){
-		super(new ApplicationVersion(0, 0, 0, 0, ApplicationType.ALPHA));
+		super(new ApplicationVersion(0, 0, 0, 26, ApplicationType.ALPHA));
 	}
 	
 	

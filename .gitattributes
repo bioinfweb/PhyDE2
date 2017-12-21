@@ -3,6 +3,7 @@ main/.classpath -text svneol=unset#text/plain
 main/.project -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
+main/MANIFEST.MF -text svneol=unset#text/plain
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
@@ -60,6 +61,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/help/TwitterAction.java -text svneol=
 main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
+main/src/resources/Splash.png -text
 main/src/resources/symbols/Add16.png -text
 main/src/resources/symbols/Add22.png -text
 main/src/resources/symbols/AddBar16.png -text
