@@ -17,3 +17,4 @@ Class-Path: lib/bioinfweb-commons-java-bio-2.5.0-preview1.jar
             lib/tic-swing-3.1.0-preview1.jar
             lib/owlapi-XMLUtils-4.1.4.jar
             lib/sequencing-1.9.2.jar
+            lib/tic-core-3.1.0-preview1.jar
