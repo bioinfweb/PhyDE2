@@ -19,15 +19,12 @@
 package info.bioinfweb.phyde2.gui.actions.file;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 
 
 
@@ -37,8 +34,6 @@ public class SaveAsAction extends AbstractFileAction{
 		super(mainFrame);
 		putValue(Action.NAME, "Save As..."); 
 		putValue(Action.SHORT_DESCRIPTION, "Save As"); 
-		KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
-		putValue(Action.ACCELERATOR_KEY, key);
 		loadSymbols("SaveAs");
 	}
 	

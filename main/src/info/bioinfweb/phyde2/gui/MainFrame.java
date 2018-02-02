@@ -195,8 +195,9 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		// Prepare heading area:
+		// Prepare heading areas:
 		sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
+		sequenceIndexAlignmentArea.setAllowVerticalScrolling(false);
 		characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
 		
 		container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
