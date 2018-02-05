@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 import info.bioinfweb.commons.ProgramMainClass;
 import info.bioinfweb.commons.appversion.ApplicationType;
@@ -63,6 +64,14 @@ public class Main extends ProgramMainClass {
 	
 	
 	private void startApplication() {
+		// Set default look and feel of the current operating system:
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+			
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
