@@ -46,7 +46,7 @@ public class Main extends ProgramMainClass {
 	 * Launch the application.
 	 */
 	public Main(){
-		super(new ApplicationVersion(0, 0, 0, 29, ApplicationType.ALPHA));
+		super(new ApplicationVersion(0, 0, 0, 33, ApplicationType.ALPHA));
 	}
 	
 	

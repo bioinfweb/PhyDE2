@@ -4,13 +4,22 @@ main/.project -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.ui.prefs -text svneol=unset#text/plain
 main/MANIFEST.MF -text svneol=unset#text/plain
+main/include/lib/bioinfweb-commons-java-bio-3.0.0.jar -text
+main/include/lib/bioinfweb-commons-java-core-3.2.0.jar -text
+main/include/lib/bioinfweb-commons-java-swing-3.1.0.jar -text
 main/include/lib/commons-beanutils-1.9.2.jar -text
 main/include/lib/commons-collections4-4.1.jar -text
 main/include/lib/commons-lang3-3.1.jar -text
 main/include/lib/core-1.9.2.jar -text
 main/include/lib/guava-20.0.jar -text
+main/include/lib/jphyloio-core-0.5.2.jar -text
+main/include/lib/libralign-core-0.9.0.jar -text
+main/include/lib/libralign-io-0.6.0.jar -text
+main/include/lib/libralign-swing-0.5.0.jar -text
 main/include/lib/owlapi-XMLUtils-4.1.4.jar -text
 main/include/lib/sequencing-1.9.2.jar -text
+main/include/lib/tic-core-3.0.1.jar -text
+main/include/lib/tic-swing-3.0.2.jar -text
 main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
 main/src/GPL.html -text svneol=unset#text/plain
 main/src/GPL.txt -text svneol=unset#text/plain

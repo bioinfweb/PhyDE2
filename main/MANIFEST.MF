@@ -1,20 +1,16 @@
 Manifest-Version: 1.0
 Main-Class: info.bioinfweb.phyde2.Main
 SplashScreen-Image: resources/Splash.png
-Class-Path: lib/bioinfweb-commons-java-bio-2.5.0-preview1.jar
-            lib/bioinfweb-commons-java-core-2.5.0-preview1.jar
-            lib/bioinfweb-commons-java-swing-2.5.0-preview1.jar
-            lib/jphyloio-core-0.5.0-preview1.jar
-            lib/libralign-biojava1-0.6.0-preview1.jar
-            lib/libralign-core-0.6.0-preview1.jar
-            lib/libralign-io-0.6.0-preview1.jar
-            lib/libralign-swing-0.6.0-preview1.jar
+Class-Path: lib/bioinfweb-commons-java-bio-3.0.0.jar
+            lib/bioinfweb-commons-java-core-3.2.0.jar
+            lib/bioinfweb-commons-java-swing-3.1.0.jar
+            lib/jphyloio-core-0.5.2.jar
+            lib/libralign-core-0.9.0.jar
+            lib/libralign-io-0.6.0.jar
+            lib/libralign-swing-0.5.0.jar
             lib/commons-lang3-3.1.jar
             lib/commons-collections4-4.1.jar
-            lib/commons-beanutils-1.9.2.jar
-            lib/core-1.9.2.jar
             lib/guava-20.0.jar
-            lib/tic-swing-3.1.0-preview1.jar
+            lib/tic-swing-3.0.2.jar
             lib/owlapi-XMLUtils-4.1.4.jar
-            lib/sequencing-1.9.2.jar
-            lib/tic-core-3.1.0-preview1.jar
+            lib/tic-core-3.0.1.jar
