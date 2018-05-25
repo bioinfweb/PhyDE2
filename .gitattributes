@@ -1,4 +1,6 @@
 * text=auto !eol
+/LICENSE.md -text
+/README.md -text
 main/.classpath -text svneol=unset#text/plain
 main/.project -text svneol=unset#text/plain
 main/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
