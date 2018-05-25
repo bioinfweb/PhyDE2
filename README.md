@@ -1,6 +1,6 @@
 # PhyDE 2
 
-*PhyDE 2* is an alignment editor for phylogenetic purposes and a complete rewrite of the *__Phy__logenetic __D__ata __E__ditor*. The first version of *PhyDE* is in use since 2005 and *PhyDE 2* is planned to fully replace it in the future. It does not yet offer all features of the precursor, but some new functionality, like support for additional alignment formats, is already available. For productive use, we currently still recommend to use the old version, but if you want to try out some of the features, feel free to download the latest version of *PhyDE 2* from here.
+*PhyDE 2* is an alignment editor for phylogenetic purposes and a complete rewrite of the __*Phy*__*logenetic* __*D*__*ata* __*E*__*ditor*. The first version of *PhyDE* is in use since 2005 and *PhyDE 2* is planned to fully replace it in the future. It does not yet offer all features of the precursor, but some new functionality, like support for additional alignment formats, is already available. For productive use, we currently still recommend to use the old version, but if you want to try out some of the features, feel free to download the latest version of *PhyDE 2* from here.
 
 More information can be found at http://bioinfweb.info/PhyDE2.
 
