@@ -12,6 +12,10 @@ This *GitHub* repository in a synchronized mirror of the [master repository at b
 
 If you have further questions, feel free to ask one on our [ResearchGate project page](http://r.bioinfweb.info/RGPhyDE2) or contact support@bioinfweb.info.
 
+## Issues
+
+If you want to submit a bug report or feature request, please use our public bug tracking system at http://bioinfweb.info/PhyDE2/Bugs. (We do not manage issues on GitHub directly.)
+
 ## License
 
 *PhyDE 2* is distrubuted under [GNU General Public License Version 3](http://bioinfweb.info/PhyDE2/License). See [NOTICE.txt](https://github.com/bioinfweb/PhyDE2/blob/master/main/src/NOTICE.txt) for further details.
