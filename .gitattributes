@@ -45,6 +45,7 @@ main/src/info/bioinfweb/phyde2/document/undo/edit/ChangeCharSetColorEdit.java -t
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ToolBarPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
@@ -61,6 +62,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveColumnsFromCharSetAction.j
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveGapsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RenameCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RenameSequenceAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/ReverseComplementAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoRedoToAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoToAction.java -text svneol=unset#text/plain

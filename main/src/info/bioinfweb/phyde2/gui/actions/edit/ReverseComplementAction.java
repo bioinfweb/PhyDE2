@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben StÃ¶ver, Jonas Bohn, Kai MÃ¼ller
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -20,41 +20,43 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import javax.swing.Action;
-import javax.swing.JOptionPane;
-
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.undo.edit.AddColumnsToCharSetEdit;
+import info.bioinfweb.phyde2.document.undo.edit.AddCharSetEdit;
+import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
+import javax.swing.Action;
 
 
-@SuppressWarnings("serial")
-public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Action {
-	public AddColumnsToCharSetAction(MainFrame mainframe) {
+
+public class ReverseComplementAction extends AbstractPhyDEAction implements Action {
+	public ReverseComplementAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Add columns to selected character set"); 
-		putValue(Action.SHORT_DESCRIPTION, "Add columns to selected char. set"); 
-		loadSymbols("AddBar");
+		// TODO Auto-generated constructor stub
 	}
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String id = getSelectedCharSetID();
+		SelectionModel model = getMainFrame().getAlignmentArea().getSelection();
 		
-		if (id == null) {
-			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want to add a column.", "Char-Set not found.", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		getMainFrame().getDocument().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getDocument(), id, getMainFrame().getAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getAlignmentArea().getSelection().getLastColumn()));
+//		Collection<String> sequenceIDs = new ArrayList<>();
+//		for (int i = model.getFirstRow(); i <= model.getLastRow(); i++) {
+//			
+//		}
+//		
+//		getMainFrame().getDocument().executeEdit(new ReverseComplementEdit(getMainFrame().getDocument(), model.getFirstColumn(), model.getLastColumn(), );
 	}
 
 	
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled(getSelectedCharSetID() != null);
+		setEnabled((document != null) && !mainframe.getAlignmentArea().getSelection().isEmpty() && 
+				mainframe.getAlignmentArea().getAlignmentModel().getTokenSet().getType().isNucleotide());
 	}
 }

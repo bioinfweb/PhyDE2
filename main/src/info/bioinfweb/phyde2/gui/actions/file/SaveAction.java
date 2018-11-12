@@ -54,9 +54,4 @@ public class SaveAction extends AbstractFileAction {
 	public void setEnabled(Document document, MainFrame mainframe) {
 		setEnabled((document != null) && (document.isChanged()));
 	}
-	
-	
-	
-	
-	
 }
