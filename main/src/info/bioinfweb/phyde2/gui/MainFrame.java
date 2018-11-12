@@ -158,7 +158,7 @@ public class MainFrame extends JFrame {
 	 */
 	private void initialize() {
 		setBounds(200, 200, 550, 500);
-		setExtendedState(JFrame.NORMAL);//MAXIMIZE_BOTH
+		setExtendedState(JFrame.NORMAL);  //MAXIMIZE_BOTH
 
 		setContentPane(getJContentPane());
 		

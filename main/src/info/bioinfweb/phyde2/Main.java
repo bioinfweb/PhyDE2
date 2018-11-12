@@ -71,7 +71,7 @@ public class Main extends ProgramMainClass {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-			
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
