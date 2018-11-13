@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.document.undo.edit;
 
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -64,7 +65,9 @@ public class ReverseComplementEdit extends DocumentEdit {
 
 			AlignmentModelUtils.reverseComplement(model, sequenceID, firstColumn, lastColumn + 1);
 			//pherogramAlignmentModel.reverseComplement();
+		
 		}
+
 	}
 	
 	
@@ -84,8 +87,38 @@ public class ReverseComplementEdit extends DocumentEdit {
 
 	@Override
 	public String getPresentationName() {
-		return "Reverse complement between column " + firstColumn + " and " + lastColumn + " in " + sequenceIDs.size() + " sequences.";
-		//TODO erste drei Sequenzen sollen mit Namen ausgegeben werden und falls es noch mehr veränderte gibt soll angezeigt werden wie viele mehr.
-		//     in "Seq 1", "Seq 2", "Seq 3", ... (18 more).
+		AlignmentModel<?> model = getDocument().getAlignmentModel();
+		StringBuilder result = new StringBuilder(64);
+		int counter = 0;
+		int dif;
+
+		result.append("Reverse complement between column ");
+		result.append(firstColumn);
+		result.append(" and ");
+		result.append(lastColumn);
+		result.append(" in sequence(s) ");
+		
+		Iterator<String> i = sequenceIDs.iterator();
+		while (i.hasNext() && (counter < 3)) {
+			result.append("\"");
+			result.append(model.sequenceNameByID(i.next()));
+			result.append("\"");
+			if (i.hasNext() && (counter < 2)){
+				result.append(", ");
+			}
+			counter++;
+		}
+		
+		dif = sequenceIDs.size() - 3;
+		
+		if (dif > 0){
+			result.append(" and ");
+			result.append(dif);
+			result.append(" more sequence(s)");
+		}
+		
+		result.append(".");
+		
+		return result.toString();
 	}
 }
