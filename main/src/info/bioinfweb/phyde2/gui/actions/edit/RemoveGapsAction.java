@@ -39,7 +39,7 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 	public RemoveGapsAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Remove gaps"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_G);
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('R', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		putValue(Action.SHORT_DESCRIPTION, "Remove gaps");
 		loadSymbols("Remove");

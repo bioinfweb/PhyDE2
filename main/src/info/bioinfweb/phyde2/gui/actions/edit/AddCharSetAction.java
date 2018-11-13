@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
@@ -43,6 +44,7 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 		super(mainFrame);
 		putValue(Action.NAME, "Add character set"); 
 		putValue(Action.SHORT_DESCRIPTION, "Add char. set");
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
 		loadSymbols("AddCH");
 	}
 

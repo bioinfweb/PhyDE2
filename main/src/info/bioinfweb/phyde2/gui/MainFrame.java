@@ -287,6 +287,7 @@ public class MainFrame extends JFrame {
 		if (fileMenu == null) {
 			fileMenu = new JMenu();
 			fileMenu.setText("File");
+			fileMenu.setMnemonic('F');
 			fileMenu.add(getActionManagement().get("file.new"));
 			fileMenu.add(getActionManagement().get("file.open"));
 			fileMenu.addSeparator();
@@ -302,6 +303,7 @@ public class MainFrame extends JFrame {
 		if (helpMenu == null) {
 			helpMenu = new JMenu();
 			helpMenu.setText("Help");
+			helpMenu.setMnemonic('H');
 			helpMenu.add(getActionManagement().get("help.about"));
 			helpMenu.addSeparator();
 			helpMenu.add(getActionManagement().get("help.index"));

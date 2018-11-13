@@ -19,6 +19,7 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -35,6 +36,7 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 		super(mainframe);
 		putValue(Action.NAME, "Rename sequence"); 
 		putValue(Action.SHORT_DESCRIPTION, "Rename sequence");
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
 		loadSymbols("Replace");
 	}
 

@@ -39,7 +39,7 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 	public ReverseComplementAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Revers Complement"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
 		putValue(Action.SHORT_DESCRIPTION, "Reverse Complement");
 		//loadSymbols("Remove");
 	}

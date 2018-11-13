@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -37,6 +38,7 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 		super(mainframe);
 		putValue(Action.NAME, "Add columns to selected character set"); 
 		putValue(Action.SHORT_DESCRIPTION, "Add columns to selected char. set"); 
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
 		loadSymbols("AddBar");
 	}
 

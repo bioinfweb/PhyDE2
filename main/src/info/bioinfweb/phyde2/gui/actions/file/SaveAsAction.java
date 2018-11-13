@@ -23,6 +23,7 @@ import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
@@ -33,6 +34,7 @@ public class SaveAsAction extends AbstractFileAction{
 	public SaveAsAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Save As..."); 
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
 		putValue(Action.SHORT_DESCRIPTION, "Save As"); 
 		loadSymbols("SaveAs");
 	}

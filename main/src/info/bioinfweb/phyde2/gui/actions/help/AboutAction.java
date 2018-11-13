@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.gui.actions.help;
 
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
@@ -39,6 +40,7 @@ public class AboutAction extends AbstractPhyDEAction {
 		super(mainframe);
 		putValue(Action.NAME, "About..."); 
 		putValue(Action.SHORT_DESCRIPTION, "About PhyDE2"); 
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
 		loadSymbols("Help");
 	}
 

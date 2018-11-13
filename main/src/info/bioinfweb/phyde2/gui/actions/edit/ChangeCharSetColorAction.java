@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.JColorChooser;
@@ -43,6 +44,7 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 		super(mainframe);
 		putValue(Action.NAME, "Change character set color"); 
 		putValue(Action.SHORT_DESCRIPTION, "Change char. set color");
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
 	}
 	
 	@Override

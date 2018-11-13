@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -37,6 +38,7 @@ public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
 		super(mainframe);
 		putValue(Action.NAME, "Rename character set"); 
 		putValue(Action.SHORT_DESCRIPTION, "Rename char. set");
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
 	}
 
 	
