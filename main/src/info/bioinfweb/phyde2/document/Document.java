@@ -38,6 +38,11 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
+/**
+ * The main data model class of <i>PhyDE 2</i>.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class Document {
 	public static final int UNDO_LIMIT = 50;
 	
