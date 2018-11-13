@@ -33,6 +33,11 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
+/**
+ * The main class of the <i>PhyDE 2</i> application.
+ * 
+ * @author Ben St&ouml;ver
+ */
 public class Main extends ProgramMainClass {
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	public static final String APPLICATION_NAME = "PhyDE 2"; 
