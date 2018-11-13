@@ -33,7 +33,6 @@ public class BioinfWebMainPageAction extends WebsiteAction {
 		putValue(Action.NAME, "Bioinfweb"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_B);
 		putValue(Action.SHORT_DESCRIPTION, "Help Main Page"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('B', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		loadSymbols("bioinfweb");
 	}
 

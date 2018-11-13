@@ -32,7 +32,6 @@ public class TwitterAction extends WebsiteAction {
 		
 		putValue(Action.NAME, "Twitter"); 
 		putValue(Action.SHORT_DESCRIPTION, "bioinfweb main page on Twitter"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('T', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_T);
 		loadSymbols("Twitter");
 	}

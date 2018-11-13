@@ -35,8 +35,6 @@ public class PhyDEMainPageAction extends WebsiteAction {
 		putValue(Action.NAME, "PhyDE 2 website"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_P);
 		putValue(Action.SHORT_DESCRIPTION, "PhyDE Main Page comming soon");
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, 
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		loadSymbols("PhyDE2");
 	}
 
