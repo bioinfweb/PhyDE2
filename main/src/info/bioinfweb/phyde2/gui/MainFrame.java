@@ -261,6 +261,7 @@ public class MainFrame extends JFrame {
 		if (editMenu == null) {
 			editMenu = new JMenu();
 			editMenu.setText("Edit");
+			editMenu.setMnemonic('E');
 			editMenu.add(getUndoMenu());
 			editMenu.add(getRedoMenu());
 			editMenu.addSeparator();
@@ -276,6 +277,7 @@ public class MainFrame extends JFrame {
 			editMenu.add(getActionManagement().get("edit.removecurrendCharSet"));
 			editMenu.add(getActionManagement().get("edit.changecolorCharSet"));
 			editMenu.add(getActionManagement().get("edit.renameCharSet"));
+			editMenu.add(getActionManagement().get("edit.reverseComplement"));
 		}
 		return editMenu;
 	}

@@ -47,7 +47,7 @@ public class ReverseComplementEdit extends DocumentEdit {
 
 	private void reverseComplement() {
     	//SelectionModel selection = getReadsArea().getSelection();
-    	AlignmentModel<?> model = getDocument().getAlignmentModel();
+    	AlignmentModel<?> model = getDocument().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
     	for (String sequenceID : sequenceIDs) {
 //			PherogramArea area = getPherogramArea(sequenceID);
 //			PherogramAreaModel pherogramAlignmentModel = area.getModel();
@@ -62,7 +62,7 @@ public class ReverseComplementEdit extends DocumentEdit {
 //                rightBorder = rightRelation.getAfterValidIndex();
 //            }
 
-			AlignmentModelUtils.reverseComplement(model, sequenceID, firstColumn, lastColumn);
+			AlignmentModelUtils.reverseComplement(model, sequenceID, firstColumn, lastColumn + 1);
 			//pherogramAlignmentModel.reverseComplement();
 		}
 	}
@@ -85,5 +85,7 @@ public class ReverseComplementEdit extends DocumentEdit {
 	@Override
 	public String getPresentationName() {
 		return "Reverse complement between column " + firstColumn + " and " + lastColumn + " in " + sequenceIDs.size() + " sequences.";
+		//TODO erste drei Sequenzen sollen mit Namen ausgegeben werden und falls es noch mehr veränderte gibt soll angezeigt werden wie viele mehr.
+		//     in "Seq 1", "Seq 2", "Seq 3", ... (18 more).
 	}
 }

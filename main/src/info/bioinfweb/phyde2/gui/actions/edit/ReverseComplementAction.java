@@ -19,38 +19,43 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.undo.edit.AddCharSetEdit;
 import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 
 
 
+@SuppressWarnings("serial")
 public class ReverseComplementAction extends AbstractPhyDEAction implements Action {
 	public ReverseComplementAction(MainFrame mainframe) {
 		super(mainframe);
-		// TODO Auto-generated constructor stub
+		putValue(Action.NAME, "Revers Complement"); 
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+		putValue(Action.SHORT_DESCRIPTION, "Reverse Complement");
+		//loadSymbols("Remove");
 	}
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SelectionModel model = getMainFrame().getAlignmentArea().getSelection();
+		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
+		Collection<String> sequenceIDs = new ArrayList<>();
 		
-//		Collection<String> sequenceIDs = new ArrayList<>();
-//		for (int i = model.getFirstRow(); i <= model.getLastRow(); i++) {
-//			
-//		}
-//		
-//		getMainFrame().getDocument().executeEdit(new ReverseComplementEdit(getMainFrame().getDocument(), model.getFirstColumn(), model.getLastColumn(), );
+		for (int i = selection.getFirstRow(); i <= selection.getLastRow(); i++) {
+			sequenceIDs.add(getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(i));
+		}
+		
+		getMainFrame().getDocument().executeEdit(new ReverseComplementEdit(getMainFrame().getDocument(), 
+				selection.getFirstColumn(), selection.getLastColumn(), sequenceIDs));
 	}
 
 	

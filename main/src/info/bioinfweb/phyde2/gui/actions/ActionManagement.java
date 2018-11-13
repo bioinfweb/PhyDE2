@@ -41,6 +41,7 @@ import info.bioinfweb.phyde2.gui.actions.edit.RemoveColumnsFromCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RenameCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RenameSequenceAction;
+import info.bioinfweb.phyde2.gui.actions.edit.ReverseComplementAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoToAction;
 import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
@@ -88,7 +89,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.removecurrendCharSet", new RemoveColumnsFromCharSetAction(mainFrame));
 		put("edit.changecolorCharSet", new ChangeCharSetColorAction(mainFrame));
 		put("edit.renameCharSet", new RenameCharSetAction(mainFrame));
-		
+		put("edit.reverseComplement", new ReverseComplementAction(mainFrame));
 		
 		// TODO add Links
 		put("help.about", new AboutAction(mainFrame));
