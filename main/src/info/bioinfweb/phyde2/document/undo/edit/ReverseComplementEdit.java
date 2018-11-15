@@ -92,11 +92,23 @@ public class ReverseComplementEdit extends DocumentEdit {
 		int counter = 0;
 		int dif;
 
-		result.append("Reverse complement between column ");
-		result.append(firstColumn);
-		result.append(" and ");
-		result.append(lastColumn);
-		result.append(" in sequence(s) ");
+		result.append("Reverse complement ");
+		if ((firstColumn-lastColumn) < 0){
+			result.append("between column ");
+			result.append(firstColumn + 1);
+			result.append(" and ");
+		}
+		else {
+			result.append("in column ");
+		}
+		result.append(lastColumn + 1);
+		
+		result.append(" in sequence");
+		if (sequenceIDs.size() > 1) {
+			result.append("s");
+		}
+		result.append(" ");
+		
 		
 		Iterator<String> i = sequenceIDs.iterator();
 		while (i.hasNext() && (counter < 3)) {
