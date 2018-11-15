@@ -27,18 +27,18 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
-import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.undo.DocumentEdit;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 
 
 
-public class ReverseComplementEdit extends DocumentEdit {
+public class ReverseComplementEdit extends AlignmentEdit {
 	private int firstColumn;
 	private int lastColumn;
 	private Collection<String> sequenceIDs;
 	
 	
-	public ReverseComplementEdit(Document document, int firstColumn, int lastColumn, Collection<String> sequenceIDs) {
+	public ReverseComplementEdit(PhyDE2AlignmentModel document, int firstColumn, int lastColumn, Collection<String> sequenceIDs) {
 		super(document);
 		this.firstColumn = firstColumn;
 		this.lastColumn = lastColumn;

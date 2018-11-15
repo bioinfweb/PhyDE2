@@ -22,11 +22,11 @@ package info.bioinfweb.phyde2.document.undo.edit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 public class AddColumnsToCharSetEdit extends AddRemoveCharSetColumns {
-	public AddColumnsToCharSetEdit(Document document, String id, int FirstColumn, int LastColumn) {
+	public AddColumnsToCharSetEdit(PhyDE2AlignmentModel document, String id, int FirstColumn, int LastColumn) {
 		super(document, id, FirstColumn, LastColumn);
 	}
 	

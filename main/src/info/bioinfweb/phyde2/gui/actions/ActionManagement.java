@@ -27,7 +27,7 @@ import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.commons.swing.AbstractUndoActionManagement;
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.edit.AddCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddColumnsToCharSetAction;
@@ -129,7 +129,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	}
 	
 	
-	private void setActionStatusBySelection(Document document, MainFrame mainframe) {
+	private void setActionStatusBySelection(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		
 		Iterator<Action> iterator = getMap().values().iterator();
 		while (iterator.hasNext()) {
@@ -142,7 +142,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	public void refreshActionStatus() {
-		Document document = mainFrame.getDocument();
+		PhyDE2AlignmentModel document = mainFrame.getDocument();
 		setActionStatusBySelection(document, mainFrame);
 		
 		editUndoRedoMenus();

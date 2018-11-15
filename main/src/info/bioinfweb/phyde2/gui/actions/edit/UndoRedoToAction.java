@@ -22,7 +22,7 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 import javax.swing.Action;
 import javax.swing.undo.UndoableEdit;
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -41,7 +41,7 @@ public abstract class UndoRedoToAction extends AbstractPhyDEAction {
 
 
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled((document != null) && document.getUndoManager().contains(edit));
 	}
 }

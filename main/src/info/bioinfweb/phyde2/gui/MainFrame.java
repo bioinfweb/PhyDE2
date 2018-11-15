@@ -28,7 +28,7 @@ import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.Main;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
 	private static MainFrame firstInstance = null;
 	
 	
-	private Document document = new Document();
+	private PhyDE2AlignmentModel document = new PhyDE2AlignmentModel();
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JPanel jContentPane = null;
@@ -95,7 +95,7 @@ public class MainFrame extends JFrame {
 	}
 	
 
-	public void setDocument(Document document) {
+	public void setDocument(PhyDE2AlignmentModel document) {
 		this.document = document;
 		mainArea.setAlignmentModel(document.getAlignmentModel(), true);
 		charSetArea.setModel(document.getCharSetModel(), true);
@@ -103,7 +103,7 @@ public class MainFrame extends JFrame {
 	}
 
 
-	public Document getDocument() {
+	public PhyDE2AlignmentModel getDocument() {
 		return document;
 	}
 

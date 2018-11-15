@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddColumnsToCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -56,7 +56,7 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 
 	
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(getSelectedCharSetID() != null);
 	}
 }

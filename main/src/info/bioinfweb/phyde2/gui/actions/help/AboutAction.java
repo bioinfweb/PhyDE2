@@ -24,7 +24,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import info.bioinfweb.phyde2.gui.dialogs.AboutDialog;
@@ -59,5 +59,5 @@ public class AboutAction extends AbstractPhyDEAction {
 
 
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {}
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}
 }

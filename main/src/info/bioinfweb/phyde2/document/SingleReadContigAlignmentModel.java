@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben StÃ¶ver, Jonas Bohn, Kai MÃ¼ller
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo.edit;
-
-
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
+package info.bioinfweb.phyde2.document;
 
 
 
-public abstract class AbstractCharSetEdit extends AlignmentEdit {
-	private String id;
-	
-	
-	public AbstractCharSetEdit(PhyDE2AlignmentModel document, String id) {
-		super(document);
-		this.id = id;
-	}
-	
+public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 
-	public String getID() {
-		return id;
-	}
 }

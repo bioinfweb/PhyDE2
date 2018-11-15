@@ -22,7 +22,7 @@ package info.bioinfweb.phyde2.document.undo.edit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
@@ -31,7 +31,7 @@ public class RenameCharSetEdit extends AbstractCharSetEdit {
 	private String oldName;
 	
 	
-	public RenameCharSetEdit(Document document, String id, String newName) {
+	public RenameCharSetEdit(PhyDE2AlignmentModel document, String id, String newName) {
 		super(document, id);
 		this.newName = newName;
 		this.oldName = getDocument().getCharSetModel().get(id).getName();

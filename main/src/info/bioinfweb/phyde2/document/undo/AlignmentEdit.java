@@ -22,22 +22,22 @@ package info.bioinfweb.phyde2.document.undo;
 import javax.swing.undo.UndoableEdit;
 
 import info.bioinfweb.commons.swing.AbstractDocumentEdit;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
-public abstract class DocumentEdit extends AbstractDocumentEdit implements UndoableEdit {
-	private Document document;
+public abstract class AlignmentEdit extends AbstractDocumentEdit implements UndoableEdit {
+	private PhyDE2AlignmentModel document;
 
 	
-	public DocumentEdit(Document document) {
+	public AlignmentEdit(PhyDE2AlignmentModel document) {
 		super();
 		this.document = document;
 	}
 
 	
-	public Document getDocument() {
+	public PhyDE2AlignmentModel getDocument() {
 		return document;
 	}
 

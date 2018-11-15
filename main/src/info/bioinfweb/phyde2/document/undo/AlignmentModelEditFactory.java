@@ -25,16 +25,16 @@ import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.LibrAlignSwingAlignmentEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingAddSequenceEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingConcreteAddSequenceEdit;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
 
 
 
 public class AlignmentModelEditFactory implements SwingEditFactory<Character> {
-	private Document document;
+	private PhyDE2AlignmentModel document;
 	
 	
-	public AlignmentModelEditFactory(Document document) {
+	public AlignmentModelEditFactory(PhyDE2AlignmentModel document) {
 		super();
 		this.document = document;
 	}

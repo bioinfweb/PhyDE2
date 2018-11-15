@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -46,7 +46,7 @@ public class NewAction extends AbstractFileAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (handleUnsavedChanges()) {
-			getMainFrame().setDocument(new Document());
+			getMainFrame().setDocument(new PhyDE2AlignmentModel());
 			getMainFrame().getDocument().setFile(null);
 			getMainFrame().getDocument().setChanged(false);
 		}
@@ -54,5 +54,5 @@ public class NewAction extends AbstractFileAction {
 
 
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {}
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}
 }
