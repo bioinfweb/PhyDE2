@@ -3,7 +3,7 @@ Main-Class: info.bioinfweb.phyde2.Main
 SplashScreen-Image: resources/Splash.png
 Class-Path: lib/bioinfweb-commons-java-bio-3.0.0.jar
             lib/bioinfweb-commons-java-core-3.2.0.jar
-            lib/bioinfweb-commons-java-swing-3.1.0.jar
+            lib/bioinfweb-commons-java-swing-3.3.0.jar
             lib/jphyloio-core-0.5.2.jar
             lib/libralign-core-0.9.0.jar
             lib/libralign-io-0.6.0.jar
