@@ -38,7 +38,7 @@ import javax.swing.Action;
 public class ReverseComplementAction extends AbstractPhyDEAction implements Action {
 	public ReverseComplementAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Revers Complement"); 
+		putValue(Action.NAME, "Reverse Complement"); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
 		putValue(Action.SHORT_DESCRIPTION, "Reverse Complement");
 		//loadSymbols("Remove");
