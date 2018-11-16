@@ -48,6 +48,6 @@ public class AddColumnsToCharSetEdit extends AddRemoveCharSetColumns {
 	
 	@Override
 	public String getPresentationName() {
-		return "Add columns to character set \"" + getDocument().getCharSetModel().get(getID()) + "\"";
+		return "Add columns to character set \"" + getAlignment().getCharSetModel().get(getID()) + "\"";
 	}
 }

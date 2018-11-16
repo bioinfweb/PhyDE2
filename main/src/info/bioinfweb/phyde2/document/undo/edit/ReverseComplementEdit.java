@@ -48,7 +48,7 @@ public class ReverseComplementEdit extends AlignmentEdit {
 
 	private void reverseComplement() {
     	//SelectionModel selection = getReadsArea().getSelection();
-    	AlignmentModel<?> model = getDocument().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
+    	AlignmentModel<?> model = getAlignment().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
     	for (String sequenceID : sequenceIDs) {
 //			PherogramArea area = getPherogramArea(sequenceID);
 //			PherogramAreaModel pherogramAlignmentModel = area.getModel();
@@ -87,7 +87,7 @@ public class ReverseComplementEdit extends AlignmentEdit {
 
 	@Override
 	public String getPresentationName() {
-		AlignmentModel<?> model = getDocument().getAlignmentModel();
+		AlignmentModel<?> model = getAlignment().getAlignmentModel();
 		StringBuilder result = new StringBuilder(64);
 		int counter = 0;
 		int dif;

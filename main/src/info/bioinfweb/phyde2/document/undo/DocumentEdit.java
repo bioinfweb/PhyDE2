@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben StÃ¶ver, Jonas Bohn, Kai MÃ¼ller
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,32 +18,6 @@
  */
 package info.bioinfweb.phyde2.document.undo;
 
+public class DocumentEdit {
 
-import javax.swing.undo.UndoableEdit;
-
-import info.bioinfweb.commons.swing.AbstractDocumentEdit;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.gui.MainFrame;
-
-
-
-public abstract class AlignmentEdit extends AbstractDocumentEdit implements UndoableEdit {
-	private PhyDE2AlignmentModel alignment;
-
-	
-	public AlignmentEdit(PhyDE2AlignmentModel alignment) {
-		super();
-		this.alignment = alignment;
-	}
-
-	
-	public PhyDE2AlignmentModel getAlignment() {
-		return alignment;
-	}
-
-
-	@Override
-	protected void registerDocumentChange() {
-		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO Replace this call by DocumentChangeEvent processing in the future.
-	}
 }

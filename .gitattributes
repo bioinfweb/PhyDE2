@@ -28,6 +28,9 @@ main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/Main.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/DefaultPhyDE2AlignmentModel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/DocumentChangeEvent.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/DocumentListener.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/SingleReadContigAlignmentModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#text/plain
@@ -37,6 +40,7 @@ main/src/info/bioinfweb/phyde2/document/io/PhyDEDocumentDataAdapter.java -text s
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEditFactory.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/DocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddColumnsToCharSetEdit.java -text svneol=unset#text/plain

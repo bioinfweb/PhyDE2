@@ -34,20 +34,20 @@ public class RenameCharSetEdit extends AbstractCharSetEdit {
 	public RenameCharSetEdit(PhyDE2AlignmentModel document, String id, String newName) {
 		super(document, id);
 		this.newName = newName;
-		this.oldName = getDocument().getCharSetModel().get(id).getName();
+		this.oldName = getAlignment().getCharSetModel().get(id).getName();
 	}
 		
 	
 	@Override
 	public void redo() throws CannotRedoException {
-		getDocument().getCharSetModel().get(getID()).setName(newName);
+		getAlignment().getCharSetModel().get(getID()).setName(newName);
 		super.redo();
 	}
 
 
 	@Override
 	public void undo() throws CannotUndoException {
-		getDocument().getCharSetModel().get(getID()).setName(oldName);
+		getAlignment().getCharSetModel().get(getID()).setName(oldName);
 		super.undo();
 	}
 	

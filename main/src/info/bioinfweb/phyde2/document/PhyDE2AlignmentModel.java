@@ -49,7 +49,7 @@ public class PhyDE2AlignmentModel {
 	
 	private AccessibleUndoManager undoManager;
 	
-	private File file;
+	private File file;  //TODO Move to document
 	private boolean changed;
 	
 	private SwingEditFactory<Character> alignmentModelEditFactory;
