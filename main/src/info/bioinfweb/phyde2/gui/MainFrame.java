@@ -161,6 +161,7 @@ public class MainFrame extends JFrame {
 		setBounds(200, 200, 550, 500);
 		setExtendedState(JFrame.NORMAL);  //MAXIMIZE_BOTH
 
+		setJMenuBar(getMainMenu());
 		setContentPane(getJContentPane());
 		
 		addWindowListener(new WindowAdapter() {
@@ -181,54 +182,6 @@ public class MainFrame extends JFrame {
 		});
 		refreshWindowTitle();
 		
-		// Create main container instance (TIC component):
-		container = new MultipleAlignmentsContainer();
-		
-		// out head and main AlignmentArea in container:
-		sequenceIndexAlignmentArea = new AlignmentArea(container);
-		characterSetAlignmentArea = new AlignmentArea(container);
-		mainArea = new AlignmentArea(container);
-		charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
-		charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
-			@Override
-			public void selectionChanged(GenericEventObject<CharSetArea> event) {
-				getActionManagement().refreshActionStatus();
-			}
-		});
-		
-		// Prepare heading areas:
-		sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
-		sequenceIndexAlignmentArea.setAllowVerticalScrolling(false);
-		characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
-		
-		container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
-		container.getAlignmentAreas().add(characterSetAlignmentArea);
-		//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
-		
-		// Prepare main area:
-		mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
-		mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
-			@Override
-			public void selectionChanged(GenericEventObject<SelectionModel> event) {
-				getActionManagement().refreshActionStatus();
-			}
-		});
-		
-		container.getAlignmentAreas().add(mainArea);
-		
-		// Create Swing-specific component from TIC component:
-		JComponent swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
-			
-		setJMenuBar(getMainMenu());
-		
-		// Create Swing-specific component from TIC component:
-		swingContainer = SwingComponentFactory.getInstance().getSwingComponent(container);
-		
-		getContentPane().setLayout(new BorderLayout(0, 0));
-		getContentPane().add(getToolBarPanel(), BorderLayout.PAGE_START);
-		// Add Swing component to GUI:
-		getContentPane().add(swingContainer, BorderLayout.CENTER);
-		
 		refreshMenue();
 	}
 	
@@ -241,11 +194,57 @@ public class MainFrame extends JFrame {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BorderLayout());
+			jContentPane.setLayout(new BorderLayout());			
+			
+			jContentPane.add(getToolBarPanel(), BorderLayout.PAGE_START);
+			// Add Swing component to GUI:
+			jContentPane.add(SwingComponentFactory.getInstance().getSwingComponent(getAlignmentsContainer()), BorderLayout.CENTER);
 		}
 		return jContentPane;
 	}
-		
+	
+	
+	private MultipleAlignmentsContainer getAlignmentsContainer() {
+		if (container == null) {
+			// Create main container instance (TIC component):
+			container = new MultipleAlignmentsContainer();
+					
+			// out head and main AlignmentArea in container:
+			sequenceIndexAlignmentArea = new AlignmentArea(container);
+			characterSetAlignmentArea = new AlignmentArea(container);
+			mainArea = new AlignmentArea(container);
+			charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
+			charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
+				@Override
+				public void selectionChanged(GenericEventObject<CharSetArea> event) {
+				getActionManagement().refreshActionStatus();
+				}
+			});
+					
+			// Prepare heading areas:
+			sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
+			sequenceIndexAlignmentArea.setAllowVerticalScrolling(false);
+			characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
+					
+			container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
+			container.getAlignmentAreas().add(characterSetAlignmentArea);
+			//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
+					
+			// Prepare main area:
+			mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
+			mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
+				@Override
+				public void selectionChanged(GenericEventObject<SelectionModel> event) {
+				getActionManagement().refreshActionStatus();
+				}
+			});
+					
+			container.getAlignmentAreas().add(mainArea);
+		}
+		return container;
+	}
+	
+	
 	private JMenuBar getMainMenu() {
 		if (mainMenu == null) {
 			mainMenu = new JMenuBar();
