@@ -16,18 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document;
+package info.bioinfweb.phyde2.gui;
 
-public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
+import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 
-//	TODO hier weiß ich nicht so wirklich, wie die Klasse mit dem Document kommunizieren soll. Bzw. wie 
-//	ich die Info über die Anzahl an gespeicherten Alignments im File bekomme und ob das hier
-//	überhaupt wichtig ist, oder im Document verarbeitet wird.
+public class MainSplitPane extends JFrame{
+	private JSplitPane jSplitPane;
+	private MainFrame frame;
+	private FileContentTreeView tree;
 	
-	public SingleReadContigAlignmentModel() {
+	public MainSplitPane(MainFrame frame, FileContentTreeView tree ) {
 		super();
-		//TODO außerdem zusätzliches AlignemntModel für consensus
+		this.frame = frame;
+		this.tree = tree;
+		initialize();
 	}
 	
-	//TODO Eine Funktion "getConsensus" muss hier hin, damit DefaultPhyDE2 sich das holen kann.
+	private void initialize (){
+		getJSplitPane().setRightComponent(frame.getInstance().getContentPane());
+		getJSplitPane().setLeftComponent(tree.getTree());
+	}
+	
+	private JSplitPane getJSplitPane ()
+	{
+		if (jSplitPane == null)
+		{
+			jSplitPane = new JSplitPane (JSplitPane.VERTICAL_SPLIT);
+		}
+		return jSplitPane;
+	}
+	
 }

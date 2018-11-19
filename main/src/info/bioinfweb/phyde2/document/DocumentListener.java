@@ -28,4 +28,11 @@ public interface DocumentListener extends EventListener {
 	
 	
 	public void afterContigAdded(DocumentChangeEvent e);
+	public void afterContigDeleted (DocumentChangeEvent e);
+	public void afterDefaultPhyDE2Added (DocumentChangeEvent e);
+	public void afterDefaultPhyDE2Deleted (DocumentChangeEvent e);
+	//TODO die müssen hier doch auch noch irgendwas machen, oder?
 }
+
+	
+	

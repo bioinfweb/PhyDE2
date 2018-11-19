@@ -44,6 +44,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 
 
@@ -61,7 +62,7 @@ public class MainFrame extends JFrame {
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JPanel jContentPane = null;
-	
+	//private JSplitPane jSplitPane = null;
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
 	private JMenu editMenu = null;
@@ -244,7 +245,6 @@ public class MainFrame extends JFrame {
 		}
 		return jContentPane;
 	}
-	
 		
 	private JMenuBar getMainMenu() {
 		if (mainMenu == null) {

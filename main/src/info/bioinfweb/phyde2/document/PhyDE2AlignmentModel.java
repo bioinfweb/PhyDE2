@@ -43,13 +43,16 @@ import info.bioinfweb.phyde2.gui.MainFrame;
  * 
  * @author Ben St&ouml;ver
  */
-public class PhyDE2AlignmentModel {
+public class PhyDE2AlignmentModel extends Document {
+	//extends Document muss momentan noch hier stehen, da im MainFrame noch diese Klasse verarbeitet wird und 
+	//noch nicht wie später gewollt das Document. Die dazugehörige Methode wurde allerdings schon ins Document
+	//verschoben, daher muss extends hier stehen
 	public static final int UNDO_LIMIT = 50;
 	
 	
 	private AccessibleUndoManager undoManager;
 	
-	private File file;  //TODO Move to document
+	//private File file;  //TODO Move to document
 	private boolean changed;
 	
 	private SwingEditFactory<Character> alignmentModelEditFactory;
@@ -85,16 +88,6 @@ public class PhyDE2AlignmentModel {
 		return undoManager;
 	}
 	
-	
-	public File getFile() {
-		return file;
-	}
-
-
-	public void setFile(File file) {
-		this.file = file;
-		MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
-	}
 
 
 	public boolean isChanged() {
@@ -155,4 +148,6 @@ public class PhyDE2AlignmentModel {
 	public void setCharSetModel(CharSetDataModel charSetModel) {
 		this.charSetModel = charSetModel;
 	}
+
+
 }
