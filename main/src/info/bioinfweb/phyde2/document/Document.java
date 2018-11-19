@@ -18,63 +18,86 @@
  */
 package info.bioinfweb.phyde2.document;
 
-import java.io.File;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
 
 import info.bioinfweb.phyde2.gui.MainFrame;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 
 
 public class Document {
-	private Collection<DocumentListener> listeners = new ArrayList<>();
 	private File file;
-	private Map<String, DefaultPhyDE2AlignmentModel> defaultPhyDE2AlignmentModelMap = new TreeMap <String, DefaultPhyDE2AlignmentModel>();
-	private Map<String, SingleReadContigAlignmentModel> singleReadContigAlignmentModelMap = new TreeMap <String, SingleReadContigAlignmentModel>();
-	//Wenn ich zu den Maps eine Instanz hinzufüge, muss ich das mit den Listenern verknüpfen. 
-	//brauche ich noch eine Methode um die IDs der Einträge zu bekommen?
-	public SingleReadContigAlignmentModel getSingleReadContigAlignmentModelFromMap(String id) {
-		return singleReadContigAlignmentModelMap.get(id);
-		//Gibt das Alignment mit der übergebenen ID zurück
+	private Map<String, PhyDE2AlignmentModel> alignmentModelMap = new TreeMap <String, PhyDE2AlignmentModel>();
+	private Collection<DocumentListener> listeners = new ArrayList<>();
+	
+	
+	public File getFile() {
+		return file;
 	}
+	
 
-
-	public void setSingleReadContigAlignmentModelToMap(SingleReadContigAlignmentModel contig, String id) {
-		this.singleReadContigAlignmentModelMap.put(id,contig);
-		// fügt ein Alignment mit definierter ID hinzu.
-	}
-
-
-	public DefaultPhyDE2AlignmentModel getDefaultPhyDE2AlignmentModelFromMap(String id) {
-		return defaultPhyDE2AlignmentModelMap.get(id);
-		//gibt das Alignment mit der übergebenen ID zurück.
-	}
-
-	public void setDefaultPhyDE2AlignmentModelToMap(DefaultPhyDE2AlignmentModel phyDE2Alignment, String id) {
-		this.defaultPhyDE2AlignmentModelMap.put(id, phyDE2Alignment);
-		//fügt ein Alignment mit definierter ID hinzu.
+	public void setFile(File file) {
+		this.file = file;
+		MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
 	}
 
 	
-	public void addAlignmentModels (PhyDE2AlignmentModel model, String id)
-	{
-		// irgendwie muss hier noch hin, wie ich die verschiedenen models aus dem File bekomme..
-		if (model instanceof DefaultPhyDE2AlignmentModel){
-			//add to defaultPhyDE2AlignmentModelMap
-			setDefaultPhyDE2AlignmentModelToMap((DefaultPhyDE2AlignmentModel)model, id);
-		}
+	public PhyDE2AlignmentModel getAlignmentModel(String id) {
+		return alignmentModelMap.get(id);
+	}
+	
+
+	/**
+	 * Returns a set of all alignment IDs in this document. The set is not backed by the model and changes to the
+	 * returned set will not be reflected in the document.
+	 * 
+	 * @return a new set containing all alignment IDs that are currently in the document
+	 */
+	public Set<String> idSet() {
+		return new TreeSet<>(alignmentModelMap.keySet());
+	}
+	
+	
+	/**
+	 * Returns a set of all IDs of alignments of the specified type in this document. The set is not backed by the 
+	 * model and changes to the returned set will not be reflected in the document.
+	 * 
+	 * @param the alignment type
+	 * @return a new set containing all alignment IDs that are currently in the document
+	 */
+	public Set<String> idSet(Class<? extends PhyDE2AlignmentModel> modelClass) {
+		Set<String> result = idSet();
 		
-		if (model instanceof SingleReadContigAlignmentModel){
-			//add to singleReadContigAlignmentModelMap
-			setSingleReadContigAlignmentModelToMap((SingleReadContigAlignmentModel)model, id);
-			//fireAfterContigAdded(contig) aufrufen, um Listener zu informieren, dass ein Contig hinzugefügt wurde:
-			fireAfterContigAdded((SingleReadContigAlignmentModel) model);
+		Iterator<String> iterator = result.iterator();
+		while (iterator.hasNext()) {
+			if (!modelClass.isInstance(getAlignmentModel(iterator.next()))) {
+				iterator.remove();
+			}
 		}
+		return result;
+	}
+
+
+	public void addAlignmentModel(PhyDE2AlignmentModel model) {
+		alignmentModelMap.put(model.getAlignmentModel().getID(), model);
+		fireAfterAlignmentModelAdded(model);
 	}
 	
+	
+	public PhyDE2AlignmentModel deleteAlignmentModel(String id) {
+		PhyDE2AlignmentModel model = alignmentModelMap.remove(id);
+		if (model != null) {
+			fireAfterAlignmentModelDeleted(getAlignmentModel(id));	
+		}
+		return model;
+	}
 	
 	
 	public void addDocumentListener(DocumentListener listener) {
@@ -87,28 +110,17 @@ public class Document {
 	}
 	
 	
-	protected void fireAfterContigAdded(SingleReadContigAlignmentModel contig) {
-		DocumentChangeEvent e = new DocumentChangeEvent(this, contig);
+	protected void fireAfterAlignmentModelAdded(PhyDE2AlignmentModel model) {
+		DocumentChangeEvent e = new DocumentChangeEvent(this, model);
 		for (DocumentListener listener : listeners) {
-			listener.afterContigAdded(e);
+			listener.afterAlignmentModelAdded(e);
 		}
 	}
 	
-	protected void fireAfterDefaultPhyDE2Added(DefaultPhyDE2AlignmentModel defaultPhyDE2) {
-		DocumentChangeEvent e = new DocumentChangeEvent(this, defaultPhyDE2);
+	protected void fireAfterAlignmentModelDeleted(PhyDE2AlignmentModel model) {
+		DocumentChangeEvent e = new DocumentChangeEvent(this, model);
 		for (DocumentListener listener : listeners) {
-			listener.afterDefaultPhyDE2Added(e);
+			listener.afterAlignmentModelDeleted(e);
 		}
 	}
-	
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-		MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
-	}
-
-	
 }

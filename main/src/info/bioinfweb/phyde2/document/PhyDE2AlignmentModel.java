@@ -43,7 +43,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
  * 
  * @author Ben St&ouml;ver
  */
-public class PhyDE2AlignmentModel extends Document {
+public class PhyDE2AlignmentModel {
 	//extends Document muss momentan noch hier stehen, da im MainFrame noch diese Klasse verarbeitet wird und 
 	//noch nicht wie später gewollt das Document. Die dazugehörige Methode wurde allerdings schon ins Document
 	//verschoben, daher muss extends hier stehen
@@ -52,7 +52,6 @@ public class PhyDE2AlignmentModel extends Document {
 	
 	private AccessibleUndoManager undoManager;
 	
-	//private File file;  //TODO Move to document
 	private boolean changed;
 	
 	private SwingEditFactory<Character> alignmentModelEditFactory;
@@ -150,4 +149,10 @@ public class PhyDE2AlignmentModel extends Document {
 	}
 
 
+	public File getFile() {  //TODO Remove when refactoring is done
+		return null;
+	}
+
+	
+	public void setFile(File file) {}  //TODO Remove when refactoring is done
 }

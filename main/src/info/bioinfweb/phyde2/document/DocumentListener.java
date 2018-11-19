@@ -26,13 +26,7 @@ import java.util.EventListener;
 public interface DocumentListener extends EventListener {
 	//after add, after delete (possibly differentiate between MSA and contig)
 	
+	public void afterAlignmentModelAdded(DocumentChangeEvent e);
 	
-	public void afterContigAdded(DocumentChangeEvent e);
-	public void afterContigDeleted (DocumentChangeEvent e);
-	public void afterDefaultPhyDE2Added (DocumentChangeEvent e);
-	public void afterDefaultPhyDE2Deleted (DocumentChangeEvent e);
-	//TODO die müssen hier doch auch noch irgendwas machen, oder?
+	public void afterAlignmentModelDeleted(DocumentChangeEvent e);
 }
-
-	
-	
