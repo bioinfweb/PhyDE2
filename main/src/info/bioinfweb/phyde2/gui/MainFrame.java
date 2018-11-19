@@ -61,8 +61,8 @@ public class MainFrame extends JFrame {
 	private PhyDE2AlignmentModel document = new PhyDE2AlignmentModel();
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
-	private JPanel jContentPane = null;
-	//private JSplitPane jSplitPane = null;
+	private JPanel alignmentPanel = null;
+	private JSplitPane splitPane = null;
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
 	private JMenu editMenu = null;
@@ -162,7 +162,7 @@ public class MainFrame extends JFrame {
 		setExtendedState(JFrame.NORMAL);  //MAXIMIZE_BOTH
 
 		setJMenuBar(getMainMenu());
-		setContentPane(getJContentPane());
+		setContentPane(getSplitPane());
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -191,16 +191,26 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	private JPanel getJContentPane() {
-		if (jContentPane == null) {
-			jContentPane = new JPanel();
-			jContentPane.setLayout(new BorderLayout());			
+	private JPanel getAlignmentPanel() {
+		if (alignmentPanel == null) {
+			alignmentPanel = new JPanel();
+			alignmentPanel.setLayout(new BorderLayout());			
 			
-			jContentPane.add(getToolBarPanel(), BorderLayout.PAGE_START);
+			alignmentPanel.add(getToolBarPanel(), BorderLayout.PAGE_START);
 			// Add Swing component to GUI:
-			jContentPane.add(SwingComponentFactory.getInstance().getSwingComponent(getAlignmentsContainer()), BorderLayout.CENTER);
+			alignmentPanel.add(SwingComponentFactory.getInstance().getSwingComponent(getAlignmentsContainer()), BorderLayout.CENTER);
 		}
-		return jContentPane;
+		return alignmentPanel;
+	}
+	
+	
+	private JSplitPane getSplitPane() {
+		if (splitPane == null) {
+			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+			//splitPane.setLeftComponent(getFileContentTreeView());
+			splitPane.setRightComponent(getAlignmentPanel());
+		}
+		return splitPane;
 	}
 	
 	

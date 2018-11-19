@@ -31,7 +31,6 @@ import info.bioinfweb.commons.appversion.ApplicationVersion;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.phyde2.gui.FileContentTreeView;
 import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.MainSplitPane;
 
 
 
@@ -83,11 +82,6 @@ public class Main extends ProgramMainClass {
 			public void run() {
 				try {
 					MainFrame window = MainFrame.getInstance();
-					//FileContentTreeView tree = new FileContentTreeView();
-					//MainSplitPane splitPane = new MainSplitPane(window,tree);
-					//show frame
-					//splitPane.setVisible(true);
-					//splitPane.setIconImage(createImageIcon(ICON_PATH).getImage());
 					window.setVisible(true);
 					window.setIconImage(createImageIcon(ICON_PATH).getImage());
 				}

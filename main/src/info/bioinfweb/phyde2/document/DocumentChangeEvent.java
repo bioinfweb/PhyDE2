@@ -24,8 +24,6 @@ import javax.swing.event.ChangeEvent;
 
 
 public class DocumentChangeEvent extends ChangeEvent {
-	//TODO Possibly add more read-only properties (also as constructor parameter)
-	
 	private PhyDE2AlignmentModel model;
 	
 	
