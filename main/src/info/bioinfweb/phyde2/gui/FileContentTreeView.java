@@ -19,13 +19,15 @@
 package info.bioinfweb.phyde2.gui;
 
 
-import javax.swing.JFrame;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.DocumentChangeEvent;
 import info.bioinfweb.phyde2.document.DocumentListener;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
+
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 
@@ -33,50 +35,59 @@ public class FileContentTreeView extends JTree {
 	public FileContentTreeView(Document document) {
 		super(new DefaultMutableTreeNode());
 		
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
+		DefaultMutableTreeNode file = new DefaultMutableTreeNode("Some file");
+		DefaultMutableTreeNode defaultPhyDE2 = new DefaultMutableTreeNode("Multiple Sequence Alignments");
+		DefaultMutableTreeNode contigs = new DefaultMutableTreeNode("Contig Alignments");
+		file.add(defaultPhyDE2);
+		file.add(contigs);
+		root.add(file);
+		
+		
 		document.addDocumentListener(new DocumentListener() {
 			@Override
 			public void afterAlignmentModelAdded(DocumentChangeEvent e) {
-				e.getModel();
-				// TODO Add new node and set e.getModel() as user object 
+				// TODO Add new node and set e.getModel() as user object
+				//file.setUserObject(e.getModel());//PhyDE2Alignmentmodel To String methode die label zurückgibt
+				//das userObject muss zum jeweiligen Alignemntmodel gehören.
+				DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
+				DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
+			
+				if (e.getModel() instanceof DefaultPhyDE2AlignmentModel){
+					((DefaultMutableTreeNode)file.getChildAt(0)).add(new DefaultMutableTreeNode(e.getModel()));
+				}
+				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
+					((DefaultMutableTreeNode)file.getChildAt(1)).add(new DefaultMutableTreeNode(e.getModel()));
+					//TODO für getModel() eine neue toString()-Methode schreiben.
+				}
 			}
 
 			@Override
 			public void afterAlignmentModelDeleted(DocumentChangeEvent e) {
-				e.getModel().getAlignmentModel().getID();
+				DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
+				DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
+				
+				if (e.getModel() instanceof DefaultPhyDE2AlignmentModel){
+					for (int i = 0; i < file.getChildAt(0).getChildCount(); i++) {
+						if (e.getModel().getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+								((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
+								file.remove((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i));
+						}
+					}
+					
+				}
+				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
 				// TODO Search node with user object that has the same alignment model ID and remove it
+					for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
+						if (e.getModel().getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+								((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
+								file.remove((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i));
+						}
+					}	
+					
 			}
-		});
-	}
-	
-	
-	private void refreshTree() {
-		//muss im DocumentListener vom Document aufgerufen werden.
-		//DocumentListener muss irgendwo registriert werden, entweder hier im Constructor oder in getFileContentTreeView
-		//im MainFrame.
-		//MainFrame.getInstance().getDocument();
-	}
-	
-	
-	public void createTree() {
-		
-		//create the root node
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
-		//root.removeAllChildren();
-		
-		DefaultMutableTreeNode file = new DefaultMutableTreeNode("Some file");
-		//file.getUserObject();
-		
-	    //create the child nodes
-	    DefaultMutableTreeNode defaultPhyDE2 = new DefaultMutableTreeNode("Multiple Sequence Alignments");
-	    //TODO irgendwas wie: for each MSA in der Liste im Document defaultPhyDE2.add(MSA) 
-	    DefaultMutableTreeNode contigs = new DefaultMutableTreeNode("Contig Alignments");
-	    //TODO irgendwas wie: for each contig in der Liste im Document contigs.add(contig)
-	    //=> geht das so überhaupt? ich hab ja ne Map und brauche irgendwo dann eigentlich die IDs her..
-	    
-	    file.add(defaultPhyDE2);
-	    file.add(contigs);
-	    
-	    root.add(file);
-	    
+				//e.getModel().getAlignmentModel().getID();
+				//((PhyDE2AlignmentModel) ((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(0)).getUserObject()).getAlignmentModel().getID();
+		}});
 	}
 }

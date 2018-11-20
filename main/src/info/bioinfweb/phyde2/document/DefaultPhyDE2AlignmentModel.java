@@ -19,6 +19,8 @@
 package info.bioinfweb.phyde2.document;
 
 public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
+
+	
 //TODO hier muss noch eine Referenz auf die Consensus des contigs gesetzt werden (wie?).
 // => als was speichere ich die Consensus, also welcher Datentyp?
 }

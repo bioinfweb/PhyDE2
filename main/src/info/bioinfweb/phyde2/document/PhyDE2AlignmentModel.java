@@ -147,6 +147,17 @@ public class PhyDE2AlignmentModel {
 	public void setCharSetModel(CharSetDataModel charSetModel) {
 		this.charSetModel = charSetModel;
 	}
+	
+
+
+	@Override
+	public String toString() {
+		if (getAlignmentModel().getLabel() == null) {
+			return "<unnamend alignment>";
+		}
+		
+		return getAlignmentModel().getLabel();
+	}
 
 
 	public File getFile() {  //TODO Remove when refactoring is done

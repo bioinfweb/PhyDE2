@@ -28,7 +28,10 @@ import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -45,6 +48,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 
@@ -70,7 +74,7 @@ public class MainFrame extends JFrame {
 	private JMenu undoMenu = null;
 	private JMenu redoMenu = null;
 	private JPanel toolBarPanel = null;
-	
+	private FileContentTreeView treeView = null;
 	// Alignment views:
 	private AlignmentArea mainArea = null;
 	private MultipleAlignmentsContainer container = null;
@@ -203,14 +207,46 @@ public class MainFrame extends JFrame {
 		return alignmentPanel;
 	}
 	
+	private FileContentTreeView getFileContentTreeView () {
+		Document doc = new Document(); // for testing.
+		DefaultPhyDE2AlignmentModel phyDE2 = new DefaultPhyDE2AlignmentModel();
+		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel();
+		phyDE2.getAlignmentModel().setID("1");
+		phyDE2.getAlignmentModel().setLabel("Default PhyDE2 Alignment");
+		contig.getAlignmentModel().setID("2");
+		contig.getAlignmentModel().setLabel("Contig"); // for testing end.
+
+		if (treeView == null) {
+			treeView = new FileContentTreeView(doc);
+			treeView.setLayout(new BorderLayout());
+			doc.addAlignmentModel(phyDE2);
+			doc.addAlignmentModel(contig);
+			
+		}
+		
+		return treeView;
+	}
+	
 	
 	private JSplitPane getSplitPane() {
 		if (splitPane == null) {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-			//splitPane.setLeftComponent(getFileContentTreeView());
+			splitPane.setLeftComponent(getFileContentTreeView());
 			splitPane.setRightComponent(getAlignmentPanel());
 		}
 		return splitPane;
+	}
+	
+	
+	public PhyDE2AlignmentModel getSelectedAlignment () {
+		Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
+		if (selectedNode instanceof DefaultMutableTreeNode) {
+			Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+			if (userObject instanceof PhyDE2AlignmentModel){
+				return (PhyDE2AlignmentModel) userObject;
+			}
+		}
+		return null;
 	}
 	
 	
