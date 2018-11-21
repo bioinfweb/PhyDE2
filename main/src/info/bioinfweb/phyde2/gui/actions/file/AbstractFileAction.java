@@ -24,7 +24,6 @@ import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
-import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.jphyloio.objecttranslation.ObjectTranslatorFactory;
 import info.bioinfweb.jphyloio.objecttranslation.implementations.ColorTranslator;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
@@ -219,7 +218,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		else {
 			return true;
 		}
-		
 	}
 }
 
