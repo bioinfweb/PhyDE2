@@ -77,7 +77,7 @@ public class Tab extends JPanel {
 	
 	
 	private MultipleAlignmentsContainer getAlignmentsContainer() {
-		if (container == null) { //das muss weg, oder?
+		if (container == null) { 
 			// Create main container instance (TIC component):
 			container = new MultipleAlignmentsContainer();
 					

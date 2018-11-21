@@ -96,12 +96,16 @@ public class MainFrame extends JFrame {
 	
 
 	public void addDocument(Document document) {
+		Tab newTab = new Tab(document);
+		String tabTitle;
 		if (document.getAlignmentModel().getLabel() != null) {
-			tabbedPane.addTab(document.getAlignmentModel().getLabel(), null, new Tab(document), null);
+			tabTitle = document.getAlignmentModel().getLabel();
 		}
 		else {
-			tabbedPane.addTab("<unnamed alignment>", null, new Tab(document), null);
+			tabTitle = "<unnamed alignment>";
 		}
+		tabbedPane.addTab(tabTitle, null, newTab, null);
+		tabbedPane.setSelectedComponent(newTab);
 	}
 
 
