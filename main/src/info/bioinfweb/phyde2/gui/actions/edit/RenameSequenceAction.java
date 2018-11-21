@@ -42,12 +42,12 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
+		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		String name = JOptionPane.showInputDialog("New sequence name");
 		if (name != null) {
 			for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-				String id = getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(row);
-				getMainFrame().getDocument().getAlignmentModel().renameSequence(id, name);
+				String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row);
+				getMainFrame().getActiveDocument().getAlignmentModel().renameSequence(id, name);
 			}
 		}
 	}
@@ -55,7 +55,7 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 	
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled(document.getAlignmentModel().getSequenceCount() != 0);
+		setEnabled((document != null) && document.getAlignmentModel().getSequenceCount() != 0);
 	}
 	
 	

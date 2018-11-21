@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -47,21 +47,21 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SelectionModel selection = getMainFrame().getAlignmentArea().getSelection();
+		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		Collection<String> sequenceIDs = new ArrayList<>();
 		
 		for (int i = selection.getFirstRow(); i <= selection.getLastRow(); i++) {
-			sequenceIDs.add(getMainFrame().getAlignmentArea().getSequenceOrder().idByIndex(i));
+			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(i));
 		}
 		
-		getMainFrame().getDocument().executeEdit(new ReverseComplementEdit(getMainFrame().getDocument(), 
+		getMainFrame().getActiveDocument().executeEdit(new ReverseComplementEdit(getMainFrame().getActiveDocument(), 
 				selection.getFirstColumn(), selection.getLastColumn(), sequenceIDs));
 	}
 
 	
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled((document != null) && !mainframe.getAlignmentArea().getSelection().isEmpty() && 
-				mainframe.getAlignmentArea().getAlignmentModel().getTokenSet().getType().isNucleotide());
+		setEnabled((document != null) && !mainframe.getActiveAlignmentArea().getSelection().isEmpty() && 
+				mainframe.getActiveAlignmentArea().getAlignmentModel().getTokenSet().getType().isNucleotide());
 	}
 }

@@ -90,63 +90,60 @@ public class OpenAction extends AbstractFileAction {
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (handleUnsavedChanges()) {
-			
-			//	File reading:
-			try {
-				if (getOpenFileChooser().showOpenDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION) {
-					ReadWriteParameterMap parameters = new ReadWriteParameterMap();
-					parameters.put(ReadWriteParameterNames.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
-					JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), parameters);
-					PhyDEAlignmentDataReader mainReader = new PhyDEAlignmentDataReader(eventReader);
-					mainReader.readAll();
-					
-					if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {  // File does not contain any alignments.
-						JOptionPane.showMessageDialog(getMainFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
-								"\" does not contain any alignments.", "Error while loading file", JOptionPane.ERROR_MESSAGE);
+	public void actionPerformed(ActionEvent e) {			
+		//	File reading:
+		try {
+			if (getOpenFileChooser().showOpenDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION) {
+				ReadWriteParameterMap parameters = new ReadWriteParameterMap();
+				parameters.put(ReadWriteParameterNames.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
+				JPhyloIOEventReader eventReader = factory.guessReader(getOpenFileChooser().getSelectedFile(), parameters);
+				PhyDEAlignmentDataReader mainReader = new PhyDEAlignmentDataReader(eventReader);
+				mainReader.readAll();
+				
+				if (mainReader.getAlignmentModelReader().getCompletedModels().size() == 0) {  // File does not contain any alignments.
+					JOptionPane.showMessageDialog(getMainFrame(), "The file \"" +  getOpenFileChooser().getSelectedFile().getAbsolutePath() + 
+							"\" does not contain any alignments.", "Error while loading file", JOptionPane.ERROR_MESSAGE);
+				}
+				else {  // File contains at least one alignment.
+					//	create new Document:
+					AlignmentModel<Character> alignmentModel = (AlignmentModel<Character>)mainReader.getAlignmentModelReader().getCompletedModels().get(0);
+					Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+					CharSetDataModel charSetModel;
+					if (charSetModels.isEmpty()) {
+						charSetModel = new CharSetDataModel();
 					}
-					else {  // File contains at least one alignment.
-						//	create new Document:
-						AlignmentModel<Character> alignmentModel = (AlignmentModel<Character>)mainReader.getAlignmentModelReader().getCompletedModels().get(0);
-						Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
-						CharSetDataModel charSetModel;
-						if (charSetModels.isEmpty()) {
-							charSetModel = new CharSetDataModel();
-						}
-						else {
-							charSetModel = charSetModels.iterator().next();
-						}
-						
-						getMainFrame().setDocument(new Document(alignmentModel, charSetModel));
-						if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
-							getMainFrame().getDocument().setFile(getOpenFileChooser().getSelectedFile());
-							getMainFrame().getDocument().setChanged(false);
+					else {
+						charSetModel = charSetModels.iterator().next();
+					}
+					
+					getMainFrame().addDocument(new Document(alignmentModel, charSetModel));
+					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
+						getMainFrame().getActiveDocument().setFile(getOpenFileChooser().getSelectedFile());
+						getMainFrame().getActiveDocument().setChanged(false);
 
-							// File contains more than one alignment or character set:
-							String message = "";
-							if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
-								message = "The file contained more than one alignment. Only the first one was loaded.";
-							}
-							if (charSetModels.size() > 1) {
-								if (message.length() > 0) {
-									message += "\n";
-								}
-								message += "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
-							}
+						// File contains more than one alignment or character set:
+						String message = "";
+						if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
+							message = "The file contained more than one alignment. Only the first one was loaded.";
+						}
+						if (charSetModels.size() > 1) {
 							if (message.length() > 0) {
-								JOptionPane.showMessageDialog(getMainFrame(),
-										message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);
+								message += "\n";
 							}
+							message += "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
+						}
+						if (message.length() > 0) {
+							JOptionPane.showMessageDialog(getMainFrame(),
+									message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				}
 			}
-			catch (Exception ex) {
-				//TODO: Throws Exception while opening a NexML file: "The symbol("-")of a standard data token definition must be of type Integer."
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
-			}
+		}
+		catch (Exception ex) {
+			//TODO: Throws Exception while opening a NexML file: "The symbol("-")of a standard data token definition must be of type Integer."
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while loading file", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

@@ -101,7 +101,12 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	@Override
 	protected AccessibleUndoManager getUndoManager() {
-		return mainFrame.getDocument().getUndoManager();
+		if (mainFrame.getActiveDocument() != null) {
+			return mainFrame.getActiveDocument().getUndoManager();
+		}
+		else {
+			return null;
+		}
 	}
 	
 
@@ -142,12 +147,14 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	public void refreshActionStatus() {
-		Document document = mainFrame.getDocument();
+		Document document = mainFrame.getActiveDocument();
 		setActionStatusBySelection(document, mainFrame);
 		
-		editUndoRedoMenus();
-		get("edit.undo").setEnabled(mainFrame.getDocument().getUndoManager().canUndo());
-		get("edit.redo").setEnabled(mainFrame.getDocument().getUndoManager().canRedo());
+		if (document != null) {
+			editUndoRedoMenus();
+			get("edit.undo").setEnabled(mainFrame.getActiveDocument().getUndoManager().canUndo());
+			get("edit.redo").setEnabled(mainFrame.getActiveDocument().getUndoManager().canRedo());
+		}
 		
 //			Test:
 //		get("edit.undo").setEnabled(false);

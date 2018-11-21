@@ -47,6 +47,7 @@ main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.j
 main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/Tab.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ToolBarPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/ActionManagement.java -text svneol=unset#text/plain

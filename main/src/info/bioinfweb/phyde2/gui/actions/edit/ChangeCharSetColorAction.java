@@ -56,11 +56,11 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want change the color.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			model = getMainFrame().getCharSetArea().getModel();
+			model = getMainFrame().getActiveCharSetArea().getModel();
 			CharSet charSet = model.get(id);
 			Color color = JColorChooser.showDialog(getMainFrame(), "Change character set color", charSet.getColor());
 			if (color != null) {
-				getMainFrame().getDocument().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getDocument(), getMainFrame().getCharSetArea().getModel(), id, color));
+				getMainFrame().getActiveDocument().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveDocument(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
 			}
 		}
 	}

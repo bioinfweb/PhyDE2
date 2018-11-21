@@ -44,6 +44,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 
 
@@ -57,8 +58,9 @@ public class MainFrame extends JFrame {
 	private static MainFrame firstInstance = null;
 	
 	
-	private Document document = new Document();
 	private ActionManagement actionManagement = new ActionManagement(this);
+	
+	private JTabbedPane tabbedPane = null;
 	
 	private JPanel jContentPane = null;
 	
@@ -69,13 +71,6 @@ public class MainFrame extends JFrame {
 	private JMenu undoMenu = null;
 	private JMenu redoMenu = null;
 	private JPanel toolBarPanel = null;
-	
-	// Alignment views:
-	private AlignmentArea mainArea = null;
-	private MultipleAlignmentsContainer container = null;
-	private AlignmentArea sequenceIndexAlignmentArea = null;
-	private AlignmentArea characterSetAlignmentArea = null;
-	private CharSetArea charSetArea = null;
 	
 
 	/**
@@ -94,32 +89,59 @@ public class MainFrame extends JFrame {
 		return firstInstance;
 	}
 	
-
-	public void setDocument(Document document) {
-		this.document = document;
-		mainArea.setAlignmentModel(document.getAlignmentModel(), true);
-		charSetArea.setModel(document.getCharSetModel(), true);
-		getActionManagement().refreshActionStatus();
-	}
-
-
-	public Document getDocument() {
-		return document;
-	}
-
-
-	public CharSetArea getCharSetArea() {
-		return charSetArea;
-	}
-	
-	
-	public AlignmentArea getAlignmentArea() {
-		return mainArea;
-	}
-
 	
 	public ActionManagement getActionManagement() {
 		return actionManagement;
+	}
+	
+
+	public void addDocument(Document document) {
+		if (document.getAlignmentModel().getLabel() != null) {
+			tabbedPane.addTab(document.getAlignmentModel().getLabel(), null, new Tab(document), null);
+		}
+		else {
+			tabbedPane.addTab("<unnamed alignment>", null, new Tab(document), null);
+		}
+	}
+
+
+	private Tab getActiveTab() {
+		if (tabbedPane.getSelectedComponent() instanceof Tab) {
+			return ((Tab)tabbedPane.getSelectedComponent());
+		}
+		else {
+			return null;
+		}
+	}
+	
+	
+	public Document getActiveDocument() {
+		if (getActiveTab() != null) {
+			return getActiveTab().getDocument();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	
+	public CharSetArea getActiveCharSetArea() {
+		if (getActiveTab() != null) {
+			return getActiveTab().getCharSetArea();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	
+	public AlignmentArea getActiveAlignmentArea() {
+		if (getActiveTab() != null) {
+			return getActiveTab().getAlignmentArea();
+		}
+		else {
+			return null;
+		}
 	}
 	
 	
@@ -136,15 +158,23 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	private JTabbedPane getTabbedPane() {
+		if (tabbedPane == null) {
+			tabbedPane = new JTabbedPane();
+		}
+		return tabbedPane;
+	}
+	
+	
 	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
 		title.append(Main.APPLICATION_NAME);
 		title.append(" - ");
-		if (getDocument().isChanged()) {
+		if ((getActiveDocument() != null) && getActiveDocument().isChanged()) {
 			title.append("*");
 		}
-		if (getDocument().getFile() != null) {
-			title.append(getDocument().getFile().getAbsolutePath());
+		if ((getActiveDocument() != null) && getActiveDocument().getFile() != null) {
+			title.append(getActiveDocument().getFile().getAbsolutePath());
 		}
 		else {
 			title.append("Unsaved");
@@ -197,50 +227,9 @@ public class MainFrame extends JFrame {
 			
 			jContentPane.add(getToolBarPanel(), BorderLayout.PAGE_START);
 			// Add Swing component to GUI:
-			jContentPane.add(SwingComponentFactory.getInstance().getSwingComponent(getAlignmentsContainer()), BorderLayout.CENTER);
+			jContentPane.add(getTabbedPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
-	}
-	
-	
-	private MultipleAlignmentsContainer getAlignmentsContainer() {
-		if (container == null) {
-			// Create main container instance (TIC component):
-			container = new MultipleAlignmentsContainer();
-					
-			// out head and main AlignmentArea in container:
-			sequenceIndexAlignmentArea = new AlignmentArea(container);
-			characterSetAlignmentArea = new AlignmentArea(container);
-			mainArea = new AlignmentArea(container);
-			charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
-			charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
-				@Override
-				public void selectionChanged(GenericEventObject<CharSetArea> event) {
-				getActionManagement().refreshActionStatus();
-				}
-			});
-					
-			// Prepare heading areas:
-			sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
-			sequenceIndexAlignmentArea.setAllowVerticalScrolling(false);
-			characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
-					
-			container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
-			container.getAlignmentAreas().add(characterSetAlignmentArea);
-			//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
-					
-			// Prepare main area:
-			mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
-			mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
-				@Override
-				public void selectionChanged(GenericEventObject<SelectionModel> event) {
-				getActionManagement().refreshActionStatus();
-				}
-			});
-					
-			container.getAlignmentAreas().add(mainArea);
-		}
-		return container;
 	}
 	
 	

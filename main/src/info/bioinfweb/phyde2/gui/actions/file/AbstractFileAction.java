@@ -104,17 +104,17 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 
 	protected void writeFile() {
-		writeFile(getMainFrame().getDocument().getFile(), Main.DEFAULT_FORMAT);
+		writeFile(getMainFrame().getActiveDocument().getFile(), Main.DEFAULT_FORMAT);
 	}
 	
 	
 	private boolean checkForOverlappingCharSet () {
-		MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
+		MapIterator<String, CharSet> it = getMainFrame().getActiveDocument().getCharSetModel().mapIterator();
 		//TODO Move to save related action
 		boolean overlappingCharSet = false;
 		while (it.hasNext()) {
 			it.next();
-			if (!it.getValue().isEmpty() && (it.getValue().last().getLastPos() > getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength())) {
+			if (!it.getValue().isEmpty() && (it.getValue().last().getLastPos() > getMainFrame().getActiveDocument().getAlignmentModel().getMaxSequenceLength())) {
 				overlappingCharSet = true;
 				break;
 			}
@@ -142,10 +142,10 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 	protected void writeFile(File file, String formatID) {
 		if (factory.getFormatInfo(formatID).isElementModeled(EventContentType.CHARACTER_SET, false)) {
-			int maxSeqLength  = getMainFrame().getDocument().getAlignmentModel().getMaxSequenceLength();
+			int maxSeqLength  = getMainFrame().getActiveDocument().getAlignmentModel().getMaxSequenceLength();
 			
 			if (checkForOverlappingCharSet()) {
-				MapIterator<String, CharSet> it = getMainFrame().getDocument().getCharSetModel().mapIterator();
+				MapIterator<String, CharSet> it = getMainFrame().getActiveDocument().getCharSetModel().mapIterator();
 				//TODO Move to save related action
 				while (it.hasNext())
 				{
@@ -164,10 +164,10 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
-			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getDocument());
+			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getActiveDocument());
 			factory.getWriter(formatID).writeDocument(documentAdapter, file, parameters);
 			
-			getMainFrame().getDocument().setChanged(false);
+			getMainFrame().getActiveDocument().setChanged(false);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -179,7 +179,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	protected boolean promptFileName() {
 		boolean result = (getFileChooser().showSaveDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION);
 		if (result) {
-			getMainFrame().getDocument().setFile(getFileChooser().getSelectedFile());
+			getMainFrame().getActiveDocument().setFile(getFileChooser().getSelectedFile());
 		}
 		return result;
 	}
@@ -195,7 +195,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	
 
 	protected boolean save() {
-		if (getMainFrame().getDocument().getFile() == null) {
+		if (getMainFrame().getActiveDocument().getFile() == null) {
 			return saveAs();
 		}
 		else {
@@ -206,19 +206,20 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	
 	   
 	public boolean handleUnsavedChanges() {
-		if (getMainFrame().getDocument().isChanged()) {
-            switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes. Do you want to save the changes?", 
-            		"Unsaved changes", JOptionPane.YES_NO_OPTION)) {
-	            case JOptionPane.YES_OPTION:
-	            	return save();
-	            case JOptionPane.NO_OPTION:
-	            	return true;
-            }
-    		return false;
+		if (getMainFrame().getActiveDocument().isChanged()) {
+			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes. Do you want to save the changes?", 
+					"Unsaved changes", JOptionPane.YES_NO_OPTION)) {
+					case JOptionPane.YES_OPTION:
+						return save();
+					case JOptionPane.NO_OPTION:
+						return true;
+			}
+			return false;
 		}
 		else {
 			return true;
 		}
+		
 	}
 }
 

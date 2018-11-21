@@ -41,14 +41,14 @@ public class UndoAction  extends AbstractPhyDEAction implements Action{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (getMainFrame().getDocument().getUndoManager().canUndo()) {
-			getMainFrame().getDocument().getUndoManager().undo();
+		if (getMainFrame().getActiveDocument().getUndoManager().canUndo()) {
+			getMainFrame().getActiveDocument().getUndoManager().undo();
 		}
 	}
 
 
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled(!getMainFrame().getDocument().getUndoManager().canUndo());
+		setEnabled((document != null) && !getMainFrame().getActiveDocument().getUndoManager().canUndo());
 	}
 }
