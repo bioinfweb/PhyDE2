@@ -19,6 +19,8 @@
 package info.bioinfweb.phyde2.gui;
 
 
+import java.awt.Container;
+
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.DocumentChangeEvent;
@@ -26,15 +28,18 @@ import info.bioinfweb.phyde2.document.DocumentListener;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
 
 
 public class FileContentTreeView extends JTree {
 	public FileContentTreeView(Document document) {
-		super(new DefaultMutableTreeNode());
-		
+		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
+		setRootVisible(false);
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
 		DefaultMutableTreeNode file = new DefaultMutableTreeNode("Some file");
 		DefaultMutableTreeNode defaultPhyDE2 = new DefaultMutableTreeNode("Multiple Sequence Alignments");
@@ -42,14 +47,11 @@ public class FileContentTreeView extends JTree {
 		file.add(defaultPhyDE2);
 		file.add(contigs);
 		root.add(file);
-		
+		getModel().reload();
 		
 		document.addDocumentListener(new DocumentListener() {
 			@Override
 			public void afterAlignmentModelAdded(DocumentChangeEvent e) {
-				// TODO Add new node and set e.getModel() as user object
-				//file.setUserObject(e.getModel());//PhyDE2Alignmentmodel To String methode die label zurückgibt
-				//das userObject muss zum jeweiligen Alignemntmodel gehören.
 				DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
 				DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
 			
@@ -58,8 +60,8 @@ public class FileContentTreeView extends JTree {
 				}
 				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
 					((DefaultMutableTreeNode)file.getChildAt(1)).add(new DefaultMutableTreeNode(e.getModel()));
-					//TODO für getModel() eine neue toString()-Methode schreiben.
 				}
+				getModel().reload();
 			}
 
 			@Override
@@ -71,23 +73,31 @@ public class FileContentTreeView extends JTree {
 					for (int i = 0; i < file.getChildAt(0).getChildCount(); i++) {
 						if (e.getModel().getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
 								((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
-								file.remove((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i));
+							((DefaultMutableTreeNode) file.getChildAt(0)).remove(i);
 						}
 					}
 					
 				}
 				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
-				// TODO Search node with user object that has the same alignment model ID and remove it
 					for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
 						if (e.getModel().getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
 								((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
-								file.remove((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i));
+								((DefaultMutableTreeNode) file.getChildAt(1)).remove(i);
 						}
-					}	
+					}		
 					
-			}
-				//e.getModel().getAlignmentModel().getID();
-				//((PhyDE2AlignmentModel) ((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(0)).getUserObject()).getAlignmentModel().getID();
+				}
+				getModel().reload();
+
 		}});
 	}
+
+	
+	@Override
+	public DefaultTreeModel getModel() {
+		return (DefaultTreeModel) super.getModel();
+	}
+	
+	
+	
 }

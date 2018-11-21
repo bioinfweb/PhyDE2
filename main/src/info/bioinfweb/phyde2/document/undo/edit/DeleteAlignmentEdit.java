@@ -16,26 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo;
+package info.bioinfweb.phyde2.document.undo.edit;
 
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.undo.DocumentEdit;
 
-import javax.swing.undo.UndoableEdit;
 
+public class DeleteAlignmentEdit extends AbstractAddDeleteAlignmentEdit {
 
-
-public abstract class DocumentEdit extends PhyDE2Edit implements UndoableEdit{
-	private Document document;
-
-	
-	public DocumentEdit(Document document) {
-		super();
-		this.document = document;
+	public DeleteAlignmentEdit(Document document, PhyDE2AlignmentModel model) {
+		super(document, model);
 	}
 
 	
-	public Document getDocument() {
-		return document;
+	
+	@Override
+	public void redo() throws CannotRedoException {
+		deleteAlignment();
+		super.redo();
 	}
+
+
+
+	@Override
+	public void undo() throws CannotUndoException {
+		addAlignmentModel();
+		super.undo();
+	}
+
+
+
+	@Override
+	public String getPresentationName() {
+		return "Alignment deleted.";
+	}
+	
+
 }

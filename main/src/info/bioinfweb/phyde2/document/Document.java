@@ -94,7 +94,7 @@ public class Document {
 	public PhyDE2AlignmentModel deleteAlignmentModel(String id) {
 		PhyDE2AlignmentModel model = alignmentModelMap.remove(id);
 		if (model != null) {
-			fireAfterAlignmentModelDeleted(getAlignmentModel(id));	
+			fireAfterAlignmentModelDeleted(model);	
 		}
 		return model;
 	}

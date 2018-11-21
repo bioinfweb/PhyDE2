@@ -19,23 +19,21 @@
 package info.bioinfweb.phyde2.document.undo;
 
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.commons.swing.AbstractDocumentEdit;
+import info.bioinfweb.phyde2.gui.MainFrame;
 
 import javax.swing.undo.UndoableEdit;
 
 
 
-public abstract class DocumentEdit extends PhyDE2Edit implements UndoableEdit{
-	private Document document;
-
-	
-	public DocumentEdit(Document document) {
+public abstract class PhyDE2Edit extends AbstractDocumentEdit {
+	public PhyDE2Edit() {
 		super();
-		this.document = document;
 	}
 
 	
-	public Document getDocument() {
-		return document;
+	@Override
+	protected void registerDocumentChange() {
+		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO Replace this call by DocumentChangeEvent processing in the future.
 	}
 }

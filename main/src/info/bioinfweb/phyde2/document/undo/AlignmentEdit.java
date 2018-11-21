@@ -21,13 +21,11 @@ package info.bioinfweb.phyde2.document.undo;
 
 import javax.swing.undo.UndoableEdit;
 
-import info.bioinfweb.commons.swing.AbstractDocumentEdit;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
-public abstract class AlignmentEdit extends AbstractDocumentEdit implements UndoableEdit {
+public abstract class AlignmentEdit extends PhyDE2Edit implements UndoableEdit {
 	private PhyDE2AlignmentModel alignment;
 
 	
@@ -39,11 +37,5 @@ public abstract class AlignmentEdit extends AbstractDocumentEdit implements Undo
 	
 	public PhyDE2AlignmentModel getAlignment() {
 		return alignment;
-	}
-
-
-	@Override
-	protected void registerDocumentChange() {
-		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO Replace this call by DocumentChangeEvent processing in the future.
 	}
 }

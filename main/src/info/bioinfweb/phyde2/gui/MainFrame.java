@@ -47,6 +47,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -63,6 +64,7 @@ public class MainFrame extends JFrame {
 	
 	
 	private PhyDE2AlignmentModel document = new PhyDE2AlignmentModel();
+	private Document newDocument = new Document(); 
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JPanel alignmentPanel = null;
@@ -108,10 +110,15 @@ public class MainFrame extends JFrame {
 	}
 
 
-	public PhyDE2AlignmentModel getDocument() {
+	public PhyDE2AlignmentModel getDocument() {  //TODO Replace with instance of Document later in refactoring.
 		return document;
 	}
 
+	
+	public Document getNewDocument() {  //TODO Remove this property when getDocument() returns an instance of Document.
+		return newDocument;
+	}
+	
 
 	public CharSetArea getCharSetArea() {
 		return charSetArea;
@@ -206,24 +213,13 @@ public class MainFrame extends JFrame {
 		}
 		return alignmentPanel;
 	}
+
 	
 	private FileContentTreeView getFileContentTreeView () {
-		Document doc = new Document(); // for testing.
-		DefaultPhyDE2AlignmentModel phyDE2 = new DefaultPhyDE2AlignmentModel();
-		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel();
-		phyDE2.getAlignmentModel().setID("1");
-		phyDE2.getAlignmentModel().setLabel("Default PhyDE2 Alignment");
-		contig.getAlignmentModel().setID("2");
-		contig.getAlignmentModel().setLabel("Contig"); // for testing end.
-
 		if (treeView == null) {
-			treeView = new FileContentTreeView(doc);
+			treeView = new FileContentTreeView(getNewDocument());
 			treeView.setLayout(new BorderLayout());
-			doc.addAlignmentModel(phyDE2);
-			doc.addAlignmentModel(contig);
-			
 		}
-		
 		return treeView;
 	}
 	
@@ -231,7 +227,7 @@ public class MainFrame extends JFrame {
 	private JSplitPane getSplitPane() {
 		if (splitPane == null) {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-			splitPane.setLeftComponent(getFileContentTreeView());
+			splitPane.setLeftComponent(new JScrollPane(getFileContentTreeView()));
 			splitPane.setRightComponent(getAlignmentPanel());
 		}
 		return splitPane;
@@ -309,6 +305,10 @@ public class MainFrame extends JFrame {
 			editMenu.setMnemonic('E');
 			editMenu.add(getUndoMenu());
 			editMenu.add(getRedoMenu());
+			editMenu.addSeparator();
+			editMenu.add(getActionManagement().get("edit.addContigAlignment"));
+			editMenu.add(getActionManagement().get("edit.addDefaultPhyDE2Alignment"));
+			editMenu.add(getActionManagement().get("edit.deleteAlignment"));
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addSequence"));
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));
