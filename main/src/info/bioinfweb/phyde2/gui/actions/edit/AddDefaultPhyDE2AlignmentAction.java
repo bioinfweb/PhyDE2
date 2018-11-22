@@ -18,43 +18,31 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-import java.awt.event.ActionEvent;
 
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.AddAlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+
+import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 
-public class AddDefaultPhyDE2AlignmentAction extends AbstractPhyDEAction implements Action {
 
+
+public class AddDefaultPhyDE2AlignmentAction extends AbstractAddAlignmentAction implements Action {
 	public AddDefaultPhyDE2AlignmentAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Add alignment"); 
 		putValue(Action.SHORT_DESCRIPTION, "Add alignment");
 	}
+	
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		String label = JOptionPane.showInputDialog(getMainFrame(), "Enter a label for the new alignment:");
-		if (label != null) {
-
-			DefaultPhyDE2AlignmentModel defaultPhyDE2 = new DefaultPhyDE2AlignmentModel();
-			defaultPhyDE2.getAlignmentModel().setID("B");  // TODO create unique id
-			defaultPhyDE2.getAlignmentModel().setLabel(label);
-			getMainFrame().getDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), defaultPhyDE2));
-		}
-		
+	public void actionPerformed(ActionEvent e) {
+		addAlignment("Enter a label for the new alignment:", new DefaultPhyDE2AlignmentModel());
 	}
+	
 
 	@Override
-	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}  //TODO Possibly check if a file is selected in the future. (Do that in superclass.)
 }

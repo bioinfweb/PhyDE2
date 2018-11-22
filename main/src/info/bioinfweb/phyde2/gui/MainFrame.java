@@ -49,6 +49,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 
@@ -219,6 +221,12 @@ public class MainFrame extends JFrame {
 		if (treeView == null) {
 			treeView = new FileContentTreeView(getNewDocument());
 			treeView.setLayout(new BorderLayout());
+			treeView.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
+				@Override
+				public void valueChanged(TreeSelectionEvent e) {
+					refreshMenue();
+				}
+			});
 		}
 		return treeView;
 	}
@@ -235,11 +243,13 @@ public class MainFrame extends JFrame {
 	
 	
 	public PhyDE2AlignmentModel getSelectedAlignment () {
-		Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
-		if (selectedNode instanceof DefaultMutableTreeNode) {
-			Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
-			if (userObject instanceof PhyDE2AlignmentModel){
-				return (PhyDE2AlignmentModel) userObject;
+		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null){
+			Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
+			if (selectedNode instanceof DefaultMutableTreeNode) {
+				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+				if (userObject instanceof PhyDE2AlignmentModel){
+					return (PhyDE2AlignmentModel) userObject;
+				}
 			}
 		}
 		return null;

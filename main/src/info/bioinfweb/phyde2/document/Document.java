@@ -19,6 +19,8 @@
 package info.bioinfweb.phyde2.document;
 
 
+import info.bioinfweb.commons.IntegerIDManager;
+import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 import java.io.File;
@@ -35,6 +37,7 @@ import java.util.TreeSet;
 public class Document {
 	private File file;
 	private Map<String, PhyDE2AlignmentModel> alignmentModelMap = new TreeMap <String, PhyDE2AlignmentModel>();
+	private IntegerIDManager idManager = new IntegerIDManager();
 	private Collection<DocumentListener> listeners = new ArrayList<>();
 	
 	
@@ -84,10 +87,33 @@ public class Document {
 		return result;
 	}
 
+	
+	private String generateID() {
+		return ReadWriteConstants.DEFAULT_MATRIX_ID_PREFIX + Integer.toString(idManager.createNewID());
+	}
+	
+	
+	public String generateUniqueID() {
+		String result = generateID();
+		while (alignmentModelMap.containsKey(result)) {
+			result = generateID();
+		}
+		return result;
+	}
+	
 
-	public void addAlignmentModel(PhyDE2AlignmentModel model) {
-		alignmentModelMap.put(model.getAlignmentModel().getID(), model);
-		fireAfterAlignmentModelAdded(model);
+	public void addAlignmentModel(PhyDE2AlignmentModel model) {		
+		String id = model.getAlignmentModel().getID();
+		if (id == null) {
+			throw new IllegalArgumentException("The ID of the specified alignment model must not be null");
+		}
+		else if (alignmentModelMap.get(id) != null) {
+			throw new IllegalArgumentException("The specified alignment model ID (\"" + id + "\") is already present in the document.");
+		}
+		else {
+			alignmentModelMap.put(id, model);
+			fireAfterAlignmentModelAdded(model);
+		}
 	}
 	
 	

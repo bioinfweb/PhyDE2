@@ -50,8 +50,7 @@ public class DeleteAlignmentAction extends AbstractPhyDEAction implements Action
 
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
-		// TODO Auto-generated method stub
-		
+		setEnabled ((document != null) && (getMainFrame().getSelectedAlignment () != null ));
 	}
 
 }

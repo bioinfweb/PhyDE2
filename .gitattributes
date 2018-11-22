@@ -61,6 +61,7 @@ main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ToolBarPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/ActionManagement.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/AbstractAddAlignmentAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddColumnsToCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddContigAlignmentAction.java -text svneol=unset#text/plain

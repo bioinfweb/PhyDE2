@@ -20,31 +20,27 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
+import info.bioinfweb.phyde2.document.undo.edit.AddAlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
 
 
-public class AddContigAlignmentAction extends AbstractAddAlignmentAction implements Action {
-	public AddContigAlignmentAction(MainFrame mainframe) {
+public abstract class AbstractAddAlignmentAction extends AbstractPhyDEAction implements Action {
+	public AbstractAddAlignmentAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Add contig alignment"); 
-		putValue(Action.SHORT_DESCRIPTION, "Add contig alignment");
-		//loadSymbols("Delete");
 	}
 
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		addAlignment("Enter a label for the new contig alignment:", new SingleReadContigAlignmentModel());
+	protected void addAlignment(String message, PhyDE2AlignmentModel model) {
+		String label = JOptionPane.showInputDialog(getMainFrame(), message);
+		if (label != null) {
+			model.getAlignmentModel().setID(getMainFrame().getNewDocument().generateUniqueID());
+			model.getAlignmentModel().setLabel(label);
+			getMainFrame().getDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
+		}
 	}
-
-	
-	@Override
-	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}  //TODO Possibly check if a file is selected in the future. (Do that in superclass.)
 }
