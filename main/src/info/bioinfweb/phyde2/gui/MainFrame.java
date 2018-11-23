@@ -199,6 +199,13 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	@Override
+	public void setVisible(boolean flag) {
+		super.setVisible(flag);
+		getSplitPane().setDividerLocation(0.3);
+	}
+
+
 	public void refreshMenue() {
 		getActionManagement().refreshActionStatus();
 	}
@@ -237,6 +244,7 @@ public class MainFrame extends JFrame {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setLeftComponent(new JScrollPane(getFileContentTreeView()));
 			splitPane.setRightComponent(getAlignmentPanel());
+			splitPane.setResizeWeight(0.1);
 		}
 		return splitPane;
 	}

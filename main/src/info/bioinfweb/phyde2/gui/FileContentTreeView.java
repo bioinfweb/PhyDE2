@@ -57,11 +57,12 @@ public class FileContentTreeView extends JTree {
 			
 				if (e.getModel() instanceof DefaultPhyDE2AlignmentModel){
 					((DefaultMutableTreeNode)file.getChildAt(0)).add(new DefaultMutableTreeNode(e.getModel()));
+					getModel().reload(file.getChildAt(0));
 				}
 				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
 					((DefaultMutableTreeNode)file.getChildAt(1)).add(new DefaultMutableTreeNode(e.getModel()));
+					getModel().reload(file.getChildAt(1));
 				}
-				getModel().reload();
 			}
 
 			@Override
@@ -76,7 +77,7 @@ public class FileContentTreeView extends JTree {
 							((DefaultMutableTreeNode) file.getChildAt(0)).remove(i);
 						}
 					}
-					
+					getModel().reload(file.getChildAt(0));
 				}
 				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
 					for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
@@ -85,10 +86,8 @@ public class FileContentTreeView extends JTree {
 								((DefaultMutableTreeNode) file.getChildAt(1)).remove(i);
 						}
 					}		
-					
+					getModel().reload(file.getChildAt(1));
 				}
-				getModel().reload();
-
 		}});
 	}
 

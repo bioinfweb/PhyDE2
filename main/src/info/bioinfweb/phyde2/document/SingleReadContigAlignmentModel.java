@@ -27,7 +27,10 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	public SingleReadContigAlignmentModel() {
 		super();
 		//TODO außerdem zusätzliches AlignemntModel für consensus
+		
+		//getAlignmentModel().addSequence(sequenceName)
 	}
+
 	
 	//TODO Eine Funktion "getConsensus" muss hier hin, damit DefaultPhyDE2 sich das holen kann.
 }
