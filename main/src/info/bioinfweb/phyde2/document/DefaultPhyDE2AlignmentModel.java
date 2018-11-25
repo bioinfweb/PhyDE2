@@ -20,7 +20,18 @@ package info.bioinfweb.phyde2.document;
 
 public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 
+	public DefaultPhyDE2AlignmentModel (){
+		super();
+	}
 	
-//TODO hier muss noch eine Referenz auf die Consensus des contigs gesetzt werden (wie?).
-// => als was speichere ich die Consensus, also welcher Datentyp?
+	public void addConsensus (SingleReadContigAlignmentModel contig)
+	{
+		String id = getAlignmentModel().addSequence(("consensus" + contig.getAlignmentModel().getID()));
+		//damit eindeutig ist aus welchem Contig diese Sequenz kommt
+		//soll es möglich sein in einem Alignment die gleiche Consensus mehrfach zu haben?
+		getAlignmentModel().appendTokens(id,contig.getConsensus());
+		//Die Consensus-Sequenz eines bestimmten contigs zum Alignmentmodel
+		//dieses DefaultPhyDE2AlignmentModels hinzufügen.
+	
+	}
 }

@@ -18,19 +18,47 @@
  */
 package info.bioinfweb.phyde2.document;
 
-public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
+import java.util.Map;
+import java.util.TreeMap;
 
-//	TODO hier weiß ich nicht so wirklich, wie die Klasse mit dem Document kommunizieren soll. Bzw. wie 
-//	ich die Info über die Anzahl an gespeicherten Alignments im File bekomme und ob das hier
-//	überhaupt wichtig ist, oder im Document verarbeitet wird.
-	
+import javax.sound.midi.Sequence;
+
+import info.bioinfweb.libralign.model.tokenset.TokenSet;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+
+public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
+	private Map<String, PherogramAreaModel> pherogramModelMap = new TreeMap <String, PherogramAreaModel>();
+	private TokenSet<Character> consensus;
 	public SingleReadContigAlignmentModel() {
 		super();
-		//TODO außerdem zusätzliches AlignemntModel für consensus
-		
-		//getAlignmentModel().addSequence(sequenceName)
+		}
+	
+	public void addSingleRead (String id, PherogramAreaModel model){
+		if ((id != null) && (model != null)){
+			pherogramModelMap.put(id, model);
+			getAlignmentModel().addSequence(id,id); //wo krieg ich den Sequenznamen her?
+			//das AlignmentModel gehört ja zum SingleReadContigModel, deshalb muss da die SingleRead Sequenz
+			//hinzugefügt werden (?). Außerdem das dazu gehörige Pherogram in die Map hier gespeichert werden.
+		}
+	}
+	
+	public PherogramAreaModel getPherogramModel (String id)
+	{
+		return pherogramModelMap.get(id);
 	}
 
+	public void setConsensus (TokenSet<Character> consensus){
+		if (consensus != null)
+		{
+			this.consensus = consensus;
+		}
+		//soll später von Klassen aufgerufen werden, die fürs einlesen zuständig sind, da die consensus
+		//in der Datei enthalten ist (?)
+	}
 	
-	//TODO Eine Funktion "getConsensus" muss hier hin, damit DefaultPhyDE2 sich das holen kann.
-}
+	public TokenSet<Character> getConsensus (){
+		return consensus;
+		//soll von DefaultPhyDE2AlignmentModel benutzt werden, da das Alignment aus
+		//verschiedenen Consensussequenzen bestehen kann.
+	}
+	}
