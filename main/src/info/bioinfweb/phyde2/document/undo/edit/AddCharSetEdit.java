@@ -25,12 +25,12 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
 public class AddCharSetEdit extends AddDeleteCharSetEdit {
-	public AddCharSetEdit(Document document, String id, String name, Color color) {
+	public AddCharSetEdit(PhyDE2AlignmentModel document, String id, String name, Color color) {
 		super(document, id, new CharSet(name, color));
 	}
 	

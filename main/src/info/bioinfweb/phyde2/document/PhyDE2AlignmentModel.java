@@ -45,7 +45,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
  * 
  * @author Ben St&ouml;ver
  */
-public class Document {
+public class PhyDE2AlignmentModel {
 	public static final int UNDO_LIMIT = 50;
 	
 	
@@ -58,15 +58,15 @@ public class Document {
 	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
 	private CharSetDataModel charSetModel;
 	
-	private Collection<DocumentListener> listeners = new ArrayList<>();
+	private Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
 	
 	
-	public Document() {
+	public PhyDE2AlignmentModel() {
 		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel());
 	}
 	
 	
-	public Document(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
+	public PhyDE2AlignmentModel(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
 		super();
 		
 		undoManager = new AccessibleUndoManager();
@@ -161,27 +161,27 @@ public class Document {
 	}
 	
 	
-	public void addDocumentListener(DocumentListener listener) {
+	public void addDocumentListener(PhyDE2AlignmentModelListener listener) {
 		listeners.add(listener);
 	}
 	
 	
-	public void removeDocumentListener(DocumentListener listener) {
+	public void removeDocumentListener(PhyDE2AlignmentModelListener listener) {
 		listeners.remove(listener);
 	}
 	
 	
 	protected void fireAfterFileNameChanged() {
-		DocumentChangeEvent e = new DocumentChangeEvent(this);
-		for (DocumentListener listener : listeners) {
+		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
+		for (PhyDE2AlignmentModelListener listener : listeners) {
 			listener.afterFileNameChanged(e);
 		}
 	}
 	
 	
 	protected void fireAfterChangedFlagSet() {
-		DocumentChangeEvent e = new DocumentChangeEvent(this);
-		for (DocumentListener listener : listeners) {
+		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
+		for (PhyDE2AlignmentModelListener listener : listeners) {
 			listener.afterChangedFlagSet(e);
 		}
 	}

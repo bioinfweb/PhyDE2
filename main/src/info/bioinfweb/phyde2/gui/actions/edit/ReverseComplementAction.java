@@ -20,7 +20,7 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -60,7 +60,7 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 
 	
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled((document != null) && !mainframe.getActiveAlignmentArea().getSelection().isEmpty() && 
 				mainframe.getActiveAlignmentArea().getAlignmentModel().getTokenSet().getType().isNucleotide());
 	}

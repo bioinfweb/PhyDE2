@@ -20,7 +20,7 @@ package info.bioinfweb.phyde2.gui.actions;
 
 
 import info.bioinfweb.commons.swing.ExtendedAbstractAction;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -41,7 +41,7 @@ public abstract class AbstractPhyDEAction extends ExtendedAbstractAction {
 	}
 	
 	
-	public abstract void setEnabled(Document document, MainFrame mainframe);
+	public abstract void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe);
 	
 	
 	protected String getSelectedCharSetID() {

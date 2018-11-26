@@ -21,13 +21,13 @@ package info.bioinfweb.phyde2.document.undo.edit;
 
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingAddSequenceEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingConcreteAddSequenceEdit;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEdit;
 
 
 
 public class AddSequenceEdit extends AlignmentModelEdit implements SwingAddSequenceEdit {
-	public AddSequenceEdit(Document document, SwingConcreteAddSequenceEdit<Character> underlyingEdit) {
+	public AddSequenceEdit(PhyDE2AlignmentModel document, SwingConcreteAddSequenceEdit<Character> underlyingEdit) {
 		super(document, underlyingEdit);
 	}
 

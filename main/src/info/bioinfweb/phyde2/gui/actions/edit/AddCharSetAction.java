@@ -26,7 +26,7 @@ import javax.swing.Action;
 
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.commons.graphics.UniqueColorLister;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -60,7 +60,7 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 
 
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(document != null);
 	}
 }

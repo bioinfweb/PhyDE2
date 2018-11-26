@@ -22,7 +22,7 @@ package info.bioinfweb.phyde2.document.undo.edit;
 import java.util.Set;
 
 import info.bioinfweb.commons.collections.SimpleSequenceInterval;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
@@ -32,7 +32,7 @@ public abstract class AddRemoveCharSetColumns extends AbstractCharSetEdit {
 	private Set<SimpleSequenceInterval> previousElements;
 	
 	
-	public AddRemoveCharSetColumns(Document document, String id, int FirstColumn, int LastColumn) {
+	public AddRemoveCharSetColumns(PhyDE2AlignmentModel document, String id, int FirstColumn, int LastColumn) {
 		super(document, id);
 		this.firstColumn = FirstColumn;
 		this.lastColumn = LastColumn;

@@ -28,9 +28,9 @@ import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.Main;
-import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.DocumentChangeEvent;
-import info.bioinfweb.phyde2.document.DocumentListener;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -99,16 +99,16 @@ public class MainFrame extends JFrame {
 	}
 	
 
-	public void addDocument(Document document) {
-		document.addDocumentListener(new DocumentListener() {
+	public void addDocument(PhyDE2AlignmentModel document) {
+		document.addDocumentListener(new PhyDE2AlignmentModelListener() {
 			@Override
-			public void afterFileNameChanged(DocumentChangeEvent e) {
+			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
 				refreshWindowTitle();
 				refreshTabTitle();
 			}
 
 			@Override
-			public void afterChangedFlagSet(DocumentChangeEvent e) {
+			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
 				refreshWindowTitle();
 				refreshTabTitle();
 			}
@@ -159,7 +159,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	public Document getActiveDocument() {
+	public PhyDE2AlignmentModel getActiveDocument() {
 		if (getActiveTab() != null) {
 			return getActiveTab().getDocument();
 		}

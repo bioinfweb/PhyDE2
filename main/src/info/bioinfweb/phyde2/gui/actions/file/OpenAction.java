@@ -43,7 +43,7 @@ import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.io.DataModelKey;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -116,7 +116,7 @@ public class OpenAction extends AbstractFileAction {
 						charSetModel = charSetModels.iterator().next();
 					}
 					
-					getMainFrame().addDocument(new Document(alignmentModel, charSetModel));
+					getMainFrame().addDocument(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
 					
 					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
@@ -151,6 +151,6 @@ public class OpenAction extends AbstractFileAction {
 	}
 
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {}
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}
 
 }

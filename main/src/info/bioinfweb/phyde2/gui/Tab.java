@@ -27,7 +27,7 @@ import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.tic.SwingComponentFactory;
 
@@ -41,7 +41,7 @@ import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class Tab extends JPanel {
-	private Document document = null;
+	private PhyDE2AlignmentModel document = null;
 	private AlignmentArea mainArea = null;
 	private MultipleAlignmentsContainer container = null;
 	private AlignmentArea sequenceIndexAlignmentArea = null;
@@ -61,12 +61,12 @@ public class Tab extends JPanel {
 	}
 	
 	
-	public Document getDocument() {
+	public PhyDE2AlignmentModel getDocument() {
 		return document;
 	}
 	
 	
-	public Tab(Document document) {
+	public Tab(PhyDE2AlignmentModel document) {
 		super();
 		this.document = document;
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

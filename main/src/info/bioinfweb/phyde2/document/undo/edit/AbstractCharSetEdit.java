@@ -19,7 +19,7 @@
 package info.bioinfweb.phyde2.document.undo.edit;
 
 
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.DocumentEdit;
 
 
@@ -28,7 +28,7 @@ public abstract class AbstractCharSetEdit extends DocumentEdit {
 	private String id;
 	
 	
-	public AbstractCharSetEdit(Document document, String id) {
+	public AbstractCharSetEdit(PhyDE2AlignmentModel document, String id) {
 		super(document);
 		this.id = id;
 	}

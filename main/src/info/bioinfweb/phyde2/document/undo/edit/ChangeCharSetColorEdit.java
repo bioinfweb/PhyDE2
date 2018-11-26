@@ -24,7 +24,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 public class ChangeCharSetColorEdit extends AbstractCharSetEdit {
 	private CharSetDataModel model;
@@ -32,7 +32,7 @@ public class ChangeCharSetColorEdit extends AbstractCharSetEdit {
 	private Color oldcolor;
 	
 	
-	public ChangeCharSetColorEdit(Document document, CharSetDataModel model, String id, Color color) {
+	public ChangeCharSetColorEdit(PhyDE2AlignmentModel document, CharSetDataModel model, String id, Color color) {
 		super(document, id);
 		this.model = model;
 		this.newcolor = color;

@@ -23,7 +23,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.LibrAlignSwingAlignmentEdit;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
@@ -31,7 +31,7 @@ public class AlignmentModelEdit extends DocumentEdit {
 	private LibrAlignSwingAlignmentEdit<Character> underlyingEdit;
 
 	
-	public AlignmentModelEdit(Document document, LibrAlignSwingAlignmentEdit<Character> underlyingEdit) {
+	public AlignmentModelEdit(PhyDE2AlignmentModel document, LibrAlignSwingAlignmentEdit<Character> underlyingEdit) {
 		super(document);
 		this.underlyingEdit = underlyingEdit;
 	}

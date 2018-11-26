@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import javax.swing.undo.CannotUndoException;
 
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.DocumentEdit;
 
 
@@ -38,7 +38,7 @@ public class ReverseComplementEdit extends DocumentEdit {
 	private Collection<String> sequenceIDs;
 	
 	
-	public ReverseComplementEdit(Document document, int firstColumn, int lastColumn, Collection<String> sequenceIDs) {
+	public ReverseComplementEdit(PhyDE2AlignmentModel document, int firstColumn, int lastColumn, Collection<String> sequenceIDs) {
 		super(document);
 		this.firstColumn = firstColumn;
 		this.lastColumn = lastColumn;

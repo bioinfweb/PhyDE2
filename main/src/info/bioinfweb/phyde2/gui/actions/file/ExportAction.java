@@ -34,7 +34,7 @@ import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -125,7 +125,7 @@ public class ExportAction extends AbstractFileAction{
 
 
 	@Override
-	public void setEnabled(Document document, MainFrame mainframe) {
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(document != null);
 	}
 }

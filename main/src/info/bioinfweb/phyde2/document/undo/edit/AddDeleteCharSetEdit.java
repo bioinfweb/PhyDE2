@@ -20,7 +20,7 @@ package info.bioinfweb.phyde2.document.undo.edit;
 
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
@@ -28,7 +28,7 @@ public class AddDeleteCharSetEdit extends AbstractCharSetEdit {
 	private CharSet newcharSet;
 	
 	
-	public AddDeleteCharSetEdit(Document document, String id, CharSet charSet) {
+	public AddDeleteCharSetEdit(PhyDE2AlignmentModel document, String id, CharSet charSet) {
 		super(document, id);
 		this.newcharSet = charSet;
 	}

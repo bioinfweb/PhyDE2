@@ -24,14 +24,14 @@ import javax.swing.event.ChangeEvent;
 
 
 @SuppressWarnings("serial")
-public class DocumentChangeEvent extends ChangeEvent {	
-		public DocumentChangeEvent(Document source) {
+public class PhyDE2AlignmentModelChangeEvent extends ChangeEvent {	
+		public PhyDE2AlignmentModelChangeEvent(PhyDE2AlignmentModel source) {
 			super(source);
   	    }
 
 		
   	    @Override
- 	    public Document getSource() {
-  	        return (Document)super.getSource();
+ 	    public PhyDE2AlignmentModel getSource() {
+  	        return (PhyDE2AlignmentModel)super.getSource();
   	    }
 }
