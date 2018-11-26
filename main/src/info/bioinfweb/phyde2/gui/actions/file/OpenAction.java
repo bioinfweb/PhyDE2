@@ -117,10 +117,14 @@ public class OpenAction extends AbstractFileAction {
 					}
 					
 					getMainFrame().addDocument(new Document(alignmentModel, charSetModel));
+					
+					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
+						
 						getMainFrame().getActiveDocument().setFile(getOpenFileChooser().getSelectedFile());
 						getMainFrame().getActiveDocument().setChanged(false);
-
+						//getMainFrame().setActiveTabTitleTip(getMainFrame().getActiveDocument().getFile().getName(), getMainFrame().getActiveDocument().getFile().getAbsolutePath());
+						
 						// File contains more than one alignment or character set:
 						String message = "";
 						if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {

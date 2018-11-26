@@ -122,7 +122,7 @@ public class NewCharSetDialog extends OkCancelApplyHelpDialog {
 	@Override
 	protected boolean apply() {
 		if (getName().equals("")) {
-			switch(JOptionPane.showConfirmDialog(this, "There is no name for the character set. Do you want add it anyway?", "Missing Name!", JOptionPane.YES_NO_OPTION)) {
+			switch(JOptionPane.showConfirmDialog(this, "There is no name for the character set. Do you want to add it anyway?", "Missing Name!", JOptionPane.YES_NO_OPTION)) {
 			case JOptionPane.YES_OPTION:
 				return true;
 			case JOptionPane.NO_OPTION:

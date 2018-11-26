@@ -44,9 +44,11 @@ import info.bioinfweb.phyde2.gui.actions.edit.RenameSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.ReverseComplementAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoToAction;
+import info.bioinfweb.phyde2.gui.actions.file.CloseTabAction;
 import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
 import info.bioinfweb.phyde2.gui.actions.file.NewAction;
 import info.bioinfweb.phyde2.gui.actions.file.OpenAction;
+import info.bioinfweb.phyde2.gui.actions.file.RenameTabAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAsAction;
 import info.bioinfweb.phyde2.gui.actions.help.AboutAction;
@@ -73,6 +75,8 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	protected void fillMap() {
 		put("file.new", new NewAction(mainFrame));
 		put("file.open", new OpenAction(mainFrame));
+		put("file.closeTab", new CloseTabAction(mainFrame));
+		put("file.renameTab", new RenameTabAction(mainFrame));
 		put("file.save", new SaveAction(mainFrame));
 		put("file.saveAs", new SaveAsAction(mainFrame));
 		put("file.export",new ExportAction(mainFrame));

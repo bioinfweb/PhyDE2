@@ -206,16 +206,23 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	   
 	public boolean handleUnsavedChanges() {
 		if (getMainFrame().getActiveDocument().isChanged()) {
-			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes. Do you want to save the changes?", 
+			String closingTab = getMainFrame().getActiveTabTitle();
+			if (getMainFrame().getActiveDocument().getFile() != null) {
+				closingTab = getMainFrame().getActiveDocument().getFile().getAbsolutePath();
+			}
+			
+			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes " + closingTab + ". Do you want to save the changes?", 
 					"Unsaved changes", JOptionPane.YES_NO_OPTION)) {
 					case JOptionPane.YES_OPTION:
 						return save();
 					case JOptionPane.NO_OPTION:
+						getMainFrame().removeTab();
 						return true;
 			}
 			return false;
 		}
 		else {
+			getMainFrame().removeTab();
 			return true;
 		}
 	}

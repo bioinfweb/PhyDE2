@@ -97,15 +97,18 @@ public class MainFrame extends JFrame {
 
 	public void addDocument(Document document) {
 		Tab newTab = new Tab(document);
-		String tabTitle;
-		if (document.getAlignmentModel().getLabel() != null) {
-			tabTitle = document.getAlignmentModel().getLabel();
+		int i;
+		int e = 1;
+		String tabTitle = "unsavedFile";
+		for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
+			if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
+				e += 1;
+			}
 		}
-		else {
-			tabTitle = "<unnamed alignment>";
-		}
+		tabTitle = tabTitle + e;
 		tabbedPane.addTab(tabTitle, null, newTab, null);
 		tabbedPane.setSelectedComponent(newTab);
+		refreshMenue();
 	}
 
 
@@ -116,6 +119,26 @@ public class MainFrame extends JFrame {
 		else {
 			return null;
 		}
+	}
+	
+	
+	public void removeTab() {
+		int i = tabbedPane.getSelectedIndex();
+		if (i+1 < tabbedPane.getComponentCount()) {
+			tabbedPane.setSelectedIndex(i+1);
+		}
+		tabbedPane.removeTabAt(i);
+	}
+	
+	
+	public void setActiveTabTitleTip(String title, String tooltip) {
+		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
+		tabbedPane.setToolTipTextAt(tabbedPane.getSelectedIndex(), tooltip);
+	}
+	
+	
+	public String getActiveTabTitle() {
+		return tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
 	}
 	
 	
@@ -198,15 +221,26 @@ public class MainFrame extends JFrame {
 		setContentPane(getJContentPane());
 		
 		addWindowListener(new WindowAdapter() {
+			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if (((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges()) {
+				int i;
+				boolean close = false;
+				for(i = 0; i < tabbedPane.getComponentCount(); i = 0) {
+					tabbedPane.setSelectedIndex(i);
+					close = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
+				}
+				if (tabbedPane.getSelectedComponent() == null) {
+					close = true;
+				}
+				if (close) {
 					setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				}
 				else {
 					setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 				}
 			}
+				
 
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -281,6 +315,8 @@ public class MainFrame extends JFrame {
 			fileMenu.setMnemonic('F');
 			fileMenu.add(getActionManagement().get("file.new"));
 			fileMenu.add(getActionManagement().get("file.open"));
+			fileMenu.add(getActionManagement().get("file.closeTab"));
+			fileMenu.add(getActionManagement().get("file.renameTab"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.save"));
 			fileMenu.add(getActionManagement().get("file.saveAs"));

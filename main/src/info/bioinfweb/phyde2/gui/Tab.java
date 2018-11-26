@@ -47,7 +47,7 @@ public class Tab extends JPanel {
 	private AlignmentArea sequenceIndexAlignmentArea = null;
 	private AlignmentArea characterSetAlignmentArea = null;
 	private CharSetArea charSetArea = null;
-	
+	private String tabName = null;
 	
 	
 	
