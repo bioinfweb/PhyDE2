@@ -45,11 +45,9 @@ public class NewAction extends AbstractFileAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (handleUnsavedChanges()) {
-			getMainFrame().setDocument(new Document());
-			getMainFrame().getDocument().setFile(null);
-			getMainFrame().getDocument().setChanged(false);
-		}
+		getMainFrame().addDocument(new Document());
+		getMainFrame().getActiveDocument().setFile(null);
+		getMainFrame().getActiveDocument().setChanged(false);
 	}
 
 

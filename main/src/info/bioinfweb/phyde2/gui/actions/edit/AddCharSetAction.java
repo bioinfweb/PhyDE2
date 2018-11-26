@@ -54,7 +54,7 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 		dialog.setSelectedColor(colorLister.generateNext());
 		dialog.setName("");
 		if (dialog.execute()) {
-			getMainFrame().getDocument().executeEdit(new AddCharSetEdit(getMainFrame().getDocument(), "cs" + idManager.createNewID(), dialog.getName(), dialog.getSelectedColor()));
+			getMainFrame().getActiveDocument().executeEdit(new AddCharSetEdit(getMainFrame().getActiveDocument(), "cs" + idManager.createNewID(), dialog.getName(), dialog.getSelectedColor()));
 		}
 	}
 

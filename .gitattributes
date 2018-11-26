@@ -28,6 +28,8 @@ main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/Main.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/DocumentChangeEvent.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/DocumentListener.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataReader.java -text svneol=unset#text/plain
@@ -47,6 +49,7 @@ main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.j
 main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/Tab.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ToolBarPanel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/ActionManagement.java -text svneol=unset#text/plain
@@ -67,9 +70,11 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoAction.java -text svneol=uns
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoRedoToAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/UndoToAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/AbstractFileAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/file/CloseTabAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/ExportAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/NewAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/OpenAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/file/RenameTabAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
@@ -79,6 +84,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/help/TwitterAction.java -text svneol=
 main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/dialogs/RenameTabDialog.java -text svneol=unset#text/plain
 main/src/resources/Splash.png -text
 main/src/resources/symbols/Add16.png -text
 main/src/resources/symbols/Add22.png -text

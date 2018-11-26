@@ -50,14 +50,14 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	public void actionPerformed(ActionEvent e) {
 		String name = JOptionPane.showInputDialog("New sequence name");
 		if (name != null) {
-			getMainFrame().getDocument().getAlignmentModel().addSequence(name);
+			getMainFrame().getActiveDocument().getAlignmentModel().addSequence(name);
 		}
 	}
 
 
 	@Override
 	public void setEnabled(Document document, MainFrame mainframe) {
-		setEnabled((document != null) && (mainframe.getAlignmentArea() != null));
+		setEnabled((document != null) && (mainframe.getActiveAlignmentArea() != null));
 	}
 	
 	

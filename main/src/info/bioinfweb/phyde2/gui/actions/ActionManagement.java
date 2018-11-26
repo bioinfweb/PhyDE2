@@ -44,9 +44,11 @@ import info.bioinfweb.phyde2.gui.actions.edit.RenameSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.ReverseComplementAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoAction;
 import info.bioinfweb.phyde2.gui.actions.edit.UndoToAction;
+import info.bioinfweb.phyde2.gui.actions.file.CloseTabAction;
 import info.bioinfweb.phyde2.gui.actions.file.ExportAction;
 import info.bioinfweb.phyde2.gui.actions.file.NewAction;
 import info.bioinfweb.phyde2.gui.actions.file.OpenAction;
+import info.bioinfweb.phyde2.gui.actions.file.RenameTabAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAsAction;
 import info.bioinfweb.phyde2.gui.actions.help.AboutAction;
@@ -73,6 +75,8 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	protected void fillMap() {
 		put("file.new", new NewAction(mainFrame));
 		put("file.open", new OpenAction(mainFrame));
+		put("file.closeTab", new CloseTabAction(mainFrame));
+		put("file.renameTab", new RenameTabAction(mainFrame));
 		put("file.save", new SaveAction(mainFrame));
 		put("file.saveAs", new SaveAsAction(mainFrame));
 		put("file.export",new ExportAction(mainFrame));
@@ -101,7 +105,12 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	@Override
 	protected AccessibleUndoManager getUndoManager() {
-		return mainFrame.getDocument().getUndoManager();
+		if (mainFrame.getActiveDocument() != null) {
+			return mainFrame.getActiveDocument().getUndoManager();
+		}
+		else {
+			return null;
+		}
 	}
 	
 
@@ -142,12 +151,14 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	public void refreshActionStatus() {
-		Document document = mainFrame.getDocument();
+		Document document = mainFrame.getActiveDocument();
 		setActionStatusBySelection(document, mainFrame);
 		
-		editUndoRedoMenus();
-		get("edit.undo").setEnabled(mainFrame.getDocument().getUndoManager().canUndo());
-		get("edit.redo").setEnabled(mainFrame.getDocument().getUndoManager().canRedo());
+		if (document != null) {
+			editUndoRedoMenus();
+			get("edit.undo").setEnabled(mainFrame.getActiveDocument().getUndoManager().canUndo());
+			get("edit.redo").setEnabled(mainFrame.getActiveDocument().getUndoManager().canRedo());
+		}
 		
 //			Test:
 //		get("edit.undo").setEnabled(false);

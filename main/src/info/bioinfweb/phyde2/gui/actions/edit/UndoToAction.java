@@ -38,6 +38,6 @@ public class UndoToAction extends UndoRedoToAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		getMainFrame().getDocument().getUndoManager().undoTo(edit);
+		getMainFrame().getActiveDocument().getUndoManager().undoTo(edit);
 	}
 }
