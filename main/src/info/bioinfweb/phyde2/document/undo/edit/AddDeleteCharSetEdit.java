@@ -35,12 +35,12 @@ public class AddDeleteCharSetEdit extends AbstractCharSetEdit {
 	
 	
 	protected void addCharSet () {
-		getDocument().getCharSetModel().put(getID(), newcharSet);
+		getAlignment().getCharSetModel().put(getID(), newcharSet);
 	}
 	
 	
 	protected void deleteCharSet () {
-		getDocument().getCharSetModel().remove(getID());
+		getAlignment().getCharSetModel().remove(getID());
 	}
 	
 	

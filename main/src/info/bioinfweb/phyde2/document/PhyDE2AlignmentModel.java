@@ -35,7 +35,7 @@ import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEditFactory;
-import info.bioinfweb.phyde2.document.undo.DocumentEdit;
+import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -77,7 +77,7 @@ public class PhyDE2AlignmentModel {
 	}
 	
 	
-	public void executeEdit(DocumentEdit edit) {
+	public void executeEdit(AlignmentEdit edit) {
 		if (!getUndoManager().addEdit(edit)) {  // Must happen before execution, since undo switches not be activated otherwise.
 			throw new RuntimeException("The edit could not be executed.");
 		}

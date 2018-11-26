@@ -48,6 +48,6 @@ public class RemoveColumnsFromCharSetEdit extends AddRemoveCharSetColumns {
 	
 	@Override
 	public String getPresentationName() {
-		return "Remove columns at character set \"" + getDocument().getCharSetModel().get(getID()) + "\"";
+		return "Remove columns at character set \"" + getAlignment().getCharSetModel().get(getID()) + "\"";
 	}
 }

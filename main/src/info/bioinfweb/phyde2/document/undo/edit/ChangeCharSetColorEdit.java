@@ -56,6 +56,6 @@ public class ChangeCharSetColorEdit extends AbstractCharSetEdit {
 	
 	@Override
 	public String getPresentationName() {
-		return "Change color of character set \"" + getDocument().getCharSetModel().get(getID()).getName() + "\"";
+		return "Change color of character set \"" + getAlignment().getCharSetModel().get(getID()).getName() + "\"";
 	}
 }

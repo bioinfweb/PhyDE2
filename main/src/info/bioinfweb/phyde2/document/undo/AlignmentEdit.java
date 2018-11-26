@@ -27,17 +27,17 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
-public abstract class DocumentEdit extends AbstractDocumentEdit implements UndoableEdit {
+public abstract class AlignmentEdit extends AbstractDocumentEdit implements UndoableEdit {
 	private PhyDE2AlignmentModel document;
 
 	
-	public DocumentEdit(PhyDE2AlignmentModel document) {
+	public AlignmentEdit(PhyDE2AlignmentModel document) {
 		super();
 		this.document = document;
 	}
 
 	
-	public PhyDE2AlignmentModel getDocument() {
+	public PhyDE2AlignmentModel getAlignment() {
 		return document;
 	}
 

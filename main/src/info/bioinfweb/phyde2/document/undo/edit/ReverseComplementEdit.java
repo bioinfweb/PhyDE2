@@ -28,11 +28,11 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.DocumentEdit;
+import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 
 
 
-public class ReverseComplementEdit extends DocumentEdit {
+public class ReverseComplementEdit extends AlignmentEdit {
 	private int firstColumn;
 	private int lastColumn;
 	private Collection<String> sequenceIDs;
@@ -48,7 +48,7 @@ public class ReverseComplementEdit extends DocumentEdit {
 
 	private void reverseComplement() {
     	//SelectionModel selection = getReadsArea().getSelection();
-    	AlignmentModel<?> model = getDocument().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
+    	AlignmentModel<?> model = getAlignment().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
     	for (String sequenceID : sequenceIDs) {
 //			PherogramArea area = getPherogramArea(sequenceID);
 //			PherogramAreaModel pherogramAlignmentModel = area.getModel();
@@ -87,7 +87,7 @@ public class ReverseComplementEdit extends DocumentEdit {
 
 	@Override
 	public String getPresentationName() {
-		AlignmentModel<?> model = getDocument().getAlignmentModel();
+		AlignmentModel<?> model = getAlignment().getAlignmentModel();
 		StringBuilder result = new StringBuilder(64);
 		int counter = 0;
 		int dif;

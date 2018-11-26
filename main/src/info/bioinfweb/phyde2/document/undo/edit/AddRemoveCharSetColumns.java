@@ -41,16 +41,16 @@ public abstract class AddRemoveCharSetColumns extends AbstractCharSetEdit {
 	
 	
 	protected void addColumnsToCharSet() {
-		getDocument().getCharSetModel().get(getID()).add(firstColumn, lastColumn);
+		getAlignment().getCharSetModel().get(getID()).add(firstColumn, lastColumn);
 	}
 	
 	
 	protected void restoreColumns() {
-		getDocument().getCharSetModel().get(getID()).addAll(previousElements);
+		getAlignment().getCharSetModel().get(getID()).addAll(previousElements);
 	}
 	
 	
 	protected void removeColumnsFromCharSet() {
-		getDocument().getCharSetModel().get(getID()).remove(firstColumn, lastColumn);
+		getAlignment().getCharSetModel().get(getID()).remove(firstColumn, lastColumn);
 	}
 }

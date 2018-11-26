@@ -27,7 +27,7 @@ import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
-public class AlignmentModelEdit extends DocumentEdit {
+public class AlignmentModelEdit extends AlignmentEdit {
 	private LibrAlignSwingAlignmentEdit<Character> underlyingEdit;
 
 	

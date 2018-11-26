@@ -20,11 +20,11 @@ package info.bioinfweb.phyde2.document.undo.edit;
 
 
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.DocumentEdit;
+import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 
 
 
-public abstract class AbstractCharSetEdit extends DocumentEdit {
+public abstract class AbstractCharSetEdit extends AlignmentEdit {
 	private String id;
 	
 	
