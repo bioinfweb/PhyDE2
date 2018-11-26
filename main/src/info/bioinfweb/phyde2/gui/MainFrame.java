@@ -356,7 +356,6 @@ public class MainFrame extends JFrame {
 			fileMenu.add(getActionManagement().get("file.new"));
 			fileMenu.add(getActionManagement().get("file.open"));
 			fileMenu.add(getActionManagement().get("file.closeTab"));
-			fileMenu.add(getActionManagement().get("file.renameTab"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.save"));
 			fileMenu.add(getActionManagement().get("file.saveAs"));
