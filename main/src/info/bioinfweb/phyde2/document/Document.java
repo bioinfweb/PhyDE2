@@ -20,6 +20,8 @@ package info.bioinfweb.phyde2.document;
 
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
@@ -55,6 +57,8 @@ public class Document {
 	private SwingEditFactory<Character> alignmentModelEditFactory;
 	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
 	private CharSetDataModel charSetModel;
+	
+	private Collection<DocumentListener> listeners = new ArrayList<>();
 	
 	
 	public Document() {
@@ -93,7 +97,7 @@ public class Document {
 
 	public void setFile(File file) {
 		this.file = file;
-		MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
+		fireAfterFileNameChanged();
 	}
 
 
@@ -105,7 +109,7 @@ public class Document {
 	public void setChanged(boolean changed) {
 		if (this.changed != changed) {
 			this.changed = changed;
-			MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
+			fireAfterChangedFlagSet();
 		}
 	}
 	
@@ -154,5 +158,31 @@ public class Document {
 	
 	public void setCharSetModel(CharSetDataModel charSetModel) {
 		this.charSetModel = charSetModel;
+	}
+	
+	
+	public void addDocumentListener(DocumentListener listener) {
+		listeners.add(listener);
+	}
+	
+	
+	public void removeDocumentListener(DocumentListener listener) {
+		listeners.remove(listener);
+	}
+	
+	
+	protected void fireAfterFileNameChanged() {
+		DocumentChangeEvent e = new DocumentChangeEvent(this);
+		for (DocumentListener listener : listeners) {
+			listener.afterFileNameChanged(e);
+		}
+	}
+	
+	
+	protected void fireAfterChangedFlagSet() {
+		DocumentChangeEvent e = new DocumentChangeEvent(this);
+		for (DocumentListener listener : listeners) {
+			listener.afterChangedFlagSet(e);
+		}
 	}
 }

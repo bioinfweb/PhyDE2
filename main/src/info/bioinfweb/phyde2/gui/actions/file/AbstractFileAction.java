@@ -208,7 +208,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		if (getMainFrame().getActiveDocument().isChanged()) {
 			String closingTab = getMainFrame().getActiveTabTitle();
 			if (getMainFrame().getActiveDocument().getFile() != null) {
-				closingTab = getMainFrame().getActiveDocument().getFile().getAbsolutePath();
+				closingTab = getMainFrame().getActiveDocument().getFile().getName();
 			}
 			
 			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes " + closingTab + ". Do you want to save the changes?", 

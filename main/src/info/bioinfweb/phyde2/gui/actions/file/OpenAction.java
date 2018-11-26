@@ -123,7 +123,6 @@ public class OpenAction extends AbstractFileAction {
 						
 						getMainFrame().getActiveDocument().setFile(getOpenFileChooser().getSelectedFile());
 						getMainFrame().getActiveDocument().setChanged(false);
-						//getMainFrame().setActiveTabTitleTip(getMainFrame().getActiveDocument().getFile().getName(), getMainFrame().getActiveDocument().getFile().getAbsolutePath());
 						
 						// File contains more than one alignment or character set:
 						String message = "";

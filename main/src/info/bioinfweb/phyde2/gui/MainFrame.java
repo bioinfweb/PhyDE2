@@ -29,6 +29,8 @@ import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceI
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.DocumentChangeEvent;
+import info.bioinfweb.phyde2.document.DocumentListener;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -45,6 +47,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 
@@ -96,6 +100,19 @@ public class MainFrame extends JFrame {
 	
 
 	public void addDocument(Document document) {
+		document.addDocumentListener(new DocumentListener() {
+			@Override
+			public void afterFileNameChanged(DocumentChangeEvent e) {
+				refreshWindowTitle();
+				refreshTabTitle();
+			}
+
+			@Override
+			public void afterChangedFlagSet(DocumentChangeEvent e) {
+				refreshWindowTitle();
+				refreshTabTitle();
+			}
+		});
 		Tab newTab = new Tab(document);
 		int i;
 		int e = 1;
@@ -188,6 +205,11 @@ public class MainFrame extends JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane();
+			tabbedPane.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent changeEvent) {
+					getInstance().refreshWindowTitle();
+				}
+			});
 		}
 		return tabbedPane;
 	}
@@ -196,19 +218,37 @@ public class MainFrame extends JFrame {
 	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
 		title.append(Main.APPLICATION_NAME);
-		title.append(" - ");
-		if ((getActiveDocument() != null) && getActiveDocument().isChanged()) {
+		if (getActiveDocument() != null) {
+			title.append(" - ");
+		}
+		if ((getActiveDocument() != null) && getActiveDocument().isChanged() && (!getActiveTabTitle().contains("*") || getActiveDocument().getFile() != null)) {
 			title.append("*");
 		}
 		if ((getActiveDocument() != null) && getActiveDocument().getFile() != null) {
 			title.append(getActiveDocument().getFile().getAbsolutePath());
 		}
-		else {
-			title.append("Unsaved");
+		else if (getActiveDocument() != null) {
+				title.append(getActiveTabTitle());
 		}
 		setTitle(title.toString());
 	}
 	
+	
+	public void refreshTabTitle() {
+		StringBuilder title = new StringBuilder();
+		StringBuilder tip = new StringBuilder();
+		if ((getActiveDocument() != null) && getActiveDocument().isChanged()) {
+			title.append("*");
+		}
+		if ((getActiveDocument() != null) && getActiveDocument().getFile() != null) {
+			title.append(getActiveDocument().getFile().getName());
+			tip.append(getActiveDocument().getFile().getAbsolutePath());
+		}
+		else {
+			title.append(getActiveTabTitle());
+		}
+		setActiveTabTitleTip(title.toString(), tip.toString());
+	}
 	
 	/**
 	 * Initialize the contents of the frame.
