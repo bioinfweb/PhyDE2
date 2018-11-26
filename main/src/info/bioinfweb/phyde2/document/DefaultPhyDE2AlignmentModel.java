@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,20 +18,15 @@
  */
 package info.bioinfweb.phyde2.document;
 
-public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 
+
+public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 	public DefaultPhyDE2AlignmentModel (){
 		super();
 	}
 	
-	public void addConsensus (SingleReadContigAlignmentModel contig)
-	{
-		String id = getAlignmentModel().addSequence(("consensus" + contig.getAlignmentModel().getID()));
-		//damit eindeutig ist aus welchem Contig diese Sequenz kommt
-		//soll es möglich sein in einem Alignment die gleiche Consensus mehrfach zu haben?
-		getAlignmentModel().appendTokens(id,contig.getConsensus());
-		//Die Consensus-Sequenz eines bestimmten contigs zum Alignmentmodel
-		//dieses DefaultPhyDE2AlignmentModels hinzufügen.
 	
+	public void addConsensus(SingleReadContigAlignmentModel contig) {
+		//TODO Implement
 	}
 }

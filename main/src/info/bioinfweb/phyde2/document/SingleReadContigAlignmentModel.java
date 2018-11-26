@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,47 +18,48 @@
  */
 package info.bioinfweb.phyde2.document;
 
+
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
+import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.sound.midi.Sequence;
 
-import info.bioinfweb.libralign.model.tokenset.TokenSet;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 
 public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	private Map<String, PherogramAreaModel> pherogramModelMap = new TreeMap <String, PherogramAreaModel>();
-	private TokenSet<Character> consensus;
-	public SingleReadContigAlignmentModel() {
-		super();
-		}
+	private AlignmentModel<Character> consensusModel;
 	
-	public void addSingleRead (String id, PherogramAreaModel model){
-		if ((id != null) && (model != null)){
+	
+	public SingleReadContigAlignmentModel() {
+		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));
+	}
+	
+	
+	public SingleReadContigAlignmentModel(AlignmentModel<Character> consensusModel) {
+		super();
+		this.consensusModel = consensusModel;
+	}
+	
+	
+	public void addSingleRead(String sequenceName, PherogramAreaModel model) {
+		if ((sequenceName != null) && (model != null)) {
+			String id = getAlignmentModel().addSequence(sequenceName);
 			pherogramModelMap.put(id, model);
-			getAlignmentModel().addSequence(id,id); //wo krieg ich den Sequenznamen her?
-			//das AlignmentModel gehört ja zum SingleReadContigModel, deshalb muss da die SingleRead Sequenz
-			//hinzugefügt werden (?). Außerdem das dazu gehörige Pherogram in die Map hier gespeichert werden.
 		}
 	}
 	
-	public PherogramAreaModel getPherogramModel (String id)
-	{
-		return pherogramModelMap.get(id);
+	
+	public PherogramAreaModel getPherogramModel(String sequenceID) {
+		return pherogramModelMap.get(sequenceID);
 	}
 
-	public void setConsensus (TokenSet<Character> consensus){
-		if (consensus != null)
-		{
-			this.consensus = consensus;
-		}
-		//soll später von Klassen aufgerufen werden, die fürs einlesen zuständig sind, da die consensus
-		//in der Datei enthalten ist (?)
+
+	public AlignmentModel<Character> getConsensusModel() {
+		return consensusModel;
 	}
-	
-	public TokenSet<Character> getConsensus (){
-		return consensus;
-		//soll von DefaultPhyDE2AlignmentModel benutzt werden, da das Alignment aus
-		//verschiedenen Consensussequenzen bestehen kann.
-	}
-	}
+}
