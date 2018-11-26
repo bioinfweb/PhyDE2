@@ -44,9 +44,6 @@ import info.bioinfweb.phyde2.gui.MainFrame;
  * @author Ben St&ouml;ver
  */
 public class PhyDE2AlignmentModel {
-	//extends Document muss momentan noch hier stehen, da im MainFrame noch diese Klasse verarbeitet wird und 
-	//noch nicht wie später gewollt das Document. Die dazugehörige Methode wurde allerdings schon ins Document
-	//verschoben, daher muss extends hier stehen
 	public static final int UNDO_LIMIT = 50;
 	
 	
