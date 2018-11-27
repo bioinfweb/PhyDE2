@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.gui;
 
+
 import javax.swing.JPanel;
 
 import info.bioinfweb.commons.events.GenericEventObject;
@@ -47,8 +48,6 @@ public class Tab extends JPanel {
 	private AlignmentArea sequenceIndexAlignmentArea = null;
 	private AlignmentArea characterSetAlignmentArea = null;
 	private CharSetArea charSetArea = null;
-	private String tabName = null;
-	
 	
 	
 	public CharSetArea getCharSetArea() {

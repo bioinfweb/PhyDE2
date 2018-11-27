@@ -49,7 +49,7 @@ public class ReverseComplementEdit extends AlignmentEdit {
 		this.sequenceIDs = sequenceIDs;
 		model = getAlignment().getAlignmentModel().getUnderlyingModel(); // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
 		for (String sequenceID : sequenceIDs) {
-			int diff = lastColumn-model.getSequenceLength(sequenceID);
+			int diff = lastColumn - model.getSequenceLength(sequenceID);
 			sequenceLengthStorage.put(sequenceID, diff);
 		}
 	}
