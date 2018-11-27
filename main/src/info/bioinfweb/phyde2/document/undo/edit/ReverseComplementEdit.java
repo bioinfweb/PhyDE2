@@ -35,8 +35,8 @@ import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 public class ReverseComplementEdit extends AlignmentEdit {
 	private int firstColumn;
 	private int lastColumn;
-	private Collection<String> sequenceIDs;
-	
+	private Collection<String> sequenceIDs;  
+	 
 	
 	public ReverseComplementEdit(PhyDE2AlignmentModel document, int firstColumn, int lastColumn, Collection<String> sequenceIDs) {
 		super(document);
@@ -45,10 +45,10 @@ public class ReverseComplementEdit extends AlignmentEdit {
 		this.sequenceIDs = sequenceIDs;
 	}
 
-
+	
 	private void reverseComplement() {
     	//SelectionModel selection = getReadsArea().getSelection();
-    	AlignmentModel<?> model = getAlignment().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
+    	AlignmentModel<Character> model = getAlignment().getAlignmentModel().getUnderlyingModel();  // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
     	for (String sequenceID : sequenceIDs) {
 //			PherogramArea area = getPherogramArea(sequenceID);
 //			PherogramAreaModel pherogramAlignmentModel = area.getModel();
@@ -62,10 +62,15 @@ public class ReverseComplementEdit extends AlignmentEdit {
 //            else {
 //                rightBorder = rightRelation.getAfterValidIndex();
 //            }
-
-			AlignmentModelUtils.reverseComplement(model, sequenceID, firstColumn, lastColumn + 1);
+    		 
+    			 if (lastColumn > model.getSequenceLength(sequenceID)){
+    				int diff = lastColumn-model.getSequenceLength(sequenceID);
+    				for (int i = 0; i <= diff; i++) {
+    					model.appendToken(sequenceID, '-');
+					}	
+    			 }
+    			 AlignmentModelUtils.reverseComplement(model, sequenceID, firstColumn, lastColumn + 1);
 			//pherogramAlignmentModel.reverseComplement();
-		
 		}
 
 	}
