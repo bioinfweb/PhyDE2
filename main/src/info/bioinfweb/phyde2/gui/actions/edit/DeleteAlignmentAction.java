@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,20 +18,19 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-import java.awt.event.ActionEvent;
 
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.AddAlignmentEdit;
 import info.bioinfweb.phyde2.document.undo.edit.DeleteAlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
+import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
-import javax.swing.JOptionPane;
+
+
 
 public class DeleteAlignmentAction extends AbstractPhyDEAction implements Action  {
-
 	public DeleteAlignmentAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Delete alignment"); 
@@ -39,18 +38,16 @@ public class DeleteAlignmentAction extends AbstractPhyDEAction implements Action
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		PhyDE2AlignmentModel model = getMainFrame().getSelectedAlignment ();
-		getMainFrame().getDocument().executeEdit(new DeleteAlignmentEdit(getMainFrame().getNewDocument(), model));
-		
-		
+		getMainFrame().getActiveAlignment().executeEdit(new DeleteAlignmentEdit(getMainFrame().getNewDocument(), model));
 	}
 
+	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled ((document != null) && (getMainFrame().getSelectedAlignment () != null ));
 	}
-
 }

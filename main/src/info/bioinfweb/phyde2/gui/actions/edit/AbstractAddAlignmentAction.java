@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public abstract class AbstractAddAlignmentAction extends AbstractPhyDEAction imp
 		if (label != null) {
 			model.getAlignmentModel().setID(getMainFrame().getNewDocument().generateUniqueID());
 			model.getAlignmentModel().setLabel(label);
-			getMainFrame().getDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
+			getMainFrame().getActiveAlignment().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
 		}
 	}
 }

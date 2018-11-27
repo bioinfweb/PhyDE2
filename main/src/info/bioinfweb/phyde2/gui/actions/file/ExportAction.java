@@ -118,7 +118,7 @@ public class ExportAction extends AbstractFileAction{
 	protected boolean promptExportFileName() {
 		boolean result = (getExportFileChooser().showDialog(getMainFrame(), "Export") == JFileChooser.APPROVE_OPTION);
 		if (result) {
-	    	getMainFrame().getDocument().setFile(getExportFileChooser().getSelectedFile());
+	    	getMainFrame().getActiveAlignment().setFile(getExportFileChooser().getSelectedFile());
 		}
 		return result;
 	}

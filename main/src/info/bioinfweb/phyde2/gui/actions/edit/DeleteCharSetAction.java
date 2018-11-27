@@ -51,8 +51,8 @@ public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
 		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set which you want to delete.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
-		CharSet charSet = getMainFrame().getDocument().getCharSetModel().get(id);
-		getMainFrame().getDocument().executeEdit(new DeleteCharSetEdit(getMainFrame().getDocument(), charSet, id));
+		CharSet charSet = getMainFrame().getActiveAlignment().getCharSetModel().get(id);
+		getMainFrame().getActiveAlignment().executeEdit(new DeleteCharSetEdit(getMainFrame().getActiveAlignment(), charSet, id));
 	}
 	
 	

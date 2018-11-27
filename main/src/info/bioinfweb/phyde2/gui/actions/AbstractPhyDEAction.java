@@ -45,12 +45,17 @@ public abstract class AbstractPhyDEAction extends ExtendedAbstractAction {
 	
 	
 	protected String getSelectedCharSetID() {
-		int index = getMainFrame().getCharSetArea().getSelectedIndex();
-		if (index == -1) {
-			return null;
+		if (getMainFrame().getActiveCharSetArea() != null) {
+			int index = getMainFrame().getActiveCharSetArea().getSelectedIndex();
+			if (index == -1) {
+				return null;
+			}		
+			else {
+				return getMainFrame().getActiveAlignment().getCharSetModel().get(index);
+			}
 		}
 		else {
-			return getMainFrame().getDocument().getCharSetModel().get(index);
+			return null;
 		}
 	}
 }

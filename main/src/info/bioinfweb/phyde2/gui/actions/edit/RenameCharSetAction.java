@@ -51,7 +51,7 @@ public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
 		else {
 			String name = JOptionPane.showInputDialog("New character set name:");
 			if (name != null) {
-				PhyDE2AlignmentModel document = getMainFrame().getDocument();
+				PhyDE2AlignmentModel document = getMainFrame().getActiveAlignment();
 				document.executeEdit(new RenameCharSetEdit(document, id, name));
 			}
 		}

@@ -43,14 +43,14 @@ public class RedoAction  extends AbstractPhyDEAction implements Action{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (getMainFrame().getDocument().getUndoManager().canRedo()) {
-			getMainFrame().getDocument().getUndoManager().redo();
+		if (getMainFrame().getActiveAlignment().getUndoManager().canRedo()) {
+			getMainFrame().getActiveAlignment().getUndoManager().redo();
 		}
 	}
 
 
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
-		setEnabled(!getMainFrame().getDocument().getUndoManager().canRedo());	
+		setEnabled((document != null) && !getMainFrame().getActiveAlignment().getUndoManager().canRedo());	
 	}
 }

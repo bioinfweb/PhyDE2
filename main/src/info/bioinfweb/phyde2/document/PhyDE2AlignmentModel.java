@@ -19,8 +19,6 @@
 package info.bioinfweb.phyde2.document;
 
 
-import java.io.File;
-
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
@@ -34,7 +32,10 @@ import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignme
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEditFactory;
 import info.bioinfweb.phyde2.document.undo.PhyDE2Edit;
-import info.bioinfweb.phyde2.gui.MainFrame;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 
@@ -50,10 +51,13 @@ public class PhyDE2AlignmentModel {
 	private AccessibleUndoManager undoManager;
 	
 	private boolean changed;
+	private File file;  //TODO Remove, since file is now a property of Document.
 	
 	private SwingEditFactory<Character> alignmentModelEditFactory;
 	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
 	private CharSetDataModel charSetModel;
+	
+	private Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
 	
 	
 	public PhyDE2AlignmentModel() {
@@ -84,6 +88,16 @@ public class PhyDE2AlignmentModel {
 		return undoManager;
 	}
 	
+	
+	public File getFile() {
+		return file;
+	}
+
+
+	public void setFile(File file) {
+		this.file = file;
+		fireAfterFileNameChanged();
+	}
 
 
 	public boolean isChanged() {
@@ -94,7 +108,7 @@ public class PhyDE2AlignmentModel {
 	public void setChanged(boolean changed) {
 		if (this.changed != changed) {
 			this.changed = changed;
-			MainFrame.getInstance().refreshWindowTitle();  //TODO Replace this call by DocumentChangeEvent processing in the future.
+			fireAfterChangedFlagSet();
 		}
 	}
 	
@@ -144,7 +158,6 @@ public class PhyDE2AlignmentModel {
 	public void setCharSetModel(CharSetDataModel charSetModel) {
 		this.charSetModel = charSetModel;
 	}
-	
 
 
 	@Override
@@ -157,10 +170,29 @@ public class PhyDE2AlignmentModel {
 	}
 
 
-	public File getFile() {  //TODO Remove when refactoring is done
-		return null;
-	}
-
 	
-	public void setFile(File file) {}  //TODO Remove when refactoring is done
+	public void addDocumentListener(PhyDE2AlignmentModelListener listener) {
+		listeners.add(listener);
+	}
+	
+	
+	public void removeDocumentListener(PhyDE2AlignmentModelListener listener) {
+		listeners.remove(listener);
+	}
+	
+	
+	protected void fireAfterFileNameChanged() {
+		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
+		for (PhyDE2AlignmentModelListener listener : listeners) {
+			listener.afterFileNameChanged(e);
+		}
+	}
+	
+	
+	protected void fireAfterChangedFlagSet() {
+		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
+		for (PhyDE2AlignmentModelListener listener : listeners) {
+			listener.afterChangedFlagSet(e);
+		}
+	}
 }

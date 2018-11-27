@@ -31,6 +31,9 @@ import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
@@ -52,6 +55,9 @@ import javax.swing.JSplitPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 
@@ -65,12 +71,13 @@ public class MainFrame extends JFrame {
 	private static MainFrame firstInstance = null;
 	
 	
-	private PhyDE2AlignmentModel document = new PhyDE2AlignmentModel();
 	private Document newDocument = new Document(); 
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
-	private JPanel alignmentPanel = null;
 	private JSplitPane splitPane = null;
+	private JTabbedPane tabbedPane = null;
+	private JPanel jContentPane = null;  // ?
+	
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
 	private JMenu editMenu = null;
@@ -79,13 +86,6 @@ public class MainFrame extends JFrame {
 	private JMenu redoMenu = null;
 	private JPanel toolBarPanel = null;
 	private FileContentTreeView treeView = null;
-	// Alignment views:
-	private AlignmentArea mainArea = null;
-	private MultipleAlignmentsContainer container = null;
-	private AlignmentArea sequenceIndexAlignmentArea = null;
-	private AlignmentArea characterSetAlignmentArea = null;
-	private CharSetArea charSetArea = null;
-	
 
 	/**
 	 * Create the application.
@@ -103,17 +103,39 @@ public class MainFrame extends JFrame {
 		return firstInstance;
 	}
 	
-
-	public void setDocument(PhyDE2AlignmentModel document) {
-		this.document = document;
-		mainArea.setAlignmentModel(document.getAlignmentModel(), true);
-		charSetArea.setModel(document.getCharSetModel(), true);
-		getActionManagement().refreshActionStatus();
+	
+	public ActionManagement getActionManagement() {
+		return actionManagement;
 	}
+	
 
+	public void addDocument(PhyDE2AlignmentModel document) {
+		document.addDocumentListener(new PhyDE2AlignmentModelListener() {
+			@Override
+			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+				refreshWindowTitle();
+				refreshTabTitle();
+			}
 
-	public PhyDE2AlignmentModel getDocument() {  //TODO Replace with instance of Document later in refactoring.
-		return document;
+			@Override
+			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
+				refreshWindowTitle();
+				refreshTabTitle();
+			}
+		});
+		Tab newTab = new Tab(document);
+		int i;
+		int e = 1;
+		String tabTitle = "unsavedFile";
+		for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
+			if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
+				e += 1;
+			}
+		}
+		tabTitle = tabTitle + e;
+		tabbedPane.addTab(tabTitle, null, newTab, null);
+		tabbedPane.setSelectedComponent(newTab);
+		refreshMenue();
 	}
 
 	
@@ -122,18 +144,63 @@ public class MainFrame extends JFrame {
 	}
 	
 
-	public CharSetArea getCharSetArea() {
-		return charSetArea;
+	private Tab getActiveTab() {
+		if (tabbedPane.getSelectedComponent() instanceof Tab) {
+			return ((Tab)tabbedPane.getSelectedComponent());
+		}
+		else {
+			return null;
+		}
 	}
 	
 	
-	public AlignmentArea getAlignmentArea() {
-		return mainArea;
+	public void removeTab() {
+		int i = tabbedPane.getSelectedIndex();
+		if (i+1 < tabbedPane.getComponentCount()) {
+			tabbedPane.setSelectedIndex(i+1);
+		}
+		tabbedPane.removeTabAt(i);
 	}
-
 	
-	public ActionManagement getActionManagement() {
-		return actionManagement;
+	
+	public void setActiveTabTitleTip(String title, String tooltip) {
+		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
+		tabbedPane.setToolTipTextAt(tabbedPane.getSelectedIndex(), tooltip);
+	}
+	
+	
+	public String getActiveTabTitle() {
+		return tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+	}
+	
+	
+	public PhyDE2AlignmentModel getActiveAlignment() {
+		if (getActiveTab() != null) {
+			return getActiveTab().getDocument();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	
+	public CharSetArea getActiveCharSetArea() {
+		if (getActiveTab() != null) {
+			return getActiveTab().getCharSetArea();
+		}
+		else {
+			return null;
+		}
+	}
+	
+	
+	public AlignmentArea getActiveAlignmentArea() {
+		if (getActiveTab() != null) {
+			return getActiveTab().getAlignmentArea();
+		}
+		else {
+			return null;
+		}
 	}
 	
 	
@@ -150,22 +217,53 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	private JTabbedPane getTabbedPane() {
+		if (tabbedPane == null) {
+			tabbedPane = new JTabbedPane();
+			tabbedPane.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent changeEvent) {
+					getInstance().refreshWindowTitle();
+				}
+			});
+		}
+		return tabbedPane;
+	}
+	
+	
 	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
 		title.append(Main.APPLICATION_NAME);
-		title.append(" - ");
-		if (getDocument().isChanged()) {
+		if (getActiveAlignment() != null) {
+			title.append(" - ");
+		}
+		if ((getActiveAlignment() != null) && getActiveAlignment().isChanged() && (!getActiveTabTitle().contains("*") || getActiveAlignment().getFile() != null)) {
 			title.append("*");
 		}
-		if (getDocument().getFile() != null) {
-			title.append(getDocument().getFile().getAbsolutePath());
+		if ((getActiveAlignment() != null) && getActiveAlignment().getFile() != null) {
+			title.append(getActiveAlignment().getFile().getAbsolutePath());
 		}
-		else {
-			title.append("Unsaved");
+		else if (getActiveAlignment() != null) {
+				title.append(getActiveTabTitle());
 		}
 		setTitle(title.toString());
 	}
 	
+	
+	public void refreshTabTitle() {
+		StringBuilder title = new StringBuilder();
+		StringBuilder tip = new StringBuilder();
+		if ((getActiveAlignment() != null) && getActiveAlignment().isChanged()) {
+			title.append("*");
+		}
+		if ((getActiveAlignment() != null) && getActiveAlignment().getFile() != null) {
+			title.append(getActiveAlignment().getFile().getName());
+			tip.append(getActiveAlignment().getFile().getAbsolutePath());
+		}
+		else {
+			title.append(getActiveTabTitle());
+		}
+		setActiveTabTitleTip(title.toString(), tip.toString());
+	}
 	
 	/**
 	 * Initialize the contents of the frame.
@@ -175,18 +273,29 @@ public class MainFrame extends JFrame {
 		setExtendedState(JFrame.NORMAL);  //MAXIMIZE_BOTH
 
 		setJMenuBar(getMainMenu());
-		setContentPane(getSplitPane());
+		setContentPane(getJContentPane());
 		
 		addWindowListener(new WindowAdapter() {
+			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if (((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges()) {
+				int i;
+				boolean close = false;
+				for(i = 0; i < tabbedPane.getComponentCount(); i = 0) {
+					tabbedPane.setSelectedIndex(i);
+					close = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
+				}
+				if (tabbedPane.getSelectedComponent() == null) {
+					close = true;
+				}
+				if (close) {
 					setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				}
 				else {
 					setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 				}
 			}
+				
 
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -211,16 +320,15 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	private JPanel getAlignmentPanel() {
-		if (alignmentPanel == null) {
-			alignmentPanel = new JPanel();
-			alignmentPanel.setLayout(new BorderLayout());			
+	private JPanel getJContentPane() {
+		if (jContentPane == null) {
+			jContentPane = new JPanel();
+			jContentPane.setLayout(new BorderLayout());
 			
-			alignmentPanel.add(getToolBarPanel(), BorderLayout.PAGE_START);
-			// Add Swing component to GUI:
-			alignmentPanel.add(SwingComponentFactory.getInstance().getSwingComponent(getAlignmentsContainer()), BorderLayout.CENTER);
+			jContentPane.add(getToolBarPanel(), BorderLayout.NORTH);
+			jContentPane.add(getSplitPane(), BorderLayout.CENTER);
 		}
-		return alignmentPanel;
+		return jContentPane;
 	}
 
 	
@@ -243,7 +351,7 @@ public class MainFrame extends JFrame {
 		if (splitPane == null) {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setLeftComponent(new JScrollPane(getFileContentTreeView()));
-			splitPane.setRightComponent(getAlignmentPanel());
+			splitPane.setRightComponent(getTabbedPane());
 			splitPane.setResizeWeight(0.1);
 		}
 		return splitPane;
@@ -261,47 +369,6 @@ public class MainFrame extends JFrame {
 			}
 		}
 		return null;
-	}
-	
-	
-	private MultipleAlignmentsContainer getAlignmentsContainer() {
-		if (container == null) {
-			// Create main container instance (TIC component):
-			container = new MultipleAlignmentsContainer();
-					
-			// out head and main AlignmentArea in container:
-			sequenceIndexAlignmentArea = new AlignmentArea(container);
-			characterSetAlignmentArea = new AlignmentArea(container);
-			mainArea = new AlignmentArea(container);
-			charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
-			charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
-				@Override
-				public void selectionChanged(GenericEventObject<CharSetArea> event) {
-				getActionManagement().refreshActionStatus();
-				}
-			});
-					
-			// Prepare heading areas:
-			sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
-			sequenceIndexAlignmentArea.setAllowVerticalScrolling(false);
-			characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
-					
-			container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
-			container.getAlignmentAreas().add(characterSetAlignmentArea);
-			//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
-					
-			// Prepare main area:
-			mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displying its contents is solved.
-			mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
-				@Override
-				public void selectionChanged(GenericEventObject<SelectionModel> event) {
-				getActionManagement().refreshActionStatus();
-				}
-			});
-					
-			container.getAlignmentAreas().add(mainArea);
-		}
-		return container;
 	}
 	
 	
@@ -353,6 +420,7 @@ public class MainFrame extends JFrame {
 			fileMenu.setMnemonic('F');
 			fileMenu.add(getActionManagement().get("file.new"));
 			fileMenu.add(getActionManagement().get("file.open"));
+			fileMenu.add(getActionManagement().get("file.closeTab"));
 			fileMenu.addSeparator();
 			fileMenu.add(getActionManagement().get("file.save"));
 			fileMenu.add(getActionManagement().get("file.saveAs"));
