@@ -19,9 +19,12 @@
 package info.bioinfweb.phyde2.gui;
 
 
-import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
@@ -32,19 +35,13 @@ import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-
 
 
 public class FileContentTreeView extends JTree {
 	private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
 	
 	
-	public FileContentTreeView(Document document) {
+	public FileContentTreeView(Document document, MainFrame mainframe) {
 		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
 		setRootVisible(false);
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
@@ -110,9 +107,14 @@ public class FileContentTreeView extends JTree {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//checks, if selected alignment is PhyDE2AlignmentModel
+				if (mainframe.getSelectedAlignment() != null){
 				if (e.getClickCount() == 2) {
-				    System.out.println("double clicked");
-				   // getSelectionModel()FileContentTreeView.g
+					PhyDE2AlignmentModel model = mainframe.getSelectedAlignment();
+					mainframe.showAlignment(model);
+				   // System.out.println("double clicked");
+				}
+				
 			}
 		}});
 	}

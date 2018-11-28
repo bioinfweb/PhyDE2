@@ -122,6 +122,7 @@ public class MainFrame extends JFrame {
 	
 	public void showAlignment(PhyDE2AlignmentModel document) {
 		Tab newTab = null;
+		String tabTitle;
 		
 		// Check if document is already present in a tab
 
@@ -154,13 +155,21 @@ public class MainFrame extends JFrame {
 			
 				int i;
 				int e = 1;
-				String tabTitle = "unsavedFile";
+				
+				if (document.getAlignmentModel().getLabel() != null)
+				{
+					tabTitle = document.getAlignmentModel().getLabel();
+				}
+				
+				else {
+				tabTitle = "unsavedFile";
 				for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
 					if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
 						e += 1;
 					}
 				}
 				tabTitle = tabTitle + e;
+				}
 				tabbedPane.addTab(tabTitle, null, newTab, null);
 				tabbedPane.setSelectedComponent(newTab);
 				refreshMenue();
@@ -367,7 +376,7 @@ public class MainFrame extends JFrame {
 	
 	private FileContentTreeView getFileContentTreeView () {
 		if (treeView == null) {
-			treeView = new FileContentTreeView(getNewDocument());
+			treeView = new FileContentTreeView(getNewDocument(), this);
 			treeView.setLayout(new BorderLayout());
 			treeView.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 				@Override
