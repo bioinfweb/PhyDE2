@@ -126,7 +126,7 @@ public class MainFrame extends JFrame {
 		// Check if document is already present in a tab
 
 			if (tabByAlignment(document) != null) {
-				
+				getTabbedPane().setSelectedComponent(tabByAlignment(document));
 			}
 			
 			else {
