@@ -116,7 +116,7 @@ public class OpenAction extends AbstractFileAction {
 						charSetModel = charSetModels.iterator().next();
 					}
 					
-					getMainFrame().addDocument(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
+					getMainFrame().showAlignment(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
 					
 					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {

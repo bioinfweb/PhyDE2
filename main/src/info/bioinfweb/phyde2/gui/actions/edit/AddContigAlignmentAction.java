@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -31,6 +31,7 @@ import javax.swing.Action;
 
 
 public class AddContigAlignmentAction extends AbstractAddAlignmentAction implements Action {
+	
 	public AddContigAlignmentAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Add contig alignment"); 
@@ -41,7 +42,9 @@ public class AddContigAlignmentAction extends AbstractAddAlignmentAction impleme
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		addAlignment("Enter a label for the new contig alignment:", new SingleReadContigAlignmentModel());
+		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel();
+		addAlignment("Enter a label for the new contig alignment:", contig);
+		
 	}
 
 	

@@ -75,7 +75,7 @@ public class Tab extends JPanel {
 	}
 	
 	
-	private MultipleAlignmentsContainer getAlignmentsContainer() {
+	protected MultipleAlignmentsContainer getAlignmentsContainer() {
 		if (container == null) { 
 			// Create main container instance (TIC component):
 			container = new MultipleAlignmentsContainer();

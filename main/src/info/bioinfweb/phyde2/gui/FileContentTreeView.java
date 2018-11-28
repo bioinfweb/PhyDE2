@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,16 @@ package info.bioinfweb.phyde2.gui;
 
 
 import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.DocumentChangeEvent;
 import info.bioinfweb.phyde2.document.DocumentListener;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 import javax.swing.JScrollPane;
@@ -37,6 +41,9 @@ import javax.swing.tree.TreeModel;
 
 
 public class FileContentTreeView extends JTree {
+	private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
+	
+	
 	public FileContentTreeView(Document document) {
 		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
 		setRootVisible(false);
@@ -88,6 +95,25 @@ public class FileContentTreeView extends JTree {
 					}		
 					getModel().reload(file.getChildAt(1));
 				}
+		}});
+		
+		model.addDocumentListener(new PhyDE2AlignmentModelListener() {
+			@Override
+			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+				//TODO Implement
+			}
+
+			@Override
+			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
+		});
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+				    System.out.println("double clicked");
+				   // getSelectionModel()FileContentTreeView.g
+			}
 		}});
 	}
 

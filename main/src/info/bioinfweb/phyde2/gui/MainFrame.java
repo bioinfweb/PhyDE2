@@ -109,34 +109,67 @@ public class MainFrame extends JFrame {
 	}
 	
 
-	public void addDocument(PhyDE2AlignmentModel document) {
-		document.addDocumentListener(new PhyDE2AlignmentModelListener() {
-			@Override
-			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
-				refreshWindowTitle();
-				refreshTabTitle();
-			}
-
-			@Override
-			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
-				refreshWindowTitle();
-				refreshTabTitle();
-			}
-		});
-		Tab newTab = new Tab(document);
-		int i;
-		int e = 1;
-		String tabTitle = "unsavedFile";
-		for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
-			if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
-				e += 1;
+	private Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
+		for (int j = 0; j < getTabbedPane().getComponentCount(); j++) {
+			Tab tab = (Tab)getTabbedPane().getComponentAt(j); 
+			if (tab.getDocument() == alignment) {
+				return tab;
 			}
 		}
-		tabTitle = tabTitle + e;
-		tabbedPane.addTab(tabTitle, null, newTab, null);
-		tabbedPane.setSelectedComponent(newTab);
-		refreshMenue();
+		return null;
 	}
+	
+	
+	public void showAlignment(PhyDE2AlignmentModel document) {
+		Tab newTab = null;
+		
+		// Check if document is already present in a tab
+
+			if (tabByAlignment(document) != null) {
+				
+			}
+			
+			else {
+				document.addDocumentListener(new PhyDE2AlignmentModelListener() {
+					@Override
+					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+						refreshWindowTitle();
+						refreshTabTitle();
+					}
+
+					@Override
+					public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
+						refreshWindowTitle();
+						refreshTabTitle();
+					}
+				});
+				
+				
+				if (document instanceof SingleReadContigAlignmentModel){
+				newTab = new ContigTab ((SingleReadContigAlignmentModel)document);	
+				}
+				else {
+					newTab = new Tab(document);
+				}
+			
+				int i;
+				int e = 1;
+				String tabTitle = "unsavedFile";
+				for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
+					if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
+						e += 1;
+					}
+				}
+				tabTitle = tabTitle + e;
+				tabbedPane.addTab(tabTitle, null, newTab, null);
+				tabbedPane.setSelectedComponent(newTab);
+				refreshMenue();
+				}
+		}
+	
+		
+
+	
 
 	
 	public Document getNewDocument() {  //TODO Remove this property when getDocument() returns an instance of Document.

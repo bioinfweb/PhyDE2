@@ -195,4 +195,5 @@ public class PhyDE2AlignmentModel {
 			listener.afterChangedFlagSet(e);
 		}
 	}
+	
 }

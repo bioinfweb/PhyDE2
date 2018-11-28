@@ -27,4 +27,5 @@ public interface PhyDE2AlignmentModelListener extends EventListener {
 	public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e);
 	
 	public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e);
+	
 }

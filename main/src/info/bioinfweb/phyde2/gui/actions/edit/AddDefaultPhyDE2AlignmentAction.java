@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,8 @@ public class AddDefaultPhyDE2AlignmentAction extends AbstractAddAlignmentAction 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		addAlignment("Enter a label for the new alignment:", new DefaultPhyDE2AlignmentModel());
+		DefaultPhyDE2AlignmentModel model = new DefaultPhyDE2AlignmentModel ();
+		addAlignment("Enter a label for the new alignment:", model);
 	}
 	
 
