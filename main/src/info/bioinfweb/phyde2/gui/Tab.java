@@ -18,7 +18,8 @@
  */
 package info.bioinfweb.phyde2.gui;
 
-
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import info.bioinfweb.commons.events.GenericEventObject;
@@ -29,15 +30,7 @@ import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.tic.SwingComponentFactory;
-
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-
-import java.awt.Component;
 
 
 @SuppressWarnings("serial")

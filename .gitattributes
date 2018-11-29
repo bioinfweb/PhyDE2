@@ -23,7 +23,6 @@ main/include/lib/sequencing-1.9.2.jar -text
 main/include/lib/tic-core-3.0.1.jar -text
 main/include/lib/tic-swing-3.0.2.jar -text
 main/src/APACHE-LICENSE.txt -text svneol=unset#text/plain
-main/src/GPL.html -text svneol=unset#text/plain
 main/src/GPL.txt -text svneol=unset#text/plain
 main/src/NOTICE.txt -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/Main.java -text svneol=unset#text/plain
@@ -100,6 +99,8 @@ main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
 main/src/resources/Splash.png -text
+main/src/resources/about/ApacheLicense.html -text svneol=unset#text/plain
+main/src/resources/about/GPL.html -text svneol=unset#text/plain
 main/src/resources/symbols/Add16.png -text
 main/src/resources/symbols/Add22.png -text
 main/src/resources/symbols/AddBar16.png -text
