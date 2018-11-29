@@ -98,6 +98,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/help/PhyDEMainPageAction.java -text s
 main/src/info/bioinfweb/phyde2/gui/actions/help/TwitterAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/dialogs/AddSingleReadDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
 main/src/resources/Splash.png -text
 main/src/resources/about/ApacheLicense.html -text svneol=unset#text/plain

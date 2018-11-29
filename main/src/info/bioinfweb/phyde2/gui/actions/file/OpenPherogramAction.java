@@ -50,7 +50,7 @@ public class OpenPherogramAction extends AbstractPhyDEAction  {
 		if (fileChooser == null) {
 			fileChooser = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
-			        "SCF-Files", "scf"); // what was the alternate file format?
+			        "SCF- and ab1-Files", "scf", "ab1");
 			    fileChooser.setFileFilter(filter);
 		}
 		return fileChooser;
@@ -60,7 +60,8 @@ public class OpenPherogramAction extends AbstractPhyDEAction  {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		//brauche ich hier die JPhyloIO Klassen? Ich hab ja theoretisch nur die beiden Dateiformate scf und ?.
-		//meine Idee: wenn eine Pherogrammdatei geöffnet wird --> neues contig alignment, denn nur da können sie 
+		//meine Idee: wenn eine Pherogrammdatei geöffnet wird --> aktuelles contig alignment bekommt neue Sequenz + Pherogram,
+		//denn nur da können sie 
 		//dargestellt werden. Also müssen hier der Provider etc hin. Welche Überprüfungen sind zusätzlich notwendig?
 		//Außerdem: Es gibt ja (später?) den Fall, dass die Pherogramdaten als Referenz in einem Contig sind... Das
 		//heißt, da wird nicht manuell eine Pherogramdatei geladen, sondern in der Datei muss erkannt werden, wie viele

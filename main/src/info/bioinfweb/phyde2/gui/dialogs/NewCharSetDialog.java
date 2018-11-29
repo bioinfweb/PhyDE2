@@ -121,7 +121,7 @@ public class NewCharSetDialog extends OkCancelApplyHelpDialog {
 
 	@Override
 	protected boolean apply() {
-		if (getName().equals("")) {
+		if (getCharSetName().equals("")) {
 			switch(JOptionPane.showConfirmDialog(this, "There is no name for the character set. Do you want to add it anyway?", "Missing Name!", JOptionPane.YES_NO_OPTION)) {
 			case JOptionPane.YES_OPTION:
 				return true;
@@ -135,12 +135,12 @@ public class NewCharSetDialog extends OkCancelApplyHelpDialog {
 	}
 
 	
-	public String getName() {
+	public String getCharSetName() {
 		return nameTextField.getText();
 	}
 	
 	
-	public void setName(String name) {
+	public void setCharSetName(String name) {
 		nameTextField.setText(name);
 	}
 	

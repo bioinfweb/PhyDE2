@@ -27,9 +27,13 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
+import info.bioinfweb.phyde2.gui.dialogs.NewCharSetDialog;
 
 
 
@@ -48,9 +52,18 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String name = JOptionPane.showInputDialog("New sequence name");
-		if (name != null) {
-			getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(name);
+		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel){
+		String name = JOptionPane.showInputDialog(getMainFrame(), "New sequence name");
+			if (name != null) {
+				getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(name);
+			}
+		}
+		
+		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel){
+			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
+			dialog.setVisible(true);
+			getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(dialog.getSequenceName());
+			
 		}
 	}
 
