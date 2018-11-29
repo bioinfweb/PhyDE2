@@ -27,9 +27,11 @@ import info.bioinfweb.jphyloio.dataadapters.implementations.ListBasedDocumentDat
 import info.bioinfweb.jphyloio.events.CommentEvent;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 import java.io.IOException;
+import java.util.Set;
 
 
 
@@ -37,17 +39,20 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 	public static final String ALIGNMENT_ID = "Alignment0";
 	
 	
-	private PhyDE2AlignmentModel document;
+	private Document document;
 	
 	
-	public PhyDEDocumentDataAdapter(PhyDE2AlignmentModel document) {
+	public PhyDEDocumentDataAdapter(Document document) {
 		super();
 		this.document = document;
-		getMatrices().add(new PhyDEAlignmentDataAdapter(this));
+		Set<String> ids = document.idSet();
+		for (String id : ids) {
+			getMatrices().add(new PhyDEAlignmentDataAdapter(document.getAlignmentModel(id)));
+		}
 	}
 
 	
-	public PhyDE2AlignmentModel getDocument() {
+	public Document getDocument() {
 		return document;
 	}
 

@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ package info.bioinfweb.phyde2.document;
 
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
+import info.bioinfweb.phyde2.document.undo.PhyDE2Edit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 import java.io.File;
@@ -32,6 +33,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 
 
 public class Document {
@@ -39,6 +42,68 @@ public class Document {
 	private Map<String, PhyDE2AlignmentModel> alignmentModelMap = new TreeMap <String, PhyDE2AlignmentModel>();
 	private IntegerIDManager idManager = new IntegerIDManager();
 	private Collection<DocumentListener> listeners = new ArrayList<>();
+	
+	
+//	public Document() {
+//		addDocumentListener(new DocumentListener() {
+//			@Override
+//			public void afterAlignmentModelAdded(DocumentChangeEvent e) {
+//				DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
+//				DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
+//			
+//				if (e.getModel() instanceof DefaultPhyDE2AlignmentModel){
+//					((DefaultMutableTreeNode)file.getChildAt(0)).add(new DefaultMutableTreeNode(e.getModel()));
+//					getModel().reload(file.getChildAt(0));
+//				}
+//				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
+//					((DefaultMutableTreeNode)file.getChildAt(1)).add(new DefaultMutableTreeNode(e.getModel()));
+//					getModel().reload(file.getChildAt(1));
+//				}
+//			}
+//
+//			@Override
+//			public void afterAlignmentModelDeleted(DocumentChangeEvent e) {
+//				DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
+//				DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
+//				
+//				if (e.getModel() instanceof DefaultPhyDE2AlignmentModel){
+//					for (int i = 0; i < file.getChildAt(0).getChildCount(); i++) {
+//						if (e.getModel().getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+//								((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
+//							((DefaultMutableTreeNode) file.getChildAt(0)).remove(i);
+//						}
+//					}
+//					getModel().reload(file.getChildAt(0));
+//				}
+//				else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
+//					for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
+//						if (e.getModel().getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+//								((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
+//								((DefaultMutableTreeNode) file.getChildAt(1)).remove(i);
+//						}
+//					}		
+//					getModel().reload(file.getChildAt(1));
+//				}
+//		}});
+//		
+//		model.addDocumentListener(new PhyDE2AlignmentModelListener() {
+//			@Override
+//			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+//				//TODO Implement
+//			}
+//
+//			@Override
+//			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
+//		});
+//	}
+	
+	
+	public void executeEdit(PhyDE2Edit edit) {
+		//if (!getUndoManager().addEdit(edit)) {  // Must happen before execution, since undo switches not be activated otherwise.
+		//	throw new RuntimeException("The edit could not be executed.");
+		//}
+		edit.redo();  // actually execute
+	}
 	
 	
 	public File getFile() {

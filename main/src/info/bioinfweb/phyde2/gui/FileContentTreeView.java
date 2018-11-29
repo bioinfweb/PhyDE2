@@ -41,6 +41,7 @@ public class FileContentTreeView extends JTree {
 	private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
 	
 	
+	//public FileContentTreeView(Document document, MainFrame mainframe) {
 	public FileContentTreeView(Document document, MainFrame mainframe) {
 		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
 		setRootVisible(false);
@@ -103,7 +104,7 @@ public class FileContentTreeView extends JTree {
 			@Override
 			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
 		});
-		
+	
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -114,9 +115,9 @@ public class FileContentTreeView extends JTree {
 					mainframe.showAlignment(model);
 				   // System.out.println("double clicked");
 				}
-				
+				}
 			}
-		}});
+		});
 	}
 
 	

@@ -26,6 +26,7 @@ import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventContentType;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataAdapter;
 import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 
 
 
@@ -35,19 +36,20 @@ import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
  * @author Ben St&ouml;ver
  */
 public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Character> implements IOConstants {
-	private PhyDEDocumentDataAdapter parent;
+	private PhyDE2AlignmentModel model;
 	
 	
-	public PhyDEAlignmentDataAdapter(PhyDEDocumentDataAdapter parent) {
-		super("", new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, PhyDEDocumentDataAdapter.ALIGNMENT_ID, null, null), 
-				parent.getDocument().getAlignmentModel(), false);
-		this.parent = parent;
+	public PhyDEAlignmentDataAdapter(PhyDE2AlignmentModel model) {
+		super(model.getAlignmentModel().getID(), new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, model.getAlignmentModel().getID(), null, null), 
+				model.getAlignmentModel(), false); 
+		//TODO ensure that prefix is not added on each write operation again
+		this.model = model;
 	}
 
 	
 	@Override
 	public ObjectListDataAdapter<LinkedLabeledIDEvent> getCharacterSets(ReadWriteParameterMap parameters) {
-		return new CharSetDataAdapter(getIDPrefix(), parent.getDocument().getCharSetModel(), 
+		return new CharSetDataAdapter(getIDPrefix(), model.getCharSetModel(), 
 				PhyDEDocumentDataAdapter.ALIGNMENT_ID, new URIOrStringIdentifier(null, PREDICATE_COLOR), 
 				new URIOrStringIdentifier(null, DATA_TYPE_COLOR));
 	}

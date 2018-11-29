@@ -41,12 +41,12 @@ public abstract class AbstractAddAlignmentAction extends AbstractPhyDEAction imp
 		if (label != null) {
 			model.getAlignmentModel().setID(getMainFrame().getNewDocument().generateUniqueID());
 			model.getAlignmentModel().setLabel(label);
-			if(getMainFrame().getActiveAlignment() == null){
+			if(getMainFrame().getNewDocument() == null){
 				System.out.println("getMainFrame().getActiveAlignment() is null! Gernerate new before adding alignment!");
 				//just for reminding the developer to care about this problem later.
 			}
 			else {
-				getMainFrame().getActiveAlignment().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
+				getMainFrame().getNewDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
 		
 			}
 			getMainFrame().showAlignment(model);

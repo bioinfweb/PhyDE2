@@ -19,33 +19,25 @@
 package info.bioinfweb.phyde2.gui;
 
 
-import info.bioinfweb.commons.events.GenericEventObject;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionListener;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
-import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
-import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.Main;
-import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
-import info.bioinfweb.tic.SwingComponentFactory;
-
 import java.awt.BorderLayout;
+import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -70,8 +62,7 @@ public class MainFrame extends JFrame {
 	
 	private static MainFrame firstInstance = null;
 	
-	
-	private Document newDocument = new Document(); 
+	private ArrayList<Document> documentList = new ArrayList<>();
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JSplitPane splitPane = null;
@@ -108,7 +99,12 @@ public class MainFrame extends JFrame {
 		return actionManagement;
 	}
 	
-
+	
+	public void addDocument(Document document) {
+		documentList.add(document);
+	}
+	
+	
 	private Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
 		for (int j = 0; j < getTabbedPane().getComponentCount(); j++) {
 			Tab tab = (Tab)getTabbedPane().getComponentAt(j); 
@@ -186,7 +182,10 @@ public class MainFrame extends JFrame {
 
 	
 	public Document getNewDocument() {  //TODO Remove this property when getDocument() returns an instance of Document.
-		return newDocument;
+		if (documentList.isEmpty()) {
+			addDocument(new Document());
+		}
+		return documentList.get(0);
 	}
 	
 
@@ -279,17 +278,19 @@ public class MainFrame extends JFrame {
 	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
 		title.append(Main.APPLICATION_NAME);
-		if (getActiveAlignment() != null) {
-			title.append(" - ");
-		}
-		if ((getActiveAlignment() != null) && getActiveAlignment().isChanged() && (!getActiveTabTitle().contains("*") || getActiveAlignment().getFile() != null)) {
-			title.append("*");
-		}
-		if ((getActiveAlignment() != null) && getActiveAlignment().getFile() != null) {
-			title.append(getActiveAlignment().getFile().getAbsolutePath());
-		}
-		else if (getActiveAlignment() != null) {
-				title.append(getActiveTabTitle());
+		if (!documentList.isEmpty()) {
+			if (getActiveAlignment() != null) {
+				title.append(" - ");
+			}
+			if ((getActiveAlignment() != null) && getActiveAlignment().isChanged() && (!getActiveTabTitle().contains("*") || getActiveAlignment().getFile() != null)) {
+				title.append("*");
+			}
+			if ((getActiveAlignment() != null) && getActiveAlignment().getFile() != null) {
+				title.append(getActiveAlignment().getFile().getAbsolutePath());
+			}
+			else if (getActiveAlignment() != null) {
+					title.append(getActiveTabTitle());
+			}
 		}
 		setTitle(title.toString());
 	}

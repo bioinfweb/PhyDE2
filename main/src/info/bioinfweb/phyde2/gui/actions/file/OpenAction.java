@@ -90,7 +90,8 @@ public class OpenAction extends AbstractFileAction {
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {			
+	public void actionPerformed(ActionEvent e) {
+		String message = new String();
 		//	File reading:
 		try {
 			if (getOpenFileChooser().showOpenDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION) {
@@ -106,35 +107,53 @@ public class OpenAction extends AbstractFileAction {
 				}
 				else {  // File contains at least one alignment.
 					//	create new Document:
-					AlignmentModel<Character> alignmentModel = (AlignmentModel<Character>)mainReader.getAlignmentModelReader().getCompletedModels().get(0);
-					Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
-					CharSetDataModel charSetModel;
-					if (charSetModels.isEmpty()) {
-						charSetModel = new CharSetDataModel();
-					}
-					else {
-						charSetModel = charSetModels.iterator().next();
+					
+					for (AlignmentModel<?> alignmentModel : mainReader.getAlignmentModelReader().getCompletedModels()) {
+						Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+						CharSetDataModel charSetModel;
+						if (charSetModels.isEmpty()) {
+							charSetModel = new CharSetDataModel();
+						}
+						else {
+							charSetModel = charSetModels.iterator().next();
+						}
+						
+						if (charSetModels.size() > 1) {
+							message = "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
+						}
+						
+						getMainFrame().showAlignment(new PhyDE2AlignmentModel((AlignmentModel<Character>)alignmentModel, charSetModel));
 					}
 					
-					getMainFrame().showAlignment(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
-					
+//					AlignmentModel<Character> alignmentModel = (AlignmentModel<Character>)mainReader.getAlignmentModelReader().getCompletedModels().get(0);
+//					Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+//					CharSetDataModel charSetModel;
+//					if (charSetModels.isEmpty()) {
+//						charSetModel = new CharSetDataModel();
+//					}
+//					else {
+//						charSetModel = charSetModels.iterator().next();
+//					}
+//					
+//					getMainFrame().showAlignment(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
+//					
 					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 						
-						getMainFrame().getActiveAlignment().setFile(getOpenFileChooser().getSelectedFile());
-						getMainFrame().getActiveAlignment().setChanged(false);
+						getMainFrame().getNewDocument().setFile(getOpenFileChooser().getSelectedFile());
+						//getMainFrame().getActiveAlignment().setChanged(false);
 						
 						// File contains more than one alignment or character set:
-						String message = "";
-						if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
-							message = "The file contained more than one alignment. Only the first one was loaded.";
-						}
-						if (charSetModels.size() > 1) {
-							if (message.length() > 0) {
-								message += "\n";
-							}
-							message += "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
-						}
+//						String message = "";
+//						if (mainReader.getAlignmentModelReader().getCompletedModels().size() > 1) {
+//							message = "The file contained more than one alignment. Only the first one was loaded.";
+//						}
+//						if (charSetModels.size() > 1) {
+//							if (message.length() > 0) {
+//								message += "\n";
+//							}
+//							message += "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
+//						}
 						if (message.length() > 0) {
 							JOptionPane.showMessageDialog(getMainFrame(),
 									message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);

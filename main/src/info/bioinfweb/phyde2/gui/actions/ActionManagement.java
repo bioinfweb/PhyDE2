@@ -155,13 +155,15 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	public void refreshActionStatus() {
-		PhyDE2AlignmentModel document = mainFrame.getActiveAlignment();
-		setActionStatusBySelection(document, mainFrame);
-		
-		if (document != null) {
-			editUndoRedoMenus();
-			get("edit.undo").setEnabled(mainFrame.getActiveAlignment().getUndoManager().canUndo());
-			get("edit.redo").setEnabled(mainFrame.getActiveAlignment().getUndoManager().canRedo());
+		if (mainFrame.getNewDocument() != null) {
+			PhyDE2AlignmentModel model = mainFrame.getActiveAlignment();
+			setActionStatusBySelection(model, mainFrame);
+			
+			if (model != null) {
+				editUndoRedoMenus();
+				get("edit.undo").setEnabled(mainFrame.getActiveAlignment().getUndoManager().canUndo());
+				get("edit.redo").setEnabled(mainFrame.getActiveAlignment().getUndoManager().canRedo());
+			}
 		}
 		
 //			Test:
