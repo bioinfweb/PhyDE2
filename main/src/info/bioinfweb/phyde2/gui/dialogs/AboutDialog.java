@@ -59,8 +59,8 @@ public class AboutDialog extends info.bioinfweb.commons.swing.AboutDialog {
 	
 	private void addTabs() {
 		addTab("General", null, "text/html", getGeneralContent(), null);
-		addContentFromFile("PhyDE 2 License", "/info/bioinfweb/phyde2/gui/dialogs/about/GPL.html", "http://bioinfweb.info/PhyDE2/License");  //TODO Add link label to panel or include link in HTML.
-		addContentFromFile("Apache License", "/info/bioinfweb/phyde2/gui/dialogs/about/ApacheLicense.html", "http://www.apache.org/licenses/LICENSE-2.0.html");
+		addContentFromFile("PhyDE 2 License", "/resources/about/GPL.html", "http://bioinfweb.info/PhyDE2/License");  //TODO Add link label to panel or include link in HTML.
+		addContentFromFile("Apache License", "/resources/about/ApacheLicense.html", "http://www.apache.org/licenses/LICENSE-2.0.html");
 	}
 	
 	
