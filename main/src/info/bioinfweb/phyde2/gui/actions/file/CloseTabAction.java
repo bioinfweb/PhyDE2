@@ -33,9 +33,9 @@ public class CloseTabAction extends AbstractFileAction {
 	public CloseTabAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Close tab"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_U);
+		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
 		putValue(Action.SHORT_DESCRIPTION, "Close tab"); 
-		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('U', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('W', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		//loadSymbols("NewDocument");
 	}
 
