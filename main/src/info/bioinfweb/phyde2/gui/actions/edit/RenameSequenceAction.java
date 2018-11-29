@@ -47,7 +47,7 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 		if (name != null) {
 			for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
 				String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row);
-				getMainFrame().getActiveDocument().getAlignmentModel().renameSequence(id, name);
+				getMainFrame().getActiveAlignment().getAlignmentModel().renameSequence(id, name);
 			}
 		}
 	}

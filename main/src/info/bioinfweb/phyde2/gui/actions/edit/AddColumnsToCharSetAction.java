@@ -51,7 +51,7 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want to add a column.", "Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		getMainFrame().getActiveDocument().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getActiveDocument(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
+		getMainFrame().getActiveAlignment().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
 	}
 
 	

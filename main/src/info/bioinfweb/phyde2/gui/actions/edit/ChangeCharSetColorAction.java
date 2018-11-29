@@ -60,7 +60,7 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 			CharSet charSet = model.get(id);
 			Color color = JColorChooser.showDialog(getMainFrame(), "Change character set color", charSet.getColor());
 			if (color != null) {
-				getMainFrame().getActiveDocument().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveDocument(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
+				getMainFrame().getActiveAlignment().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveAlignment(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
 			}
 		}
 	}

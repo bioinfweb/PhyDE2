@@ -31,8 +31,11 @@ import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.edit.AddCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddColumnsToCharSetAction;
+import info.bioinfweb.phyde2.gui.actions.edit.AddContigAlignmentAction;
+import info.bioinfweb.phyde2.gui.actions.edit.AddDefaultPhyDE2AlignmentAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.ChangeCharSetColorAction;
+import info.bioinfweb.phyde2.gui.actions.edit.DeleteAlignmentAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoAction;
@@ -81,6 +84,9 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		
 		put("edit.undo", new UndoAction(mainFrame));
 		put("edit.redo", new RedoAction(mainFrame));
+		put("edit.addContigAlignment", new AddContigAlignmentAction(mainFrame));
+		put("edit.addDefaultPhyDE2Alignment", new AddDefaultPhyDE2AlignmentAction(mainFrame));
+		put("edit.deleteAlignment", new DeleteAlignmentAction(mainFrame));
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
 		put("edit.renameSequence", new RenameSequenceAction(mainFrame));
@@ -103,8 +109,8 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	@Override
 	protected AccessibleUndoManager getUndoManager() {
-		if (mainFrame.getActiveDocument() != null) {
-			return mainFrame.getActiveDocument().getUndoManager();
+		if (mainFrame.getActiveAlignment() != null) {
+			return mainFrame.getActiveAlignment().getUndoManager();
 		}
 		else {
 			return null;
@@ -149,13 +155,13 @@ public class ActionManagement extends AbstractUndoActionManagement {
 	
 	
 	public void refreshActionStatus() {
-		PhyDE2AlignmentModel document = mainFrame.getActiveDocument();
+		PhyDE2AlignmentModel document = mainFrame.getActiveAlignment();
 		setActionStatusBySelection(document, mainFrame);
 		
 		if (document != null) {
 			editUndoRedoMenus();
-			get("edit.undo").setEnabled(mainFrame.getActiveDocument().getUndoManager().canUndo());
-			get("edit.redo").setEnabled(mainFrame.getActiveDocument().getUndoManager().canRedo());
+			get("edit.undo").setEnabled(mainFrame.getActiveAlignment().getUndoManager().canUndo());
+			get("edit.redo").setEnabled(mainFrame.getActiveAlignment().getUndoManager().canRedo());
 		}
 		
 //			Test:

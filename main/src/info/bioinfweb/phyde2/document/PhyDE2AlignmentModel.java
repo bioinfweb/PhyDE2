@@ -19,10 +19,6 @@
 package info.bioinfweb.phyde2.document;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
@@ -35,8 +31,11 @@ import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEditFactory;
-import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
-import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.document.undo.PhyDE2Edit;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 
@@ -51,8 +50,8 @@ public class PhyDE2AlignmentModel {
 	
 	private AccessibleUndoManager undoManager;
 	
-	private File file;
 	private boolean changed;
+	private File file;  //TODO Remove, since file is now a property of Document.
 	
 	private SwingEditFactory<Character> alignmentModelEditFactory;
 	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
@@ -77,7 +76,7 @@ public class PhyDE2AlignmentModel {
 	}
 	
 	
-	public void executeEdit(AlignmentEdit edit) {
+	public void executeEdit(PhyDE2Edit edit) {
 		if (!getUndoManager().addEdit(edit)) {  // Must happen before execution, since undo switches not be activated otherwise.
 			throw new RuntimeException("The edit could not be executed.");
 		}
@@ -159,7 +158,18 @@ public class PhyDE2AlignmentModel {
 	public void setCharSetModel(CharSetDataModel charSetModel) {
 		this.charSetModel = charSetModel;
 	}
-	
+
+
+	@Override
+	public String toString() {
+		if (getAlignmentModel().getLabel() == null) {
+			return "<unnamend alignment>";
+		}
+		
+		return getAlignmentModel().getLabel();
+	}
+
+
 	
 	public void addDocumentListener(PhyDE2AlignmentModelListener listener) {
 		listeners.add(listener);
@@ -185,4 +195,5 @@ public class PhyDE2AlignmentModel {
 			listener.afterChangedFlagSet(e);
 		}
 	}
+	
 }

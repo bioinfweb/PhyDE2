@@ -41,8 +41,6 @@ public class Tab extends JPanel {
 	private AlignmentArea sequenceIndexAlignmentArea = null;
 	private AlignmentArea characterSetAlignmentArea = null;
 	private CharSetArea charSetArea = null;
-	private String tabName = null;
-	
 	
 	
 	public CharSetArea getCharSetArea() {
@@ -70,7 +68,7 @@ public class Tab extends JPanel {
 	}
 	
 	
-	private MultipleAlignmentsContainer getAlignmentsContainer() {
+	protected MultipleAlignmentsContainer getAlignmentsContainer() {
 		if (container == null) { 
 			// Create main container instance (TIC component):
 			container = new MultipleAlignmentsContainer();

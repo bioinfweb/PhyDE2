@@ -51,7 +51,7 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
 			String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
-			getMainFrame().getActiveDocument().getAlignmentModel().removeSequence(id);
+			getMainFrame().getActiveAlignment().getAlignmentModel().removeSequence(id);
 		}
 	}
 

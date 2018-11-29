@@ -28,9 +28,13 @@ import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -46,6 +50,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -62,11 +71,12 @@ public class MainFrame extends JFrame {
 	private static MainFrame firstInstance = null;
 	
 	
+	private Document newDocument = new Document(); 
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
+	private JSplitPane splitPane = null;
 	private JTabbedPane tabbedPane = null;
-	
-	private JPanel jContentPane = null;
+	private JPanel jContentPane = null;  // ?
 	
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
@@ -75,7 +85,7 @@ public class MainFrame extends JFrame {
 	private JMenu undoMenu = null;
 	private JMenu redoMenu = null;
 	private JPanel toolBarPanel = null;
-	
+	private FileContentTreeView treeView = null;
 
 	/**
 	 * Create the application.
@@ -99,35 +109,86 @@ public class MainFrame extends JFrame {
 	}
 	
 
-	public void addDocument(PhyDE2AlignmentModel document) {
-		document.addDocumentListener(new PhyDE2AlignmentModelListener() {
-			@Override
-			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
-				refreshWindowTitle();
-				refreshTabTitle();
-			}
-
-			@Override
-			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
-				refreshWindowTitle();
-				refreshTabTitle();
-			}
-		});
-		Tab newTab = new Tab(document);
-		int i;
-		int e = 1;
-		String tabTitle = "unsavedFile";
-		for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
-			if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
-				e += 1;
+	private Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
+		for (int j = 0; j < getTabbedPane().getComponentCount(); j++) {
+			Tab tab = (Tab)getTabbedPane().getComponentAt(j); 
+			if (tab.getDocument() == alignment) {
+				return tab;
 			}
 		}
-		tabTitle = tabTitle + e;
-		tabbedPane.addTab(tabTitle, null, newTab, null);
-		tabbedPane.setSelectedComponent(newTab);
-		refreshMenue();
+		return null;
 	}
+	
+	public void hideAlignment (PhyDE2AlignmentModel document){
+		if (tabByAlignment(document) != null){
+			getTabbedPane().remove(tabByAlignment(document));
+		}
+	}
+	public void showAlignment(PhyDE2AlignmentModel document) {
+		Tab newTab = null;
+		String tabTitle;
+		
+		// Check if document is already present in a tab
 
+			if (tabByAlignment(document) != null) {
+				getTabbedPane().setSelectedComponent(tabByAlignment(document));
+			}
+			
+			else {
+				document.addDocumentListener(new PhyDE2AlignmentModelListener() {
+					@Override
+					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+						refreshWindowTitle();
+						refreshTabTitle();
+					}
+
+					@Override
+					public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
+						refreshWindowTitle();
+						refreshTabTitle();
+					}
+				});
+				
+				
+				if (document instanceof SingleReadContigAlignmentModel){
+				newTab = new ContigTab ((SingleReadContigAlignmentModel)document);	
+				}
+				else {
+					newTab = new Tab(document);
+				}
+			
+				int i;
+				int e = 1;
+				
+				if (document.getAlignmentModel().getLabel() != null)
+				{
+					tabTitle = document.getAlignmentModel().getLabel();
+				}
+				
+				else {
+				tabTitle = "unsavedFile";
+				for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
+					if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
+						e += 1;
+					}
+				}
+				tabTitle = tabTitle + e;
+				}
+				tabbedPane.addTab(tabTitle, null, newTab, null);
+				tabbedPane.setSelectedComponent(newTab);
+				refreshMenue();
+				}
+		}
+	
+		
+
+	
+
+	
+	public Document getNewDocument() {  //TODO Remove this property when getDocument() returns an instance of Document.
+		return newDocument;
+	}
+	
 
 	private Tab getActiveTab() {
 		if (tabbedPane.getSelectedComponent() instanceof Tab) {
@@ -159,7 +220,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	public PhyDE2AlignmentModel getActiveDocument() {
+	public PhyDE2AlignmentModel getActiveAlignment() {
 		if (getActiveTab() != null) {
 			return getActiveTab().getDocument();
 		}
@@ -218,16 +279,16 @@ public class MainFrame extends JFrame {
 	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
 		title.append(Main.APPLICATION_NAME);
-		if (getActiveDocument() != null) {
+		if (getActiveAlignment() != null) {
 			title.append(" - ");
 		}
-		if ((getActiveDocument() != null) && getActiveDocument().isChanged() && (!getActiveTabTitle().contains("*") || getActiveDocument().getFile() != null)) {
+		if ((getActiveAlignment() != null) && getActiveAlignment().isChanged() && (!getActiveTabTitle().contains("*") || getActiveAlignment().getFile() != null)) {
 			title.append("*");
 		}
-		if ((getActiveDocument() != null) && getActiveDocument().getFile() != null) {
-			title.append(getActiveDocument().getFile().getAbsolutePath());
+		if ((getActiveAlignment() != null) && getActiveAlignment().getFile() != null) {
+			title.append(getActiveAlignment().getFile().getAbsolutePath());
 		}
-		else if (getActiveDocument() != null) {
+		else if (getActiveAlignment() != null) {
 				title.append(getActiveTabTitle());
 		}
 		setTitle(title.toString());
@@ -237,12 +298,12 @@ public class MainFrame extends JFrame {
 	public void refreshTabTitle() {
 		StringBuilder title = new StringBuilder();
 		StringBuilder tip = new StringBuilder();
-		if ((getActiveDocument() != null) && getActiveDocument().isChanged()) {
+		if ((getActiveAlignment() != null) && getActiveAlignment().isChanged()) {
 			title.append("*");
 		}
-		if ((getActiveDocument() != null) && getActiveDocument().getFile() != null) {
-			title.append(getActiveDocument().getFile().getName());
-			tip.append(getActiveDocument().getFile().getAbsolutePath());
+		if ((getActiveAlignment() != null) && getActiveAlignment().getFile() != null) {
+			title.append(getActiveAlignment().getFile().getName());
+			tip.append(getActiveAlignment().getFile().getAbsolutePath());
 		}
 		else {
 			title.append(getActiveTabTitle());
@@ -293,6 +354,13 @@ public class MainFrame extends JFrame {
 	}
 	
 	
+	@Override
+	public void setVisible(boolean flag) {
+		super.setVisible(flag);
+		getSplitPane().setDividerLocation(0.3);
+	}
+
+
 	public void refreshMenue() {
 		getActionManagement().refreshActionStatus();
 	}
@@ -301,13 +369,52 @@ public class MainFrame extends JFrame {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BorderLayout());			
+			jContentPane.setLayout(new BorderLayout());
 			
-			jContentPane.add(getToolBarPanel(), BorderLayout.PAGE_START);
-			// Add Swing component to GUI:
-			jContentPane.add(getTabbedPane(), BorderLayout.CENTER);
+			jContentPane.add(getToolBarPanel(), BorderLayout.NORTH);
+			jContentPane.add(getSplitPane(), BorderLayout.CENTER);
 		}
 		return jContentPane;
+	}
+
+	
+	private FileContentTreeView getFileContentTreeView () {
+		if (treeView == null) {
+			treeView = new FileContentTreeView(getNewDocument(), this);
+			treeView.setLayout(new BorderLayout());
+			treeView.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
+				@Override
+				public void valueChanged(TreeSelectionEvent e) {
+					refreshMenue();
+				}
+			});
+		}
+		return treeView;
+	}
+	
+	
+	private JSplitPane getSplitPane() {
+		if (splitPane == null) {
+			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+			splitPane.setLeftComponent(new JScrollPane(getFileContentTreeView()));
+			splitPane.setRightComponent(getTabbedPane());
+			splitPane.setResizeWeight(0.1);
+		}
+		return splitPane;
+	}
+	
+	
+	public PhyDE2AlignmentModel getSelectedAlignment () {
+		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null){
+			Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
+			if (selectedNode instanceof DefaultMutableTreeNode) {
+				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+				if (userObject instanceof PhyDE2AlignmentModel){
+					return (PhyDE2AlignmentModel) userObject;
+				}
+			}
+		}
+		return null;
 	}
 	
 	
@@ -329,6 +436,10 @@ public class MainFrame extends JFrame {
 			editMenu.setMnemonic('E');
 			editMenu.add(getUndoMenu());
 			editMenu.add(getRedoMenu());
+			editMenu.addSeparator();
+			editMenu.add(getActionManagement().get("edit.addContigAlignment"));
+			editMenu.add(getActionManagement().get("edit.addDefaultPhyDE2Alignment"));
+			editMenu.add(getActionManagement().get("edit.deleteAlignment"));
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addSequence"));
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));

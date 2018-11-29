@@ -29,6 +29,7 @@ import info.bioinfweb.commons.ProgramMainClass;
 import info.bioinfweb.commons.appversion.ApplicationType;
 import info.bioinfweb.commons.appversion.ApplicationVersion;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
+import info.bioinfweb.phyde2.gui.FileContentTreeView;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -81,7 +82,6 @@ public class Main extends ProgramMainClass {
 			public void run() {
 				try {
 					MainFrame window = MainFrame.getInstance();
-					//show frame
 					window.setVisible(true);
 					window.setIconImage(createImageIcon(ICON_PATH).getImage());
 				}

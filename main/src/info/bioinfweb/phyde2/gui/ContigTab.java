@@ -16,28 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.edit;
+package info.bioinfweb.phyde2.gui;
 
+import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
-import java.awt.event.ActionEvent;
+public class ContigTab extends Tab {
 
-import javax.swing.Action;
-import javax.swing.undo.UndoableEdit;
-
-import info.bioinfweb.phyde2.gui.MainFrame;
-
-
-
-@SuppressWarnings("serial")
-public class UndoToAction extends UndoRedoToAction {
-	public UndoToAction(MainFrame mainframe, UndoableEdit edit) {
-		super(mainframe, edit);
-		putValue(Action.NAME, edit.getUndoPresentationName()); 
+	private AlignmentArea consensusSequenceArea = null;
+			
+	public ContigTab(SingleReadContigAlignmentModel document) {
+		super(document);
+		consensusSequenceArea = new AlignmentArea(getAlignmentsContainer());
+		consensusSequenceArea.setAlignmentModel(document.getConsensusModel(), false);
+		getAlignmentsContainer().getAlignmentAreas().add(consensusSequenceArea);
+		consensusSequenceArea.setAllowVerticalScrolling(false);
 	}
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		getMainFrame().getActiveAlignment().getUndoManager().undoTo(edit);
+	public SingleReadContigAlignmentModel getDocument() {
+		return (SingleReadContigAlignmentModel)super.getDocument();
 	}
+	
+	
+
 }

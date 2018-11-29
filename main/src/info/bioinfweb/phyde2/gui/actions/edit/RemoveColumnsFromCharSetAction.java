@@ -48,7 +48,7 @@ public class RemoveColumnsFromCharSetAction extends AbstractPhyDEAction implemen
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set area where you want to remove columns.","Character set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		getMainFrame().getActiveDocument().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getActiveDocument(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
+		getMainFrame().getActiveAlignment().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
 	}
 
 	@Override

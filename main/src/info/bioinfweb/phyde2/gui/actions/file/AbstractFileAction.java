@@ -103,17 +103,17 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 
 	protected void writeFile() {
-		writeFile(getMainFrame().getActiveDocument().getFile(), Main.DEFAULT_FORMAT);
+		writeFile(getMainFrame().getActiveAlignment().getFile(), Main.DEFAULT_FORMAT);
 	}
 	
 	
 	private boolean checkForOverlappingCharSet () {
-		MapIterator<String, CharSet> it = getMainFrame().getActiveDocument().getCharSetModel().mapIterator();
+		MapIterator<String, CharSet> it = getMainFrame().getActiveAlignment().getCharSetModel().mapIterator();
 		//TODO Move to save related action
 		boolean overlappingCharSet = false;
 		while (it.hasNext()) {
 			it.next();
-			if (!it.getValue().isEmpty() && (it.getValue().last().getLastPos() > getMainFrame().getActiveDocument().getAlignmentModel().getMaxSequenceLength())) {
+			if (!it.getValue().isEmpty() && (it.getValue().last().getLastPos() > getMainFrame().getActiveAlignment().getAlignmentModel().getMaxSequenceLength())) {
 				overlappingCharSet = true;
 				break;
 			}
@@ -141,10 +141,10 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 	protected void writeFile(File file, String formatID) {
 		if (factory.getFormatInfo(formatID).isElementModeled(EventContentType.CHARACTER_SET, false)) {
-			int maxSeqLength  = getMainFrame().getActiveDocument().getAlignmentModel().getMaxSequenceLength();
+			int maxSeqLength  = getMainFrame().getActiveAlignment().getAlignmentModel().getMaxSequenceLength();
 			
 			if (checkForOverlappingCharSet()) {
-				MapIterator<String, CharSet> it = getMainFrame().getActiveDocument().getCharSetModel().mapIterator();
+				MapIterator<String, CharSet> it = getMainFrame().getActiveAlignment().getCharSetModel().mapIterator();
 				//TODO Move to save related action
 				while (it.hasNext())
 				{
@@ -163,10 +163,10 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
-			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getActiveDocument());
+			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getActiveAlignment());
 			factory.getWriter(formatID).writeDocument(documentAdapter, file, parameters);
 			
-			getMainFrame().getActiveDocument().setChanged(false);
+			getMainFrame().getActiveAlignment().setChanged(false);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -178,7 +178,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	protected boolean promptFileName() {
 		boolean result = (getFileChooser().showSaveDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION);
 		if (result) {
-			getMainFrame().getActiveDocument().setFile(getFileChooser().getSelectedFile());
+			getMainFrame().getActiveAlignment().setFile(getFileChooser().getSelectedFile());
 		}
 		return result;
 	}
@@ -194,7 +194,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	
 
 	protected boolean save() {
-		if (getMainFrame().getActiveDocument().getFile() == null) {
+		if (getMainFrame().getActiveAlignment().getFile() == null) {
 			return saveAs();
 		}
 		else {
@@ -205,10 +205,10 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	
 	   
 	public boolean handleUnsavedChanges() {
-		if (getMainFrame().getActiveDocument().isChanged()) {
+		if (getMainFrame().getActiveAlignment().isChanged()) {
 			String closingTab = getMainFrame().getActiveTabTitle();
-			if (getMainFrame().getActiveDocument().getFile() != null) {
-				closingTab = getMainFrame().getActiveDocument().getFile().getName();
+			if (getMainFrame().getActiveAlignment().getFile() != null) {
+				closingTab = getMainFrame().getActiveAlignment().getFile().getName();
 			}
 			
 			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes " + closingTab + ". Do you want to save the changes?", 

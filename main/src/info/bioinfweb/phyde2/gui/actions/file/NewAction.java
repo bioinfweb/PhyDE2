@@ -45,9 +45,9 @@ public class NewAction extends AbstractFileAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		getMainFrame().addDocument(new PhyDE2AlignmentModel());
-		getMainFrame().getActiveDocument().setFile(null);
-		getMainFrame().getActiveDocument().setChanged(false);
+		getMainFrame().showAlignment(new PhyDE2AlignmentModel());
+		getMainFrame().getActiveAlignment().setFile(null);
+		getMainFrame().getActiveAlignment().setChanged(false);
 	}
 
 

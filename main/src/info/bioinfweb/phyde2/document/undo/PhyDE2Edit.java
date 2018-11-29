@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben StÃ¶ver, Jonas Bohn, Kai MÃ¼ller
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,28 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.edit;
+package info.bioinfweb.phyde2.document.undo;
 
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-import javax.swing.undo.UndoableEdit;
-
+import info.bioinfweb.commons.swing.AbstractDocumentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
+import javax.swing.undo.UndoableEdit;
 
 
-@SuppressWarnings("serial")
-public class UndoToAction extends UndoRedoToAction {
-	public UndoToAction(MainFrame mainframe, UndoableEdit edit) {
-		super(mainframe, edit);
-		putValue(Action.NAME, edit.getUndoPresentationName()); 
+
+public abstract class PhyDE2Edit extends AbstractDocumentEdit {
+	public PhyDE2Edit() {
+		super();
 	}
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		getMainFrame().getActiveAlignment().getUndoManager().undoTo(edit);
+	protected void registerDocumentChange() {
+		MainFrame.getInstance().getActionManagement().refreshActionStatus();  //TODO Replace this call by DocumentChangeEvent processing in the future.
 	}
 }

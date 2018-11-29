@@ -54,7 +54,7 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(i));
 		}
 		
-		getMainFrame().getActiveDocument().executeEdit(new ReverseComplementEdit(getMainFrame().getActiveDocument(), 
+		getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementEdit(getMainFrame().getActiveAlignment(), 
 				selection.getFirstColumn(), selection.getLastColumn(), sequenceIDs));
 	}
 

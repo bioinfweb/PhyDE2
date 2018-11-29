@@ -51,7 +51,7 @@ public abstract class AbstractPhyDEAction extends ExtendedAbstractAction {
 				return null;
 			}		
 			else {
-				return getMainFrame().getActiveDocument().getCharSetModel().get(index);
+				return getMainFrame().getActiveAlignment().getCharSetModel().get(index);
 			}
 		}
 		else {

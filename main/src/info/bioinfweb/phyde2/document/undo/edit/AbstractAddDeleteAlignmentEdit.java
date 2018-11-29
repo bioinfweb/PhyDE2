@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben StÃ¶ver, Jonas Bohn, Kai MÃ¼ller
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,26 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo;
+package info.bioinfweb.phyde2.document.undo.edit;
 
 
-import javax.swing.undo.UndoableEdit;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.undo.DocumentEdit;
 
 
 
-public abstract class AlignmentEdit extends PhyDE2Edit implements UndoableEdit {
-	private PhyDE2AlignmentModel alignment;
-
+public abstract class AbstractAddDeleteAlignmentEdit extends DocumentEdit {
+	private PhyDE2AlignmentModel model;
 	
-	public AlignmentEdit(PhyDE2AlignmentModel alignment) {
-		super();
-		this.alignment = alignment;
+
+	public AbstractAddDeleteAlignmentEdit(Document document, PhyDE2AlignmentModel model) {
+		super(document);
+		this.model = model;
 	}
 
 	
-	public PhyDE2AlignmentModel getAlignment() {
-		return alignment;
+	public void addAlignmentModel() throws CannotRedoException {
+		getDocument().addAlignmentModel(model);
+		super.redo();
+	}
+
+
+
+	public void deleteAlignment() throws CannotUndoException {
+		getDocument().deleteAlignmentModel(model.getAlignmentModel().getID());
+		super.undo();
 	}
 }

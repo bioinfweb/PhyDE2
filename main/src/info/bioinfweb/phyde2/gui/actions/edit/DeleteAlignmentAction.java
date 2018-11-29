@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben St�ver, Jonas Bohn, Kai M�ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,37 +18,38 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
 
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.undo.edit.DeleteAlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
+import java.awt.event.ActionEvent;
 
-@SuppressWarnings("serial")
-public class UndoAction  extends AbstractPhyDEAction implements Action{
-	public UndoAction(MainFrame mainFrame) {
-		super(mainFrame);
-		putValue(Action.NAME, "Undo"); 
-		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_Z);
-		putValue(Action.SHORT_DESCRIPTION, "Undo"); 
-		loadSymbols("Undo");
+import javax.swing.Action;
+
+
+
+public class DeleteAlignmentAction extends AbstractPhyDEAction implements Action  {
+	public DeleteAlignmentAction(MainFrame mainframe) {
+		super(mainframe);
+		putValue(Action.NAME, "Delete alignment"); 
+		putValue(Action.SHORT_DESCRIPTION, "Delete alignment");
+		// TODO Auto-generated constructor stub
 	}
 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (getMainFrame().getActiveAlignment().getUndoManager().canUndo()) {
-			getMainFrame().getActiveAlignment().getUndoManager().undo();
-		}
+		PhyDE2AlignmentModel model = getMainFrame().getSelectedAlignment ();
+		getMainFrame().hideAlignment(model);
+		getMainFrame().getActiveAlignment().executeEdit(new DeleteAlignmentEdit(getMainFrame().getNewDocument(), model));
+		
 	}
 
-
+	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
-		setEnabled((document != null) && !getMainFrame().getActiveAlignment().getUndoManager().canUndo());
+		setEnabled ((document != null) && (getMainFrame().getSelectedAlignment () != null ));
 	}
 }

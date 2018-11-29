@@ -34,7 +34,7 @@ public class RedoToAction extends UndoRedoToAction{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		getMainFrame().getActiveDocument().getUndoManager().redoTo(edit);
+		getMainFrame().getActiveAlignment().getUndoManager().redoTo(edit);
 	}
 
 }

@@ -116,13 +116,13 @@ public class OpenAction extends AbstractFileAction {
 						charSetModel = charSetModels.iterator().next();
 					}
 					
-					getMainFrame().addDocument(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
+					getMainFrame().showAlignment(new PhyDE2AlignmentModel(alignmentModel, charSetModel));
 					
 					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 						
-						getMainFrame().getActiveDocument().setFile(getOpenFileChooser().getSelectedFile());
-						getMainFrame().getActiveDocument().setChanged(false);
+						getMainFrame().getActiveAlignment().setFile(getOpenFileChooser().getSelectedFile());
+						getMainFrame().getActiveAlignment().setChanged(false);
 						
 						// File contains more than one alignment or character set:
 						String message = "";
