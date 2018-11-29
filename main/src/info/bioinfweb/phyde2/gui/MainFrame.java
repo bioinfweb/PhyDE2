@@ -119,7 +119,11 @@ public class MainFrame extends JFrame {
 		return null;
 	}
 	
-	
+	public void hideAlignment (PhyDE2AlignmentModel document){
+		if (tabByAlignment(document) != null){
+			getTabbedPane().remove(tabByAlignment(document));
+		}
+	}
 	public void showAlignment(PhyDE2AlignmentModel document) {
 		Tab newTab = null;
 		String tabTitle;
