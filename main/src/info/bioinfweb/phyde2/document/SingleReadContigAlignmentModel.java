@@ -55,11 +55,13 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	}
 	
 	
-	public void addSingleRead(String sequenceName, PherogramAreaModel model) {
+	public String addSingleRead(String sequenceName, PherogramAreaModel model) {
 		if ((sequenceName != null) && (model != null)) {
 			String id = getAlignmentModel().addSequence(sequenceName);
 			pherogramModelMap.put(id, model);
+			return id;
 		}
+		return null;
 	}
 	
 	

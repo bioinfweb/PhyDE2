@@ -13,5 +13,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.libralign.io"/>
 	<classpathentry kind="lib" path="include/lib/commons-collections4-4.1.jar"/>
 	<classpathentry kind="lib" path="include/lib/commons-lang3-3.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/info.bioinfweb.libralign.biojava1"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.libralign.biojava1/include/lib/sequencing-1.9.2.jar"/>
+	<classpathentry kind="lib" path="/info.bioinfweb.libralign.biojava1/include/lib/core-1.9.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

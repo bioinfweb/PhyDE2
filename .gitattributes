@@ -89,6 +89,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/file/CloseTabAction.java -text svneol
 main/src/info/bioinfweb/phyde2/gui/actions/file/ExportAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/NewAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/OpenAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/file/OpenPherogramAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
