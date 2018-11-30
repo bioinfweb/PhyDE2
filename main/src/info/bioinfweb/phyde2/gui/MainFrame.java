@@ -152,24 +152,10 @@ public class MainFrame extends JFrame {
 				else {
 					newTab = new Tab(document);
 				}
-			
-				int i;
-				int e = 1;
 				
-				if (document.getAlignmentModel().getLabel() != null)
-				{
-					tabTitle = document.getAlignmentModel().getLabel();
-				}
 				
-				else {
-				tabTitle = "unsavedFile";
-				for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
-					if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
-						e += 1;
-					}
-				}
-				tabTitle = tabTitle + e;
-				}
+				tabTitle = document.getAlignmentModel().getLabel();
+				
 				tabbedPane.addTab(tabTitle, null, newTab, null);
 				tabbedPane.setSelectedComponent(newTab);
 				refreshMenue();

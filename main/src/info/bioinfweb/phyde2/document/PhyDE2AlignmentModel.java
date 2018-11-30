@@ -162,10 +162,6 @@ public class PhyDE2AlignmentModel {
 
 	@Override
 	public String toString() {
-		if (getAlignmentModel().getLabel() == null) {
-			return "<unnamend alignment>";
-		}
-		
 		return getAlignmentModel().getLabel();
 	}
 

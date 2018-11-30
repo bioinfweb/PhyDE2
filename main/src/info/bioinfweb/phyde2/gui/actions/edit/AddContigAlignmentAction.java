@@ -27,6 +27,7 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
 
 
@@ -41,10 +42,11 @@ public class AddContigAlignmentAction extends AbstractAddAlignmentAction impleme
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {		
 		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel();
-		addAlignment("Enter a label for the new contig alignment:", contig);
-		
+		String message = "Enter a label for the new contig alignment:";
+		String defaultLabel = "unnamedContig";	
+		addAlignment(contig, defaultLabel, message);
 	}
 
 	

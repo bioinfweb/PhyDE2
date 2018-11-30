@@ -26,6 +26,7 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
 
 
@@ -40,7 +41,9 @@ public class AddDefaultPhyDE2AlignmentAction extends AbstractAddAlignmentAction 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		DefaultPhyDE2AlignmentModel model = new DefaultPhyDE2AlignmentModel ();
-		addAlignment("Enter a label for the new alignment:", model);
+		String message = "Enter a label for the new alignment:";
+		String defaultLabel = "unnamedAlignment";
+		addAlignment(model, defaultLabel, message);
 	}
 	
 

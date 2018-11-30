@@ -35,21 +35,28 @@ public abstract class AbstractAddAlignmentAction extends AbstractPhyDEAction imp
 	}
 
 	
-	protected void addAlignment(String message, PhyDE2AlignmentModel model) {
+	protected void addAlignment(PhyDE2AlignmentModel model, String alternativeLabel, String message) {
 		String label = JOptionPane.showInputDialog(getMainFrame(), message);
-		//System.out.println("'" + label + "'");
-		if (label != null) {
-			model.getAlignmentModel().setID(getMainFrame().getNewDocument().generateUniqueID());
-			model.getAlignmentModel().setLabel(label);
-			if(getMainFrame().getNewDocument() == null){
-				System.out.println("getMainFrame().getActiveAlignment() is null! Gernerate new before adding alignment!");
-				//just for reminding the developer to care about this problem later.
-			}
-			else {
-				getMainFrame().getNewDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
-		
-			}
-			getMainFrame().showAlignment(model);
+		if (label.length() == 0) {
+			label = alternativeLabel;
+//			for (i = 0; i < tabbedPane.getComponentCount(); i += 1) {
+//				if (tabbedPane.getTitleAt(i).contains(tabTitle)) {
+//					l += 1;
+//				}
+//			}
+//			tabTitle = tabTitle + l;
+//			}
 		}
+		model.getAlignmentModel().setID(getMainFrame().getNewDocument().generateUniqueID());
+		model.getAlignmentModel().setLabel(label);
+		if(getMainFrame().getNewDocument() == null){
+			System.out.println("getMainFrame().getNewDocument() is null! Gernerate new before adding alignment!");
+			//just for reminding the developer to care about this problem later.
+		}
+		else {
+			getMainFrame().getNewDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
+	
+		}
+		getMainFrame().showAlignment(model);
 	}
 }
