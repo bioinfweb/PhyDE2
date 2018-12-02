@@ -27,9 +27,11 @@ import java.awt.Frame;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.GridBagLayout;
 
@@ -41,6 +43,7 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 
@@ -50,6 +53,8 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField sequenceNameTextField;
 	private JTextField filePathTextField;
+	private JFileChooser fileChooser = null;
+	private File selectedFile = null;
 
 	
 
@@ -109,8 +114,14 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 		{
 			JButton button = new JButton("...");
 			button.addActionListener(new ActionListener() {
+				
 				public void actionPerformed(ActionEvent e) {
 					//TODO onclickButtonAction
+					
+					
+					if (getOpenFileChooser().showDialog(owner,"add pherogram") == JFileChooser.APPROVE_OPTION){
+					selectedFile = getOpenFileChooser().getSelectedFile();
+					setFilePathTextField();					}
 				}
 			});
 			GridBagConstraints gbc_button = new GridBagConstraints();
@@ -122,7 +133,23 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 			getContentPane().add(getButtonsPanel());
 		}
 	}
-
+	
+	private JFileChooser getOpenFileChooser() {
+		//set allowed file formats
+		if (fileChooser == null) {
+			fileChooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+			        "SCF- and ab1-Files", "scf", "ab1");
+			    fileChooser.setFileFilter(filter);
+		}
+		return fileChooser;
+		
+	}
+	
+	public File getSelectedFile ()
+	{
+		return selectedFile;
+	}
 
 	@Override
 	protected void help() {
@@ -138,6 +165,9 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 		return filePathTextField.getText();
 	}
 
+	private void setFilePathTextField (){
+		filePathTextField.setText(getSelectedFile().getAbsolutePath());
+	}
 
 	@Override
 	protected boolean apply() {

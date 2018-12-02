@@ -22,11 +22,24 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.biojava.bio.chromatogram.Chromatogram;
+import org.biojava.bio.chromatogram.ChromatogramFactory;
+import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
+
+import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
+import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
@@ -40,6 +53,7 @@ import info.bioinfweb.phyde2.gui.dialogs.NewCharSetDialog;
 
 @SuppressWarnings("serial")
 public class AddSequenceAction extends AbstractPhyDEAction implements Action {
+	
 	public AddSequenceAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Add sequence"); 
@@ -49,7 +63,6 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		loadSymbols("Add");
 	}
 
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel){
@@ -62,8 +75,32 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel){
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			dialog.setVisible(true);
-			getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(dialog.getSequenceName());
+			if (dialog.getSelectedFile() != null) {
+				SingleReadContigAlignmentModel contig = (SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment();
+				Chromatogram chromatogram;
+				try {
+					chromatogram = ChromatogramFactory.create(new File (dialog.getSelectedFile().getAbsolutePath()));
+					PherogramProvider provider = new BioJavaPherogramProvider(chromatogram);
+					PherogramAreaModel pherogramModel = new PherogramAreaModel(provider);
+					
+					String id = contig.addSingleRead(dialog.getSequenceName(), pherogramModel);
+					contig.createPherogramSequence(id);
+					
+					AlignmentArea alignmentArea = getMainFrame().getActiveAlignmentArea();
+					PherogramArea pherogramDataArea = new PherogramArea(alignmentArea.getContentArea(), pherogramModel);
+					alignmentArea.getDataAreas().getSequenceAreas(id).add(pherogramDataArea);
+					
+					
+
+				} catch (UnsupportedChromatogramFormatException | IOException e1) {
+					
+					e1.printStackTrace();
+				} // TODO replace this with chosen file.
+			}
 			
+			else{
+			getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(dialog.getSequenceName());
+			}
 		}
 	}
 
