@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
@@ -58,7 +59,7 @@ public class ReverseComplementEdit extends AlignmentEdit {
 	private void reverseComplement() {
     	//SelectionModel selection = getReadsArea().getSelection();  
     	for (String sequenceID : sequenceIDs) {
-//			PherogramArea area = getPherogramArea(sequenceID);
+//		PherogramArea area = getPherogramArea(sequenceID);
 //			PherogramAreaModel pherogramAlignmentModel = area.getModel();
 //
 //            PherogramAlignmentRelation rightRelation = pherogramAlignmentModel.editableIndexByBaseCallIndex(

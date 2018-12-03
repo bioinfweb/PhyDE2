@@ -26,10 +26,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.Action;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.biojava.bio.chromatogram.Chromatogram;
 import org.biojava.bio.chromatogram.ChromatogramFactory;
@@ -46,7 +44,6 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
-import info.bioinfweb.phyde2.gui.dialogs.NewCharSetDialog;
 
 
 
@@ -87,15 +84,13 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 					contig.createPherogramSequence(id);
 					
 					AlignmentArea alignmentArea = getMainFrame().getActiveAlignmentArea();
-					PherogramArea pherogramDataArea = new PherogramArea(alignmentArea.getContentArea(), pherogramModel);
-					alignmentArea.getDataAreas().getSequenceAreas(id).add(pherogramDataArea);
-					
-					
+					PherogramArea pherogramDataArea = new PherogramArea(alignmentArea.getContentArea(), pherogramModel, getMainFrame().getPherogramFormats());
+					alignmentArea.getDataAreas().getSequenceAreas(id).add(pherogramDataArea);	
 
 				} catch (UnsupportedChromatogramFormatException | IOException e1) {
 					
 					e1.printStackTrace();
-				} // TODO replace this with chosen file.
+				}
 			}
 			
 			else{

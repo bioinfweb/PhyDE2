@@ -71,7 +71,7 @@ public class Tab extends JPanel {
 	protected MultipleAlignmentsContainer getAlignmentsContainer() {
 		if (container == null) { 
 			// Create main container instance (TIC component):
-			container = new MultipleAlignmentsContainer();
+			container = new MultipleAlignmentsContainer(MainFrame.getInstance().getEditSettings());
 					
 			// out head and main AlignmentArea in container:
 			sequenceIndexAlignmentArea = new AlignmentArea(container);

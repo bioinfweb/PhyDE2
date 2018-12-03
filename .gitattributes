@@ -89,7 +89,6 @@ main/src/info/bioinfweb/phyde2/gui/actions/file/CloseTabAction.java -text svneol
 main/src/info/bioinfweb/phyde2/gui/actions/file/ExportAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/NewAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/OpenAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/gui/actions/file/OpenPherogramAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/file/SaveAsAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/AboutAction.java -text svneol=unset#text/plain
@@ -97,6 +96,13 @@ main/src/info/bioinfweb/phyde2/gui/actions/help/BioinfWebMainPageAction.java -te
 main/src/info/bioinfweb/phyde2/gui/actions/help/PhyDEMainPageAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/TwitterAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/CutLeftAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/CutRightAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/DisplayQualityScoresAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/ShowHideBasecalllinesAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/ShowHideProbabilityValuesAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/SwitchInsertOverwriteAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/view/SwitchLeftRightInsertionAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AddSingleReadDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain

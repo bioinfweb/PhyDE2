@@ -57,6 +57,13 @@ import info.bioinfweb.phyde2.gui.actions.help.AboutAction;
 import info.bioinfweb.phyde2.gui.actions.help.BioinfWebMainPageAction;
 import info.bioinfweb.phyde2.gui.actions.help.PhyDEMainPageAction;
 import info.bioinfweb.phyde2.gui.actions.help.TwitterAction;
+import info.bioinfweb.phyde2.gui.actions.view.CutLeftAction;
+import info.bioinfweb.phyde2.gui.actions.view.CutRightAction;
+import info.bioinfweb.phyde2.gui.actions.view.DisplayQualityScoresAction;
+import info.bioinfweb.phyde2.gui.actions.view.ShowHideBasecalllinesAction;
+import info.bioinfweb.phyde2.gui.actions.view.ShowHideProbabilityValuesAction;
+import info.bioinfweb.phyde2.gui.actions.view.SwitchInsertOverwriteAction;
+import info.bioinfweb.phyde2.gui.actions.view.SwitchLeftRightInsertionAction;
 
 
 
@@ -98,6 +105,14 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.changecolorCharSet", new ChangeCharSetColorAction(mainFrame));
 		put("edit.renameCharSet", new RenameCharSetAction(mainFrame));
 		put("edit.reverseComplement", new ReverseComplementAction(mainFrame));
+		
+		put("view.switchLeftRightInsertion", new SwitchLeftRightInsertionAction(mainFrame));
+		put("view.switchInsertOverwriteAction", new SwitchInsertOverwriteAction (mainFrame));
+		put("view.showHideBasecalllinesAction", new ShowHideBasecalllinesAction(mainFrame));
+		put("view.displayQualityScoresAction", new DisplayQualityScoresAction(mainFrame));
+		put("view.showHideProbabilityValuesAction", new ShowHideProbabilityValuesAction(mainFrame));
+		put("view.cutRightAction", new CutRightAction(mainFrame));
+		put("view.cutLeftAction", new CutLeftAction(mainFrame));
 		
 		// TODO add Links
 		put("help.about", new AboutAction(mainFrame));

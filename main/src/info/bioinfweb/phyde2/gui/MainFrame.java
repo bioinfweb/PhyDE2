@@ -22,6 +22,8 @@ package info.bioinfweb.phyde2.gui;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
+import info.bioinfweb.libralign.editsettings.EditSettings;
+import info.bioinfweb.libralign.pherogram.PherogramFormats;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
@@ -73,10 +75,14 @@ public class MainFrame extends JFrame {
 	private JMenu fileMenu = null;
 	private JMenu editMenu = null;
 	private JMenu helpMenu = null;
+	private JMenu viewMenu = null;
 	private JMenu undoMenu = null;
 	private JMenu redoMenu = null;
 	private JPanel toolBarPanel = null;
 	private FileContentTreeView treeView = null;
+	
+	private EditSettings editSettings = new EditSettings();
+	private PherogramFormats pherogramFortmats = new PherogramFormats();
 
 	/**
 	 * Create the application.
@@ -86,6 +92,13 @@ public class MainFrame extends JFrame {
 		initialize();
 	}
 	
+	public EditSettings getEditSettings (){
+		return editSettings;
+	}
+	
+	public PherogramFormats getPherogramFormats(){
+		return pherogramFortmats;
+	}
 	
 	public static MainFrame getInstance() {
 		if (firstInstance == null) {
@@ -207,6 +220,7 @@ public class MainFrame extends JFrame {
 	
 	public PhyDE2AlignmentModel getActiveAlignment() {
 		if (getActiveTab() != null) {
+			//System.out.println(getActiveTab().getDocument().getClass());
 			return getActiveTab().getDocument();
 		}
 		else {
@@ -410,11 +424,32 @@ public class MainFrame extends JFrame {
 			mainMenu = new JMenuBar();
 			mainMenu.add(getFileMenu());
 			mainMenu.add(getEditMenu());
+			mainMenu.add(getViewMenu());
 			mainMenu.add(getHelpMenu());
+	
 		}
 		return mainMenu;
 	}
 	
+	private JMenu getViewMenu (){
+		if (viewMenu == null){
+			viewMenu = new JMenu();
+			viewMenu.setText("View");
+			viewMenu.setMnemonic('V');
+			viewMenu.add(getActionManagement().get("view.displayQualityScoresAction"));
+			viewMenu.addSeparator();
+			viewMenu.add(getActionManagement().get("view.switchLeftRightInsertion"));
+			viewMenu.add(getActionManagement().get("view.switchInsertOverwriteAction"));
+			viewMenu.add(getActionManagement().get("view.showHideBasecalllinesAction"));
+			viewMenu.add(getActionManagement().get("view.showHideProbabilityValuesAction"));
+			viewMenu.addSeparator();
+			viewMenu.add(getActionManagement().get("view.cutRightAction"));
+			viewMenu.add(getActionManagement().get("view.cutLeftAction"));
+			
+			
+		}
+		return viewMenu;
+	}
 	
 	private JMenu getEditMenu() {
 		if (editMenu == null) {
