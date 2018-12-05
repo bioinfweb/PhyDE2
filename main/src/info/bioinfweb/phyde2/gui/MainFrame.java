@@ -40,6 +40,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -54,6 +55,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.apache.commons.collections4.iterators.UnmodifiableIterator;
 
 
 
@@ -94,13 +97,16 @@ public class MainFrame extends JFrame {
 		initialize();
 	}
 	
+	
 	public EditSettings getEditSettings (){
 		return editSettings;
 	}
 	
+	
 	public PherogramFormats getPherogramFormats(){
 		return pherogramFortmats;
 	}
+	
 	
 	public static MainFrame getInstance() {
 		if (firstInstance == null) {
@@ -117,9 +123,15 @@ public class MainFrame extends JFrame {
 	
 	public void addDocument(Document document) {
 		documentList.add(document);
+		//TODO fire after document added
 	}
 	
 	
+	public Iterator<Document> documentIterator() {
+		return UnmodifiableIterator.unmodifiableIterator(documentList.iterator());
+	}
+
+
 	private Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
 		for (int j = 0; j < getTabbedPane().getComponentCount(); j++) {
 			Tab tab = (Tab)getTabbedPane().getComponentAt(j); 
@@ -181,13 +193,9 @@ public class MainFrame extends JFrame {
 				tabbedPane.setSelectedComponent(newTab);
 			}
 		}
-	
-		
 
 	
-
-	
-	public Document getNewDocument() {  //TODO Remove this property when getDocument() returns an instance of Document.
+	public Document getNewDocument() {  //TODO Remove this property when FileContentTreeView uses documentList.
 		if (documentList.isEmpty()) {
 			addDocument(new Document());
 		}
