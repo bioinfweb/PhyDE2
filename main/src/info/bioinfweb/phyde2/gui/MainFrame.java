@@ -73,6 +73,8 @@ public class MainFrame extends JFrame {
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JSplitPane splitPane = null;
+	private JSplitPane contentSplitPane = null;
+	private OriginalPherogram originalPherogramPanel = null;
 	private JTabbedPane tabbedPane = null;
 	private JPanel jContentPane = null;  // ?
 	
@@ -375,6 +377,7 @@ public class MainFrame extends JFrame {
 	public void setVisible(boolean flag) {
 		super.setVisible(flag);
 		getSplitPane().setDividerLocation(0.3);
+		getContentSplitPane().setDividerLocation(0.7);
 	}
 
 
@@ -414,10 +417,29 @@ public class MainFrame extends JFrame {
 		if (splitPane == null) {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setLeftComponent(new JScrollPane(getFileContentTreeView()));
-			splitPane.setRightComponent(getTabbedPane());
+			splitPane.setRightComponent(getContentSplitPane());
 			splitPane.setResizeWeight(0.1);
 		}
 		return splitPane;
+	}
+	
+	private JSplitPane getContentSplitPane(){
+		if (contentSplitPane == null){
+			contentSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+			contentSplitPane.setTopComponent(getTabbedPane());
+			contentSplitPane.setBottomComponent(getOriginalPherogramPanel());
+			contentSplitPane.setResizeWeight(0.9);
+
+		
+		}
+		return contentSplitPane;
+	}
+	
+	private OriginalPherogram getOriginalPherogramPanel(){
+		if (originalPherogramPanel == null){
+			originalPherogramPanel = new OriginalPherogram();
+		}
+		return originalPherogramPanel;
 	}
 	
 	
