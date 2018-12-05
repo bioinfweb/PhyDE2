@@ -18,20 +18,77 @@
  */
 package info.bioinfweb.phyde2.gui;
 
+
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
+import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
+import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
+import info.bioinfweb.libralign.model.events.TokenChangeEvent;
+import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.phyde2.document.PherogramChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
-public class ContigTab extends Tab {
 
+
+public class ContigTab extends Tab {
 	private AlignmentArea consensusSequenceArea = null;
 			
-	public ContigTab(SingleReadContigAlignmentModel document) {
-		super(document);
+	
+	public ContigTab(SingleReadContigAlignmentModel contigAlignment) {
+		super(contigAlignment);
 		consensusSequenceArea = new AlignmentArea(getAlignmentsContainer());
-		consensusSequenceArea.setAlignmentModel(document.getConsensusModel(), false);
+		consensusSequenceArea.setAlignmentModel(contigAlignment.getConsensusModel(), false);
 		getAlignmentsContainer().getAlignmentAreas().add(consensusSequenceArea);
 		consensusSequenceArea.setAllowVerticalScrolling(false);
+		contigAlignment.addDocumentListener(new PhyDE2AlignmentModelListener() {
+			
+			@Override
+			public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
+				PherogramAreaModel pherogramModel = e.getPherogramModel();
+				String sequenceID = e.getSequenceID();
+				AlignmentArea alignmentArea = MainFrame.getInstance().getActiveAlignmentArea();
+
+				switch (e.getListChangeType()) {
+				case INSERTION: 	
+					if (pherogramModel != null){
+						PherogramArea pherogramDataArea = new PherogramArea(alignmentArea.getContentArea(), pherogramModel, MainFrame.getInstance().getPherogramFormats());
+						alignmentArea.getDataAreas().getSequenceAreas(sequenceID).add(pherogramDataArea);
+					}
+				
+					break;
+					
+				case DELETION:
+					if (pherogramModel != null){
+						alignmentArea.getDataAreas().getSequenceAreas(sequenceID).clear();  //TODO Is this or should this be done in LibrAlign?
+					}
+					break;
+				
+				default:
+					break;
+				
+			}
+			
+				
+			}
+			
+			@Override
+			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	
@@ -39,7 +96,4 @@ public class ContigTab extends Tab {
 	public SingleReadContigAlignmentModel getDocument() {
 		return (SingleReadContigAlignmentModel)super.getDocument();
 	}
-	
-	
-
 }

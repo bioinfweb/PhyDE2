@@ -30,6 +30,7 @@ main/src/info/bioinfweb/phyde2/document/DefaultPhyDE2AlignmentModel.java -text s
 main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/DocumentChangeEvent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/DocumentListener.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/PherogramChangeEvent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModelChangeEvent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModelListener.java -text svneol=unset#text/plain
@@ -44,6 +45,7 @@ main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEditFactory.java -tex
 main/src/info/bioinfweb/phyde2/document/undo/DocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/PhyDE2Edit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractAddDeleteAlignmentEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractAddDeleteSequenceEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddAlignmentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddCharSetEdit.java -text svneol=unset#text/plain
@@ -54,6 +56,7 @@ main/src/info/bioinfweb/phyde2/document/undo/edit/AddSequenceEdit.java -text svn
 main/src/info/bioinfweb/phyde2/document/undo/edit/ChangeCharSetColorEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteAlignmentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteCharSetEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteSequenceEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementEdit.java -text svneol=unset#text/plain

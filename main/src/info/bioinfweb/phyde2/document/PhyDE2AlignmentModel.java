@@ -57,7 +57,7 @@ public class PhyDE2AlignmentModel {
 	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
 	private CharSetDataModel charSetModel;
 	
-	private Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
+	protected Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
 	
 	
 	public PhyDE2AlignmentModel() {

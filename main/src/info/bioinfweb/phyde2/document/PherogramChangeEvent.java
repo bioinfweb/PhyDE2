@@ -16,40 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo.edit;
+package info.bioinfweb.phyde2.document;
 
 
+import info.bioinfweb.commons.collections.ListChangeType;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 
 
-public class AddSequenceEdit extends AbstractAddDeleteSequenceEdit {
-	public AddSequenceEdit(PhyDE2AlignmentModel alignmentModel, String sequenceName, PherogramAreaModel pherogramModel) {
-		super(alignmentModel, null, sequenceName, pherogramModel);
+public class PherogramChangeEvent extends PhyDE2AlignmentModelChangeEvent{
+
+	private ListChangeType listChangeType;
+	private PherogramAreaModel pherogramModel;
+	private String sequenceID;
+	
+	
+	public PherogramChangeEvent(PhyDE2AlignmentModel source, ListChangeType listChangeType, PherogramAreaModel pherogramModel, String sequenceID) {
+		super(source);
+		this.listChangeType = listChangeType;
+		this.pherogramModel = pherogramModel;
+		this.sequenceID = sequenceID;
 	}
 
 
-	@Override
-	public void redo() throws CannotRedoException {
-		addSequence();
-		super.redo();
+	public ListChangeType getListChangeType() {
+		return listChangeType;
 	}
 
 
-	@Override
-	public void undo() throws CannotUndoException {
-		deleteSequence();
-		super.undo();
+	public PherogramAreaModel getPherogramModel() {
+		return pherogramModel;
 	}
-
-
-	@Override
-	public String getPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public String getSequenceID (){
+		return sequenceID;
 	}
 }

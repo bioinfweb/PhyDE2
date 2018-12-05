@@ -19,7 +19,9 @@
 package info.bioinfweb.phyde2.document;
 
 
+import info.bioinfweb.commons.collections.ListChangeType;
 import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
@@ -45,38 +47,53 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 		//for testing:
 		
 		String id = consensusModel.addSequence("Consensus");
-		for (int i = 0; i < 10; i++) {
-			consensusModel.appendToken(id, 'A');
-			consensusModel.appendToken(id, 'T');
-			consensusModel.appendToken(id, 'G');
-			consensusModel.appendToken(id, 'C');	
-		}
+//		for (int i = 0; i < 10; i++) {
+//			consensusModel.appendToken(id, 'A');
+//			consensusModel.appendToken(id, 'T');
+//			consensusModel.appendToken(id, 'G');
+//			consensusModel.appendToken(id, 'C');	
+//		}
 
 	}
 	
 	
-	public String addSingleRead(String sequenceName, PherogramAreaModel model) {
-		if ((sequenceName != null) && (model != null)) {
-			String sequenceID = getAlignmentModel().addSequence(sequenceName);
-			//createPherogramSequence(sequenceID); Die sequenceID ist hier ja noch nicht bekannt..
+	public void addPherogram(String sequenceID, PherogramAreaModel model) {
+		if ((sequenceID != null) && (model != null)) {
 			pherogramModelMap.put(sequenceID, model);
-			return sequenceID;
+			fireAfterPherogramAddedOrDeleted(ListChangeType.INSERTION, model, sequenceID);
 		}
-		return null;
+		else {
+			throw new NullPointerException("sequenceID and model must not be null.");
+		}
 	}
 	
-	public void createPherogramSequence (String sequenceID){
+
+	public void createPherogramSequence(String sequenceID){  //TODO Move to AddSequenceEdit and use underlyingModel
 		PherogramAreaModel model = getPherogramModel(sequenceID);
 		if (model != null){
 			for (int j = 0; j < model.getPherogramProvider().getSequenceLength(); j++) {
 				getAlignmentModel().appendToken(sequenceID, model.getPherogramProvider().getBaseCall(j));
 			}
+			
 		}
 	}
 	
 	
+	protected void fireAfterPherogramAddedOrDeleted(ListChangeType listChangeType, PherogramAreaModel pherogramModel, String sequenceID) {
+		PherogramChangeEvent e = new PherogramChangeEvent(this, listChangeType, pherogramModel, sequenceID);
+		for (PhyDE2AlignmentModelListener listener : listeners){
+			listener.afterPherogramAddedOrDeleted(e);
+		}
+	}
+	
 	public PherogramAreaModel getPherogramModel(String sequenceID) {
 		return pherogramModelMap.get(sequenceID);
+	}
+	
+	public void removePherogramModel(String sequenceID){
+		PherogramAreaModel pherogramModel = pherogramModelMap.remove(sequenceID);
+		fireAfterPherogramAddedOrDeleted(ListChangeType.DELETION, pherogramModel, sequenceID);
+	
 	}
 
 

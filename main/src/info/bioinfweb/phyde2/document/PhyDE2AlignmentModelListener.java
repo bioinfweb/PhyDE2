@@ -19,6 +19,8 @@
 package info.bioinfweb.phyde2.document;
 
 
+import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
+
 import java.util.EventListener;
 
 
@@ -28,4 +30,5 @@ public interface PhyDE2AlignmentModelListener extends EventListener {
 	
 	public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e);
 	
+	public void afterPherogramAddedOrDeleted(PherogramChangeEvent e);
 }

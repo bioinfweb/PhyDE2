@@ -26,12 +26,14 @@ import info.bioinfweb.libralign.editsettings.EditSettings;
 import info.bioinfweb.libralign.pherogram.PherogramFormats;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PherogramChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
+
 import java.awt.BorderLayout;
 import java.awt.List;
 import java.awt.event.KeyEvent;
@@ -128,11 +130,14 @@ public class MainFrame extends JFrame {
 		return null;
 	}
 	
+	
 	public void hideAlignment (PhyDE2AlignmentModel document){
 		if (tabByAlignment(document) != null){
 			getTabbedPane().remove(tabByAlignment(document));
 		}
 	}
+	
+	
 	public void showAlignment(PhyDE2AlignmentModel document) {
 		Tab newTab = null;
 		String tabTitle;
@@ -156,11 +161,14 @@ public class MainFrame extends JFrame {
 						refreshWindowTitle();
 						refreshTabTitle();
 					}
+
+					@Override
+					public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {}
 				});
 				
 				
 				if (document instanceof SingleReadContigAlignmentModel){
-				newTab = new ContigTab ((SingleReadContigAlignmentModel)document);	
+					newTab = new ContigTab ((SingleReadContigAlignmentModel)document);	
 				}
 				else {
 					newTab = new Tab(document);
@@ -171,8 +179,7 @@ public class MainFrame extends JFrame {
 				
 				tabbedPane.addTab(tabTitle, null, newTab, null);
 				tabbedPane.setSelectedComponent(newTab);
-				refreshMenue();
-				}
+			}
 		}
 	
 		
@@ -267,7 +274,8 @@ public class MainFrame extends JFrame {
 			tabbedPane = new JTabbedPane();
 			tabbedPane.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent changeEvent) {
-					getInstance().refreshWindowTitle();
+					refreshWindowTitle();
+					refreshMenue();
 				}
 			});
 		}

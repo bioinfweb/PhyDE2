@@ -30,6 +30,7 @@ import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.DocumentChangeEvent;
 import info.bioinfweb.phyde2.document.DocumentListener;
+import info.bioinfweb.phyde2.document.PherogramChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
@@ -103,6 +104,12 @@ public class FileContentTreeView extends JTree {
 
 			@Override
 			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
+
+			@Override
+			public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	
 		addMouseListener(new MouseAdapter() {

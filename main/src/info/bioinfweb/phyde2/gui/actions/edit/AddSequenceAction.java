@@ -41,6 +41,7 @@ import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
+import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
@@ -65,7 +66,8 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel){
 		String name = JOptionPane.showInputDialog(getMainFrame(), "New sequence name");
 			if (name != null) {
-				getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(name);
+				//getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(name);		
+				getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), name, null));
 			}
 		}
 		
@@ -73,19 +75,12 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			dialog.setVisible(true);
 			if (dialog.getSelectedFile() != null) {
-				SingleReadContigAlignmentModel contig = (SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment();
 				Chromatogram chromatogram;
 				try {
 					chromatogram = ChromatogramFactory.create(new File (dialog.getSelectedFile().getAbsolutePath()));
 					PherogramProvider provider = new BioJavaPherogramProvider(chromatogram);
 					PherogramAreaModel pherogramModel = new PherogramAreaModel(provider);
-					
-					String id = contig.addSingleRead(dialog.getSequenceName(), pherogramModel);
-					contig.createPherogramSequence(id);
-					
-					AlignmentArea alignmentArea = getMainFrame().getActiveAlignmentArea();
-					PherogramArea pherogramDataArea = new PherogramArea(alignmentArea.getContentArea(), pherogramModel, getMainFrame().getPherogramFormats());
-					alignmentArea.getDataAreas().getSequenceAreas(id).add(pherogramDataArea);	
+					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), pherogramModel));
 
 				} catch (UnsupportedChromatogramFormatException | IOException e1) {
 					
@@ -94,7 +89,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			}
 			
 			else{
-			getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(dialog.getSequenceName());
+				getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));
 			}
 		}
 	}
