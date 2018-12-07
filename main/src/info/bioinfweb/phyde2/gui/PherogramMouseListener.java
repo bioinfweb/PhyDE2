@@ -18,37 +18,29 @@
  */
 package info.bioinfweb.phyde2.gui;
 
-import javax.swing.JComponent;
 
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
-import info.bioinfweb.libralign.pherogram.model.PherogramComponentModel;
-import info.bioinfweb.tic.SwingComponentFactory;
 import info.bioinfweb.tic.input.TICMouseAdapter;
 import info.bioinfweb.tic.input.TICMouseEvent;
+
+
 
 public class PherogramMouseListener extends TICMouseAdapter{
 	private final PherogramArea area;
 
+	
 	public PherogramMouseListener(PherogramArea area) {
 		super();
 		this.area = area;
 	}
 
+	
 	@Override
 	public boolean mousePressed(TICMouseEvent event) {
 		if (event.getClickCount() == 2) { // Double click
-			PherogramComponentModel model = new PherogramComponentModel(area.getModel().getPherogramProvider());
-			//Set PherogramComponentModel to PherogramView
-			MainFrame.getInstance().getPherogramView().getTraceCurveView().setModel(model);
-			//Create Swing Component
-			JComponent c = SwingComponentFactory.getInstance().getSwingComponent(MainFrame.getInstance().getPherogramView());
-			//Set Swing Component to Bottom Component of SplitPane.
-			MainFrame.getInstance().setOriginalPherogram(c);
+			MainFrame.getInstance().getPherogramView().getTraceCurveView().setModel(area.getModel());
 			System.out.println("double clicked");
 		}
-		return super.mousePressed(event);
+		return true;
 	}	
-	
-	
-
 }

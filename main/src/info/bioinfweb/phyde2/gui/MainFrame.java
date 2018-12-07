@@ -77,10 +77,9 @@ public class MainFrame extends JFrame {
 	
 	private JSplitPane splitPane = null;
 	private JSplitPane contentSplitPane = null;
-	private PherogramView originalPherogram = null;
+	private PherogramView pherogramView = null;
 	private JTabbedPane tabbedPane = null;
 	private JPanel jContentPane = null;  // ?
-	private JComponent jOriginalPherogram = null;
 	
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
@@ -95,6 +94,7 @@ public class MainFrame extends JFrame {
 	private EditSettings editSettings = new EditSettings();
 	private PherogramFormats pherogramFortmats = new PherogramFormats();
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -270,33 +270,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	/**
-	 * This method initializes toolBarPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getToolBarPanel() {
-		if (toolBarPanel == null) {
-			toolBarPanel = new ToolBarPanel(this);
-		}
-		return toolBarPanel;
-	}
-	
-	
-	private JTabbedPane getTabbedPane() {
-		if (tabbedPane == null) {
-			tabbedPane = new JTabbedPane();
-			tabbedPane.addChangeListener(new ChangeListener() {
-				public void stateChanged(ChangeEvent changeEvent) {
-					refreshWindowTitle();
-					refreshMenue();
-				}
-			});
-		}
-		return tabbedPane;
-	}
-	
-	
 	public void refreshWindowTitle() {
 		StringBuilder title = new StringBuilder();
 		title.append(Main.APPLICATION_NAME);
@@ -334,6 +307,7 @@ public class MainFrame extends JFrame {
 		setActiveTabTitleTip(title.toString(), tip.toString());
 	}
 	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -345,7 +319,6 @@ public class MainFrame extends JFrame {
 		setContentPane(getJContentPane());
 		
 		addWindowListener(new WindowAdapter() {
-			
 			@Override
 			public void windowClosing(WindowEvent e) {
 				int i;
@@ -364,7 +337,6 @@ public class MainFrame extends JFrame {
 					setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 				}
 			}
-				
 
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -374,6 +346,33 @@ public class MainFrame extends JFrame {
 		refreshWindowTitle();
 		
 		refreshMenue();
+	}
+	
+	
+	/**
+	 * This method initializes toolBarPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getToolBarPanel() {
+		if (toolBarPanel == null) {
+			toolBarPanel = new ToolBarPanel(this);
+		}
+		return toolBarPanel;
+	}
+	
+	
+	private JTabbedPane getTabbedPane() {
+		if (tabbedPane == null) {
+			tabbedPane = new JTabbedPane();
+			tabbedPane.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent changeEvent) {
+					refreshWindowTitle();
+					refreshMenue();
+				}
+			});
+		}
+		return tabbedPane;
 	}
 	
 	
@@ -427,41 +426,26 @@ public class MainFrame extends JFrame {
 		return splitPane;
 	}
 	
+	
 	private JSplitPane getContentSplitPane(){
 		if (contentSplitPane == null){
 			contentSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 			contentSplitPane.setTopComponent(getTabbedPane());
-			contentSplitPane.setBottomComponent(add(getJOriginalPherogram()));
+			contentSplitPane.setBottomComponent(SwingComponentFactory.getInstance().getSwingComponent(getPherogramView()));
 			contentSplitPane.setResizeWeight(0.9);
-
-		
 		}
 		return contentSplitPane;
 	}
 	
-	private JComponent getJOriginalPherogram(){
-		if (jOriginalPherogram == null){
-			jOriginalPherogram = new JComponent() {};
-		}
-		return jOriginalPherogram;
-	}
 	
-	public void setOriginalPherogram (JComponent j){
-		if (getJOriginalPherogram() != null){
-			//add Swing Component to Bottom Component (=jOriginalPherogram) of SplitPane
-			getJOriginalPherogram().add(j);
-			getJOriginalPherogram().repaint();
-		}
-	}
-
 	public PherogramView getPherogramView(){
-		if (originalPherogram == null){
-			originalPherogram = new PherogramView();
-	}
-		return originalPherogram;
+		if (pherogramView == null){
+			pherogramView = new PherogramView();
+		}
+		return pherogramView;
 	}
 	
-	
+
 	
 	public PhyDE2AlignmentModel getSelectedAlignment () {
 		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null){
@@ -489,6 +473,7 @@ public class MainFrame extends JFrame {
 		return mainMenu;
 	}
 	
+	
 	private JMenu getViewMenu (){
 		if (viewMenu == null){
 			viewMenu = new JMenu();
@@ -508,6 +493,7 @@ public class MainFrame extends JFrame {
 		}
 		return viewMenu;
 	}
+	
 	
 	private JMenu getEditMenu() {
 		if (editMenu == null) {
