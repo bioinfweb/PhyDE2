@@ -24,6 +24,7 @@ import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.editsettings.EditSettings;
 import info.bioinfweb.libralign.pherogram.PherogramFormats;
+import info.bioinfweb.libralign.pherogram.view.PherogramView;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PherogramChangeEvent;
@@ -33,6 +34,7 @@ import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.actions.ActionManagement;
 import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
+import info.bioinfweb.tic.SwingComponentFactory;
 
 import java.awt.BorderLayout;
 import java.awt.List;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -74,9 +77,10 @@ public class MainFrame extends JFrame {
 	
 	private JSplitPane splitPane = null;
 	private JSplitPane contentSplitPane = null;
-	private OriginalPherogram originalPherogramPanel = null;
+	private PherogramView originalPherogram = null;
 	private JTabbedPane tabbedPane = null;
 	private JPanel jContentPane = null;  // ?
+	private JComponent jOriginalPherogram = null;
 	
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
@@ -427,7 +431,7 @@ public class MainFrame extends JFrame {
 		if (contentSplitPane == null){
 			contentSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 			contentSplitPane.setTopComponent(getTabbedPane());
-			contentSplitPane.setBottomComponent(getOriginalPherogramPanel());
+			contentSplitPane.setBottomComponent(add(getJOriginalPherogram()));
 			contentSplitPane.setResizeWeight(0.9);
 
 		
@@ -435,12 +439,28 @@ public class MainFrame extends JFrame {
 		return contentSplitPane;
 	}
 	
-	private OriginalPherogram getOriginalPherogramPanel(){
-		if (originalPherogramPanel == null){
-			originalPherogramPanel = new OriginalPherogram();
+	private JComponent getJOriginalPherogram(){
+		if (jOriginalPherogram == null){
+			jOriginalPherogram = new JComponent() {};
 		}
-		return originalPherogramPanel;
+		return jOriginalPherogram;
 	}
+	
+	public void setOriginalPherogram (JComponent j){
+		if (getJOriginalPherogram() != null){
+			//add Swing Component to Bottom Component (=jOriginalPherogram) of SplitPane
+			getJOriginalPherogram().add(j);
+			getJOriginalPherogram().repaint();
+		}
+	}
+
+	public PherogramView getPherogramView(){
+		if (originalPherogram == null){
+			originalPherogram = new PherogramView();
+	}
+		return originalPherogram;
+	}
+	
 	
 	
 	public PhyDE2AlignmentModel getSelectedAlignment () {

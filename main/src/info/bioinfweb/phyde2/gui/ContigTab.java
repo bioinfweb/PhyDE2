@@ -58,6 +58,7 @@ public class ContigTab extends Tab {
 				case INSERTION: 	
 					if (pherogramModel != null){
 						PherogramArea pherogramDataArea = new PherogramArea(alignmentArea.getContentArea(), pherogramModel, MainFrame.getInstance().getPherogramFormats());
+						pherogramDataArea.addMouseListener(new PherogramMouseListener(pherogramDataArea));
 						alignmentArea.getDataAreas().getSequenceAreas(sequenceID).add(pherogramDataArea);
 					}
 				
@@ -65,6 +66,7 @@ public class ContigTab extends Tab {
 					
 				case DELETION:
 					if (pherogramModel != null){
+						//muss hier vorher auch der Listener removed werden?
 						alignmentArea.getDataAreas().getSequenceAreas(sequenceID).clear();  //TODO Is this or should this be done in LibrAlign?
 					}
 					break;
