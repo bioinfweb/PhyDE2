@@ -24,6 +24,7 @@ import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.editsettings.EditSettings;
 import info.bioinfweb.libralign.pherogram.PherogramFormats;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.libralign.pherogram.view.PherogramView;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.Document;
@@ -441,6 +442,7 @@ public class MainFrame extends JFrame {
 	public PherogramView getPherogramView(){
 		if (pherogramView == null){
 			pherogramView = new PherogramView();
+			pherogramView.assignSize();
 		}
 		return pherogramView;
 	}
@@ -454,6 +456,19 @@ public class MainFrame extends JFrame {
 				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
 				if (userObject instanceof PhyDE2AlignmentModel){
 					return (PhyDE2AlignmentModel) userObject;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public PherogramAreaModel getSelectedPherogram (){
+		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null){
+			Object selectedNode= getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
+			if(selectedNode instanceof DefaultMutableTreeNode){
+				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+				if(userObject instanceof PherogramAreaModel){
+					return (PherogramAreaModel) userObject;
 				}
 			}
 		}

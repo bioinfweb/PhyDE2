@@ -26,6 +26,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.DocumentChangeEvent;
@@ -39,7 +40,7 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 
 public class FileContentTreeView extends JTree {
-	private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
+	//private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
 	
 	
 	//public FileContentTreeView(Document document, MainFrame mainframe) {
@@ -69,6 +70,52 @@ public class FileContentTreeView extends JTree {
 					((DefaultMutableTreeNode)file.getChildAt(1)).add(new DefaultMutableTreeNode(e.getModel()));
 					getModel().reload(file.getChildAt(1));
 				}
+				
+				e.getModel().addDocumentListener(new PhyDE2AlignmentModelListener() {
+					@Override
+					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+						//TODO Implement
+					}
+
+					@Override
+					public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
+
+					@Override
+					public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
+					DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
+					DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
+					
+					PhyDE2AlignmentModel phyDE2Model = e.getSource();
+					PherogramAreaModel pherogramModel = e.getPherogramModel();
+					String sequneceID = e.getSequenceID();
+						
+					switch (e.getListChangeType()) {
+					case INSERTION: 	
+						if (phyDE2Model instanceof SingleReadContigAlignmentModel){
+							for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
+							if (phyDE2Model.getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+										((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
+										((DefaultMutableTreeNode) file.getChildAt(1).getChildAt(i)).add(new DefaultMutableTreeNode(pherogramModel));
+										// TODO add setLabel() to PherogramAreaModel so that the file name could be set as label when loading the Pherogram
+										// and use the label using pherogramModel.getLabel() to display only the file name-
+										getModel().reload(file.getChildAt(1).getChildAt(i));
+							}
+							}
+					}
+					else if (phyDE2Model instanceof DefaultPhyDE2AlignmentModel)	{
+					
+					}
+						break;
+					case DELETION:
+						break;
+					default:
+						break;
+						
+					}
+				}});
+			
+				
+				
 			}
 
 			@Override
@@ -96,22 +143,7 @@ public class FileContentTreeView extends JTree {
 				}
 		}});
 		
-		model.addDocumentListener(new PhyDE2AlignmentModelListener() {
-			@Override
-			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
-				//TODO Implement
-			}
-
-			@Override
-			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
-
-			@Override
-			public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	
+		
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -122,6 +154,13 @@ public class FileContentTreeView extends JTree {
 					mainframe.showAlignment(model);
 				   // System.out.println("double clicked");
 				}
+				}
+				
+				if (mainframe.getSelectedPherogram() != null){
+					if (e.getClickCount()== 2){
+						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram();
+						mainframe.getPherogramView().getTraceCurveView().setModel(pherogramModel.getOwner().getModel());
+					}
 				}
 			}
 		});
