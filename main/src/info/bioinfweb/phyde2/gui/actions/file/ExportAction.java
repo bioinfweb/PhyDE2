@@ -22,105 +22,42 @@ package info.bioinfweb.phyde2.gui.actions.file;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-
 import javax.swing.Action;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import info.bioinfweb.commons.io.ContentExtensionFileFilter.TestStrategy;
-import info.bioinfweb.jphyloio.events.type.EventContentType;
-import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
-import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
-import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
-
+import info.bioinfweb.phyde2.gui.dialogs.ExportDialog;
 
 
 @SuppressWarnings("serial")
-public class ExportAction extends AbstractFileAction{
-	private JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
+public class ExportAction extends AbstractFileAction {
 	
-	private JFileChooser exportfileChooser = null;
-	
-	
-	public ExportAction (MainFrame mainframe) {
-		super(mainframe);
+
+	public ExportAction(MainFrame mainFrame) {
+		super(mainFrame);
 		putValue(Action.NAME, "Export..."); 
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
 		putValue(Action.SHORT_DESCRIPTION, "Export"); 
 		putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('E', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
-	
-	
-	private JFileChooser getExportFileChooser() {
-		if (exportfileChooser == null) {
-			exportfileChooser = new JFileChooser() {
-			    @Override
-			    public void approveSelection(){
-			        File f = getSelectedFile();
-			        JPhyloIOContentExtensionFileFilter filter = (JPhyloIOContentExtensionFileFilter)getFileFilter();
-			        if (!filter.accept(f)) {
-			        	f = new File(f.getAbsolutePath() + "." + filter.getDefaultExtension());
-			        	setSelectedFile(f);
-			        }
 
-			        if(f.exists()) {
-			            switch(JOptionPane.showConfirmDialog(this, "The file already exists. Do you want to overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION)) {
-			                case JOptionPane.YES_OPTION:
-			                    super.approveSelection();
-			                    return;
-			                case JOptionPane.NO_OPTION:
-			                    return;
-			                case JOptionPane.CLOSED_OPTION:
-			                    return;
-			                case JOptionPane.CANCEL_OPTION:
-			                    cancelSelection();
-			                    return;
-			            }
-			        }
-			        super.approveSelection();  
-			    }
-			};
-			//can not save in "all supported formats" option
-			exportfileChooser.setAcceptAllFileFilterUsed(false);
-			
-	        for (String formatID : factory.getFormatIDsSet()) {
-				JPhyloIOFormatInfo info = factory.getFormatInfo(formatID);
-				if (info.isElementModeled(EventContentType.ALIGNMENT, false)) {
-					JPhyloIOContentExtensionFileFilter filter = info.createFileFilter(TestStrategy.BOTH);
-					exportfileChooser.addChoosableFileFilter(filter);
-				}
-			}
-	        exportfileChooser.setDialogTitle("Export File");
-		} 
-		return exportfileChooser;
-	}
-	
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		try {
-			if (promptExportFileName()) {
-				writeFile(getExportFileChooser().getSelectedFile(), ((JPhyloIOContentExtensionFileFilter)getExportFileChooser().getFileFilter()).getFormatID());
+	public void actionPerformed(ActionEvent e) {
+		ExportDialog dialog = new ExportDialog(getMainFrame());
+		dialog.setName("");
+		if (dialog.execute()) {
+			try {
+				writeFile(dialog.getSelectedFile(), dialog.getFormatID());
 			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
+			}
+			
 		}
-		catch (Exception ex){
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-	
-	
-	//show save Dialog, set File, set File format
-	protected boolean promptExportFileName() {
-		boolean result = (getExportFileChooser().showDialog(getMainFrame(), "Export") == JFileChooser.APPROVE_OPTION);
-		if (result) {
-	    	getMainFrame().getActiveAlignment().setFile(getExportFileChooser().getSelectedFile());
-		}
-		return result;
 	}
 
 

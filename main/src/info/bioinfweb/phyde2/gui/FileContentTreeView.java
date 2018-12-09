@@ -39,6 +39,7 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 
 
+@SuppressWarnings("serial")
 public class FileContentTreeView extends JTree {
 	//private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
 	

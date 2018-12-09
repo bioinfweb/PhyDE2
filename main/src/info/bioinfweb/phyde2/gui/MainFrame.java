@@ -402,7 +402,7 @@ public class MainFrame extends JFrame {
 	}
 
 	
-	private FileContentTreeView getFileContentTreeView () {
+	public FileContentTreeView getFileContentTreeView () {
 		if (treeView == null) {
 			treeView = new FileContentTreeView(getNewDocument(), this);
 			treeView.setLayout(new BorderLayout());

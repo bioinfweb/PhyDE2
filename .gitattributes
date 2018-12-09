@@ -66,6 +66,7 @@ main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/PherogramMouseListener.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/Tab.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ToolBarPanel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/TreeView.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/AbstractPhyDEAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/ActionManagement.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AbstractAddAlignmentAction.java -text svneol=unset#text/plain
@@ -109,6 +110,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/view/SwitchInsertOverwriteAction.java
 main/src/info/bioinfweb/phyde2/gui/actions/view/SwitchLeftRightInsertionAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AddSingleReadDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/dialogs/ExportDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
 main/src/resources/Splash.png -text
 main/src/resources/about/ApacheLicense.html -text svneol=unset#text/plain
