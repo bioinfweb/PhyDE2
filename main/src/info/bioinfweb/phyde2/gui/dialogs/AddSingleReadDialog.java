@@ -54,8 +54,6 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 	private JTextField sequenceNameTextField;
 	private JTextField filePathTextField;
 	private JFileChooser fileChooser = null;
-	private File selectedFile = null;
-
 	
 
 	public AddSingleReadDialog(Frame owner) {
@@ -112,17 +110,13 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 			filePathTextField.setColumns(10);
 		}
 		{
-			JButton button = new JButton("...");
+			JButton button = new JButton("Select local file...");
 			button.addActionListener(new ActionListener() {
-				
 				public void actionPerformed(ActionEvent e) {
-					//TODO onclickButtonAction
-					
-					
 					if (getOpenFileChooser().showDialog(owner,"add pherogram") == JFileChooser.APPROVE_OPTION){
-					selectedFile = getOpenFileChooser().getSelectedFile();
-					setFilePathTextField();					}
-				}
+						filePathTextField.setText(getOpenFileChooser().getSelectedFile().getAbsolutePath());  //TODO toURI().toURL().toString()
+					}
+				}			
 			});
 			GridBagConstraints gbc_button = new GridBagConstraints();
 			gbc_button.gridx = 2;
@@ -146,29 +140,24 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 		
 	}
 	
-	public File getSelectedFile ()
-	{
-		return selectedFile;
-	}
 
 	@Override
 	protected void help() {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 	public String getSequenceName(){
 		return sequenceNameTextField.getText();
 	}
 	
+	
 	public String getFilePath(){
 		return filePathTextField.getText();
 	}
 
-	private void setFilePathTextField (){
-		filePathTextField.setText(getSelectedFile().getAbsolutePath());
-	}
-
+	
 	@Override
 	protected boolean apply() {
 	

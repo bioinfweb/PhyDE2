@@ -16,41 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo.edit;
+package info.bioinfweb.phyde2.document;
 
+
+import java.net.URL;
 
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.phyde2.document.PherogramReference;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 
 
-public class AddSequenceEdit extends AbstractAddDeleteSequenceEdit {
-	public AddSequenceEdit(PhyDE2AlignmentModel alignmentModel, String sequenceName, PherogramReference pherogramReference) {
-		super(alignmentModel, null, sequenceName, pherogramReference);
+public class PherogramReference {
+	private PherogramAreaModel model;
+	private URL url;
+	
+	
+	public PherogramReference(PherogramAreaModel model, URL url) {
+		super();
+		this.model = model;
+		this.url = url;
+	}
+
+
+	public PherogramAreaModel getModel() {
+		return model;
+	}
+
+
+	public URL getURL() {
+		return url;
 	}
 
 
 	@Override
-	public void redo() throws CannotRedoException {
-		addSequence();
-		super.redo();
-	}
-
-
-	@Override
-	public void undo() throws CannotUndoException {
-		deleteSequence();
-		super.undo();
-	}
-
-
-	@Override
-	public String getPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toString() {
+		return getURL().toString();
 	}
 }

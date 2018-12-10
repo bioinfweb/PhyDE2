@@ -39,6 +39,7 @@ import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
 import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
@@ -74,15 +75,20 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel){
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			dialog.setVisible(true);
-			if (dialog.getSelectedFile() != null) {
+			if ((dialog.getFilePath() != null) && !"".equals(dialog.getFilePath())) {
 				Chromatogram chromatogram;
 				try {
-					chromatogram = ChromatogramFactory.create(new File (dialog.getSelectedFile().getAbsolutePath()));
+					File file = new File(dialog.getFilePath());
+					//TODO move to "neues Objekt".
+					//neuesObjekt(URL); 
+					chromatogram = ChromatogramFactory.create(file);  //TODO ChromatogramFactory.create(url.openStream())
 					PherogramProvider provider = new BioJavaPherogramProvider(chromatogram);
+					
 					PherogramAreaModel pherogramModel = new PherogramAreaModel(provider);
-					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), pherogramModel));
-
-				} catch (UnsupportedChromatogramFormatException | IOException e1) {
+					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), 
+							new PherogramReference(pherogramModel, file.toURI().toURL())));
+				}
+				catch (UnsupportedChromatogramFormatException | IOException e1) {
 					
 					e1.printStackTrace();
 				}

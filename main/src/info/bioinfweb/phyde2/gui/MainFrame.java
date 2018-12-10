@@ -19,6 +19,7 @@
 package info.bioinfweb.phyde2.gui;
 
 
+import info.bioinfweb.commons.collections.observable.ObservableList;
 import info.bioinfweb.jphyloio.formats.JPhyloIOFormatIDs;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
@@ -29,6 +30,7 @@ import info.bioinfweb.libralign.pherogram.view.PherogramView;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PherogramChangeEvent;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
@@ -42,6 +44,7 @@ import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -73,7 +76,7 @@ public class MainFrame extends JFrame {
 	
 	private static MainFrame firstInstance = null;
 	
-	private ArrayList<Document> documentList = new ArrayList<>();
+	private ObservableList<Document> documentList = new ObservableList<>(new ArrayList<>());
 	private ActionManagement actionManagement = new ActionManagement(this);
 	
 	private JSplitPane splitPane = null;
@@ -128,14 +131,19 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	public void addDocument(Document document) {
+	public void addDocument(Document document) {  //TODO Remove
 		documentList.add(document);
 		//TODO fire after document added
 	}
 	
 	
-	public Iterator<Document> documentIterator() {
+	public Iterator<Document> documentIterator() {  //TODO Remove
 		return UnmodifiableIterator.unmodifiableIterator(documentList.iterator());
+	}
+
+
+	public ObservableList<Document> getDocumentList() {
+		return documentList;
 	}
 
 
@@ -168,7 +176,7 @@ public class MainFrame extends JFrame {
 			}
 			
 			else {
-				document.addDocumentListener(new PhyDE2AlignmentModelListener() {
+				document.addAlignmentListener(new PhyDE2AlignmentModelListener() {
 					@Override
 					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
 						refreshWindowTitle();
@@ -447,10 +455,9 @@ public class MainFrame extends JFrame {
 		return pherogramView;
 	}
 	
-
 	
-	public PhyDE2AlignmentModel getSelectedAlignment () {
-		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null){
+	public PhyDE2AlignmentModel getSelectedAlignment() {
+		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null) {
 			Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
 			if (selectedNode instanceof DefaultMutableTreeNode) {
 				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
@@ -462,13 +469,14 @@ public class MainFrame extends JFrame {
 		return null;
 	}
 	
-	public PherogramAreaModel getSelectedPherogram (){
-		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null){
+	
+	public PherogramReference getSelectedPherogram() {
+		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null) {
 			Object selectedNode= getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
 			if(selectedNode instanceof DefaultMutableTreeNode){
 				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
-				if(userObject instanceof PherogramAreaModel){
-					return (PherogramAreaModel) userObject;
+				if(userObject instanceof PherogramReference){
+					return (PherogramReference) userObject;
 				}
 			}
 		}

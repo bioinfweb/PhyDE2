@@ -214,4 +214,15 @@ public class Document {
 			listener.afterAlignmentModelDeleted(e);
 		}
 	}
+
+
+	@Override
+	public String toString() {
+		if (getFile() != null) {
+			return getFile().getAbsolutePath();
+		}
+		else {
+			return "Unsaved document";
+		}
+	}
 }

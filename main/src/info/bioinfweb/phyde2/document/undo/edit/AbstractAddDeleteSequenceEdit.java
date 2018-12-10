@@ -25,6 +25,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.LibrAlignSwingAlignmentEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingSequenceEdit;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
@@ -35,16 +36,16 @@ import info.bioinfweb.phyde2.document.undo.AlignmentModelEdit;
 public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 	private String sequenceName;
 	private String sequenceID;
-	private PherogramAreaModel pherogramModel;
+	private PherogramReference pherogramReference;
 	
 	
 	public AbstractAddDeleteSequenceEdit(PhyDE2AlignmentModel alignmentModel, String sequenceID, String sequenceName, 
-			PherogramAreaModel pherogramModel) {
+			PherogramReference pherogramReference) {
 		
 		super(alignmentModel);
 		this.sequenceID = sequenceID;
 		this.sequenceName = sequenceName;
-		this.pherogramModel = pherogramModel;
+		this.pherogramReference = pherogramReference;
 	}
 	
 	
@@ -57,13 +58,13 @@ public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 			getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName, sequenceID);
 		}
 		
-		if (getAlignment() instanceof SingleReadContigAlignmentModel && pherogramModel != null) {
-			System.out.println(pherogramModel);
+		if (getAlignment() instanceof SingleReadContigAlignmentModel && pherogramReference != null) {
+			System.out.println(pherogramReference);
 			
-			for (int j = 0; j < pherogramModel.getPherogramProvider().getSequenceLength(); j++) {
-				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramModel.getPherogramProvider().getBaseCall(j));
+			for (int j = 0; j < pherogramReference.getModel().getPherogramProvider().getSequenceLength(); j++) {
+				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getModel().getPherogramProvider().getBaseCall(j));
 			}
-			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramModel);
+			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
 		}
 		super.redo();
 	}

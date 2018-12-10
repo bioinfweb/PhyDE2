@@ -18,38 +18,40 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+
+import info.bioinfweb.phyde2.document.PherogramReference;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+
 
 public class DeleteSequenceEdit extends AbstractAddDeleteSequenceEdit {
-
 	public DeleteSequenceEdit(PhyDE2AlignmentModel alignmentModel,
-			String sequenceID, String sequenceName,
-			PherogramAreaModel pherogramModel) {
-		super(alignmentModel, sequenceID, sequenceName, pherogramModel);
-		// TODO Auto-generated constructor stub
+			String sequenceID, String sequenceName,	PherogramReference pherogramReference) {
+		
+		super(alignmentModel, sequenceID, sequenceName, pherogramReference);
 	}
 
+	
 	@Override
 	public void redo() throws CannotRedoException {
 		deleteSequence();
 		super.redo();
 	}
 
+	
 	@Override
 	public void undo() throws CannotUndoException {
 		addSequence();
 		super.undo();
 	}
 	
+	
 	@Override
 	public String getPresentationName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 }

@@ -167,7 +167,7 @@ public class PhyDE2AlignmentModel {
 
 
 	
-	public void addDocumentListener(PhyDE2AlignmentModelListener listener) {
+	public void addAlignmentListener(PhyDE2AlignmentModelListener listener) {
 		listeners.add(listener);
 	}
 	

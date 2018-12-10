@@ -21,11 +21,16 @@ package info.bioinfweb.phyde2.gui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import info.bioinfweb.commons.collections.observable.ListAddEvent;
+import info.bioinfweb.commons.collections.observable.ListChangeListener;
+import info.bioinfweb.commons.collections.observable.ListRemoveEvent;
+import info.bioinfweb.commons.collections.observable.ListReplaceEvent;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
@@ -56,8 +61,47 @@ public class FileContentTreeView extends JTree {
 		file.add(contigs);
 		root.add(file);
 		getModel().reload();
+		//mainFrame.addDocumentListListener()
+		mainframe.getDocumentList().addListChangeListener(new ListChangeListener<Document>() {
+			
+			@Override
+			public void beforeElementsRemoved(ListRemoveEvent<Document, Object> event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeElementsAdded(ListAddEvent<Document> event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeElementReplaced(ListReplaceEvent<Document> event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterElementsRemoved(ListRemoveEvent<Document, Document> event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterElementsAdded(ListAddEvent<Document> event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterElementReplaced(ListReplaceEvent<Document> event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
-		document.addDocumentListener(new DocumentListener() {
+		document.addDocumentListener(new DocumentListener() {  //TODO Move this to listener above.
 			@Override
 			public void afterAlignmentModelAdded(DocumentChangeEvent e) {
 				DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
@@ -72,7 +116,7 @@ public class FileContentTreeView extends JTree {
 					getModel().reload(file.getChildAt(1));
 				}
 				
-				e.getModel().addDocumentListener(new PhyDE2AlignmentModelListener() {
+				e.getModel().addAlignmentListener(new PhyDE2AlignmentModelListener() {
 					@Override
 					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
 						//TODO Implement
@@ -87,21 +131,19 @@ public class FileContentTreeView extends JTree {
 					DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
 					
 					PhyDE2AlignmentModel phyDE2Model = e.getSource();
-					PherogramAreaModel pherogramModel = e.getPherogramModel();
 					String sequneceID = e.getSequenceID();
-						
+					URL url = e.getPherogramReference().getURL();
 					switch (e.getListChangeType()) {
 					case INSERTION: 	
 						if (phyDE2Model instanceof SingleReadContigAlignmentModel){
 							for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
 							if (phyDE2Model.getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
-										((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())){
-										((DefaultMutableTreeNode) file.getChildAt(1).getChildAt(i)).add(new DefaultMutableTreeNode(pherogramModel));
-										// TODO add setLabel() to PherogramAreaModel so that the file name could be set as label when loading the Pherogram
-										// and use the label using pherogramModel.getLabel() to display only the file name-
-										getModel().reload(file.getChildAt(1).getChildAt(i));
+									((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())) {
+							
+								((DefaultMutableTreeNode) file.getChildAt(1).getChildAt(i)).add(new DefaultMutableTreeNode(e.getPherogramReference()));
+								getModel().reload(file.getChildAt(1).getChildAt(i));
 							}
-							}
+						}
 					}
 					else if (phyDE2Model instanceof DefaultPhyDE2AlignmentModel)	{
 					
@@ -157,10 +199,10 @@ public class FileContentTreeView extends JTree {
 				}
 				}
 				
-				if (mainframe.getSelectedPherogram() != null){
+				if (mainframe.getSelectedPherogram() != null) {
 					if (e.getClickCount()== 2){
-						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram();
-						mainframe.getPherogramView().getTraceCurveView().setModel(pherogramModel.getOwner().getModel());
+						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram().getModel();
+						mainframe.getPherogramView().getTraceCurveView().setModel(pherogramModel);
 					}
 				}
 			}

@@ -48,10 +48,7 @@ public class Main extends ProgramMainClass {
 	private static Main firstInstance = null;
 	
 	
-	/**
-	 * Launch the application.
-	 */
-	public Main(){
+	private Main() {
 		super(new ApplicationVersion(0, 2, 0, 90, ApplicationType.ALPHA));
 	}
 	

@@ -20,21 +20,21 @@ package info.bioinfweb.phyde2.document;
 
 
 import info.bioinfweb.commons.collections.ListChangeType;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 
 
 
 public class PherogramChangeEvent extends PhyDE2AlignmentModelChangeEvent{
-
 	private ListChangeType listChangeType;
-	private PherogramAreaModel pherogramModel;
+	private PherogramReference pherogramReference;
 	private String sequenceID;
 	
 	
-	public PherogramChangeEvent(PhyDE2AlignmentModel source, ListChangeType listChangeType, PherogramAreaModel pherogramModel, String sequenceID) {
+	public PherogramChangeEvent(PhyDE2AlignmentModel source, ListChangeType listChangeType, PherogramReference pherogramReference, 
+			String sequenceID) {
+		
 		super(source);
 		this.listChangeType = listChangeType;
-		this.pherogramModel = pherogramModel;
+		this.pherogramReference = pherogramReference;
 		this.sequenceID = sequenceID;
 	}
 
@@ -44,8 +44,8 @@ public class PherogramChangeEvent extends PhyDE2AlignmentModelChangeEvent{
 	}
 
 
-	public PherogramAreaModel getPherogramModel() {
-		return pherogramModel;
+	public PherogramReference getPherogramReference() {
+		return pherogramReference;
 	}
 	
 	public String getSequenceID (){
