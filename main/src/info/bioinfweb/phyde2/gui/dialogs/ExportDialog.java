@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.gui.dialogs;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -91,10 +92,13 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
+			jContentPane.setLayout(new BorderLayout());
+					
+					
+//					BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			
 			JPanel formatPanel = new JPanel();
-			jContentPane.add(formatPanel);
+			jContentPane.add(formatPanel, BorderLayout.NORTH);
 			GridBagLayout gbl_formatPanel = new GridBagLayout();
 			gbl_formatPanel.columnWidths = new int[]{0, 0, 0};
 			gbl_formatPanel.rowHeights = new int[]{0, 0};
@@ -142,7 +146,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	        formatPanel.add(cb, gbc_formatBox);
 	        
 	        
-			jContentPane.add(getTreeView(), null);
+			jContentPane.add(getTreeView(), BorderLayout.CENTER);
 			
 			// Calling checking mechanism on mouse click
 	        treeView.addMouseListener(new MouseListener() {
@@ -180,8 +184,11 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 				}         
 	        });
 			
+	        JPanel fusedPanels = new JPanel(new BorderLayout());
+			jContentPane.add(fusedPanels, BorderLayout.SOUTH);
+			
 			JPanel namePanel = new JPanel();
-			jContentPane.add(namePanel);
+			fusedPanels.add(namePanel, BorderLayout.NORTH);
 			GridBagLayout gbl_namePanel = new GridBagLayout();
 			gbl_namePanel.columnWidths = new int[]{0, 0, 0};
 			gbl_namePanel.rowHeights = new int[]{0, 0};
@@ -220,7 +227,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 				}
 			});
 			
-			jContentPane.add(getButtonsPanel(), null);
+			fusedPanels.add(getButtonsPanel(), BorderLayout.SOUTH);
 			getApplyButton().setVisible(false);
 		}
 		return jContentPane;
@@ -295,9 +302,10 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 				       // intercept the dialog created by JFileChooser
 				       JDialog dialog = super.createDialog(parent);
 				       dialog.setModal(true);  // set modality (or setModalityType)
+				       dialog.setAlwaysOnTop(true);
 				       return dialog;
 				   }
-			};			
+			};
 		}
 		
 		exportFileChooser.setAcceptAllFileFilterUsed(false);
