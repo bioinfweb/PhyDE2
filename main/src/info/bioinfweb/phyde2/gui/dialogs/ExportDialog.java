@@ -320,8 +320,8 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	}
 	
 	
-	public File getSelectedFile() {
-		return exportFileChooser.getSelectedFile();
+	public String getSelectedFile() {
+		return nameTextField.getText();
 	}
 	
 	

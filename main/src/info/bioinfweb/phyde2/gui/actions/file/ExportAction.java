@@ -22,6 +22,8 @@ package info.bioinfweb.phyde2.gui.actions.file;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -49,12 +51,15 @@ public class ExportAction extends AbstractFileAction {
 		ExportDialog dialog = new ExportDialog(getMainFrame());
 		dialog.setName("");
 		if (dialog.execute()) {
-			try {
-				writeFile(dialog.getSelectedFile(), dialog.getFormatID());
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
+			if (dialog.getSelectedFile() != null && !dialog.getSelectedFile().equals("")) {
+				try {
+					File file = new File(dialog.getSelectedFile());
+					writeFile(file, dialog.getFormatID());
+				}
+				catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(getMainFrame(), ex.getMessage(), "Error while export file", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			
 		}
