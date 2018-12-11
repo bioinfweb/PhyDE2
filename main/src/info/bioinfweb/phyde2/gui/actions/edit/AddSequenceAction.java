@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -39,6 +41,7 @@ import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
 import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PherogramProviderByURL;
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
@@ -76,22 +79,26 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			dialog.setVisible(true);
 			if ((dialog.getFilePath() != null) && !"".equals(dialog.getFilePath())) {
-				Chromatogram chromatogram;
-				try {
-					File file = new File(dialog.getFilePath());
-					//TODO move to "neues Objekt".
-					//neuesObjekt(URL); 
-					chromatogram = ChromatogramFactory.create(file);  //TODO ChromatogramFactory.create(url.openStream())
-					PherogramProvider provider = new BioJavaPherogramProvider(chromatogram);
-					
-					PherogramAreaModel pherogramModel = new PherogramAreaModel(provider);
-					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), 
-							new PherogramReference(pherogramModel, file.toURI().toURL())));
-				}
-				catch (UnsupportedChromatogramFormatException | IOException e1) {
-					
-					e1.printStackTrace();
-				}
+				
+				
+					try {
+						File file = new File(dialog.getFilePath());
+						URL url = file.toURI().toURL();
+						PherogramAreaModel pherogramModel = new PherogramAreaModel(PherogramProviderByURL.getInstance().getPherogramProvider(url));
+						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), 
+								new PherogramReference(pherogramModel, file.toURI().toURL())));
+					} catch (MalformedURLException e1) {
+						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
+						e1.printStackTrace();
+					} catch (UnsupportedChromatogramFormatException e1) {
+						
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
+						//TODO: maybe more information for the user?
+					}
+	
+			
 			}
 			
 			else{

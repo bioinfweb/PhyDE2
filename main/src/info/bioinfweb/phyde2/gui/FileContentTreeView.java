@@ -102,8 +102,6 @@ public class FileContentTreeView extends JTree {
 
 							@Override
 							public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
-							DefaultMutableTreeNode root = (DefaultMutableTreeNode)getModel().getRoot();
-							DefaultMutableTreeNode file = (DefaultMutableTreeNode)root.getChildAt(0);
 							
 							PhyDE2AlignmentModel phyDE2Model = e.getSource();
 							String sequneceID = e.getSequenceID();

@@ -52,14 +52,12 @@ public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 	public void addSequence() throws CannotRedoException {
 		if (sequenceID == null) {
 			sequenceID = getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName);
-			System.out.println(sequenceID);
 		}
 		else {
 			getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName, sequenceID);
 		}
 		
 		if (getAlignment() instanceof SingleReadContigAlignmentModel && pherogramReference != null) {
-			System.out.println(pherogramReference);
 			
 			for (int j = 0; j < pherogramReference.getModel().getPherogramProvider().getSequenceLength(); j++) {
 				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getModel().getPherogramProvider().getBaseCall(j));
