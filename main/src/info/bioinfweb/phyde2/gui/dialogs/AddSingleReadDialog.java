@@ -145,7 +145,7 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 	}
 	
 	
-	public String getFilePath(){
+	public String getSelectedURL(){
 		return filePathTextField.getText();
 	}
 

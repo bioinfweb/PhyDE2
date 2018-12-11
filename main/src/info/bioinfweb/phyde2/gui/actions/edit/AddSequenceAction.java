@@ -79,22 +79,25 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel){
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			if (dialog.execute()) {
-				if ((dialog.getFilePath() != null) && (!"".equals(dialog.getFilePath()))) {
+				if ((dialog.getSelectedURL() != null) && (!"".equals(dialog.getSelectedURL()))) {
 					try {
-						File file = new File(dialog.getFilePath());
-						URL url = file.toURI().toURL();
+						
+						URL url = new URL(dialog.getSelectedURL());
 						PherogramAreaModel pherogramModel = new PherogramAreaModel(PherogramProviderByURL.getInstance().getPherogramProvider(url));
 						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), 
-								new PherogramReference(pherogramModel, file.toURI().toURL())));
-					} catch (MalformedURLException e1) {
+								new PherogramReference(pherogramModel, url)));
+					} 
+					catch (MalformedURLException e1) {
 						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
 						e1.printStackTrace();
-					} catch (UnsupportedChromatogramFormatException e1) {
+					} 
+					catch (UnsupportedChromatogramFormatException e1) {
 						
 						e1.printStackTrace();
-					} catch (IOException e1) {
+					}
+					catch (IOException e1) {
 						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
-						
+						e1.printStackTrace();
 						//TODO: maybe more information for the user?
 					}
 				}
