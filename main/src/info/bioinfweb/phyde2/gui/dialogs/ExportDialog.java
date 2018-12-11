@@ -30,11 +30,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -43,6 +43,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.tree.TreePath;
 
@@ -53,6 +54,7 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOContentExtensionFileFilter;
 import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.TreeView;
 
@@ -67,6 +69,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	private JComboBox<String> cb = null;
 	private HashMap<String, String> jComboBoxTranslator = new HashMap<>();
 	private HashMap<String, Integer> allowedSelectedAlignments = new HashMap<>();
+	public Set<PhyDE2AlignmentModel> alignmentSet = new HashSet<>();
 	
 	
 	public ExportDialog(Frame owner) {
@@ -93,9 +96,6 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
-					
-					
-//					BoxLayout(getJContentPane(), BoxLayout.Y_AXIS));
 			
 			JPanel formatPanel = new JPanel();
 			jContentPane.add(formatPanel, BorderLayout.NORTH);
@@ -146,7 +146,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	        formatPanel.add(cb, gbc_formatBox);
 	        
 	        
-			jContentPane.add(getTreeView(), BorderLayout.CENTER);
+			jContentPane.add(new JScrollPane(getTreeView()), BorderLayout.CENTER);
 			
 			// Calling checking mechanism on mouse click
 	        treeView.addMouseListener(new MouseListener() {
@@ -289,7 +289,6 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 		boolean result = (getExportFileChooser().showDialog(owner, "OK") == JFileChooser.APPROVE_OPTION);
 		if (result) {
 	    	owner.getSelectedDocument().setFile(getExportFileChooser().getSelectedFile());
-	    	//TODO: check if getSelectedDocument() is the needed argument.
 		}
 		return result;
 	}
@@ -344,6 +343,18 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
+		else if(treeView.getSelectedAlignmentsCount() == 0) {
+			switch (JOptionPane.showConfirmDialog(jContentPane, "You did not choose any alignments. Do you want to generate an empty file?", "Warning", JOptionPane.YES_NO_OPTION)) {
+			case JOptionPane.YES_OPTION:
+				alignmentSet = treeView.getSelectedAlignments();
+				return true;
+			case JOptionPane.NO_OPTION:
+				return false;
+			case JOptionPane.CLOSED_OPTION:
+				return false;
+			};
+		}
+		alignmentSet = treeView.getSelectedAlignments();
 		return true;
 	}
 }

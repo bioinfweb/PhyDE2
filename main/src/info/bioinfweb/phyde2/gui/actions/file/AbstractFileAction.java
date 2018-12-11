@@ -100,11 +100,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 		return fileChooser;
 	}
-
-
-	protected void writeFile() {
-		writeFile(getMainFrame().getSelectedDocument().getFile(), Main.DEFAULT_FORMAT);
-	}
 	
 	
 	private boolean checkForOverlappingCharSet () {
@@ -137,9 +132,13 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		return false;
 	}
 	
+
+	protected void writeFile() {
+		writeFile(getMainFrame().getSelectedDocument().getFile(), Main.DEFAULT_FORMAT, new PhyDEDocumentDataAdapter(getMainFrame().getSelectedDocument()));
+	}
 	
 
-	protected void writeFile(File file, String formatID) {
+	protected void writeFile(File file, String formatID, PhyDEDocumentDataAdapter documentAdapter) {
 		if (factory.getFormatInfo(formatID).isElementModeled(EventContentType.CHARACTER_SET, false)) {
 			int maxSeqLength  = getMainFrame().getActiveAlignment().getAlignmentModel().getMaxSequenceLength();
 			
@@ -163,7 +162,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
-			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getSelectedDocument());
 			factory.getWriter(formatID).writeDocument(documentAdapter, file, parameters);
 			
 			getMainFrame().getActiveAlignment().setChanged(false);

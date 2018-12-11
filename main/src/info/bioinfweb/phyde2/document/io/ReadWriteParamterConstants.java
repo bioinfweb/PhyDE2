@@ -1,4 +1,4 @@
-package info.bioinfweb.phyde2;
+package info.bioinfweb.phyde2.document.io;
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
  * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller

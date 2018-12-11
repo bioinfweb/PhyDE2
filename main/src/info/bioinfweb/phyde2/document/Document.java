@@ -219,7 +219,7 @@ public class Document {
 	@Override
 	public String toString() {
 		if (getFile() != null) {
-			return getFile().getAbsolutePath();
+			return getFile().getName();
 		}
 		else {
 			return "Unsaved document";

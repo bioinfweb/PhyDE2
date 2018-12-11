@@ -28,6 +28,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -39,6 +40,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.TreeView.CheckChangeEvent;
 
 
@@ -185,6 +187,23 @@ public class TreeView extends JTree {
 			}
 		}
 		return count;
+	}
+	
+	
+	public Set<PhyDE2AlignmentModel> getSelectedAlignments() {
+		Set<PhyDE2AlignmentModel> alignmentSet = new HashSet<>();
+		for (TreePath path : nodesCheckingState.keySet()) {
+			if (nodesCheckingState.get(path).isSelected && path.getPathCount() == 4) {
+				Object selectedNode = path.getLastPathComponent();
+				if (selectedNode instanceof DefaultMutableTreeNode) {
+					Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+					if (userObject instanceof PhyDE2AlignmentModel){
+						alignmentSet.add((PhyDE2AlignmentModel) userObject);
+					}
+				}
+			}
+		}
+		return alignmentSet;
 	}
 	
 	

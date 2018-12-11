@@ -50,6 +50,14 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 			getMatrices().add(new PhyDEAlignmentDataAdapter(document.getAlignmentModel(id)));
 		}
 	}
+	
+	
+	public PhyDEDocumentDataAdapter(Set<PhyDE2AlignmentModel> models) {
+		super();
+		for (PhyDE2AlignmentModel model : models) {
+			getMatrices().add(new PhyDEAlignmentDataAdapter(model));
+		}
+	}
 
 	
 	public Document getDocument() {

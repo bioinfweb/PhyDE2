@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.dialogs.ExportDialog;
 
@@ -54,7 +55,7 @@ public class ExportAction extends AbstractFileAction {
 			if (dialog.getSelectedFile() != null && !dialog.getSelectedFile().equals("")) {
 				try {
 					File file = new File(dialog.getSelectedFile());
-					writeFile(file, dialog.getFormatID());
+					writeFile(file, dialog.getFormatID(), new PhyDEDocumentDataAdapter(dialog.alignmentSet));
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
