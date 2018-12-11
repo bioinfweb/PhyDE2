@@ -182,6 +182,7 @@ public class FileContentTreeView extends JTree {
 				if (mainframe.getSelectedPherogram() != null) {
 					if (e.getClickCount()== 2){
 						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram().getModel();
+						mainframe.showAlignment(mainframe.getSelectedAlignment());
 						mainframe.getPherogramView().getTraceCurveView().setModel(pherogramModel);
 					}
 				}

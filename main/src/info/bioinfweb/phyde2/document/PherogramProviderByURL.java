@@ -18,9 +18,9 @@
  */
 package info.bioinfweb.phyde2.document;
 
+
 import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
 import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
-import info.bioinfweb.phyde2.gui.MainFrame;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,36 +31,40 @@ import org.biojava.bio.chromatogram.Chromatogram;
 import org.biojava.bio.chromatogram.ChromatogramFactory;
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
+
+
 public class PherogramProviderByURL {
-private static PherogramProviderByURL firstInstance = null;
-private Map<String, PherogramProvider> pherogramProviderMap = new TreeMap<String, PherogramProvider>();	
+	private static PherogramProviderByURL firstInstance = null;
+	private Map<String, PherogramProvider> pherogramProviderMap = new TreeMap<String, PherogramProvider>();	
 
-private PherogramProviderByURL (){
 	
-}
-
-public static PherogramProviderByURL getInstance() {
-	if (firstInstance == null) {
-		firstInstance = new PherogramProviderByURL();
+	private PherogramProviderByURL() {
+		super();
 	}
-	return firstInstance;
-}
-
-public PherogramProvider getPherogramProvider (URL url) throws UnsupportedChromatogramFormatException, IOException{
-	PherogramProvider pherogramProvider = null;
 	
-	if (pherogramProviderMap.get(url.toString()) == null){
+	
+	public static PherogramProviderByURL getInstance() {
+		if (firstInstance == null) {
+			firstInstance = new PherogramProviderByURL();
+		}
+		return firstInstance;
+	}
+	
+	
+	public PherogramProvider getPherogramProvider (URL url) throws UnsupportedChromatogramFormatException, IOException{
+		PherogramProvider pherogramProvider = null;
 		
-			Chromatogram chromatogram = ChromatogramFactory.create(url.openStream());
-			pherogramProvider = new BioJavaPherogramProvider(chromatogram);
-			pherogramProviderMap.put(url.toString(), pherogramProvider);		
-	
+		if (pherogramProviderMap.get(url.toString()) == null){
+			
+				Chromatogram chromatogram = ChromatogramFactory.create(url.openStream());
+				pherogramProvider = new BioJavaPherogramProvider(chromatogram);
+				pherogramProviderMap.put(url.toString(), pherogramProvider);		
+		
+		}
+		else {
+			pherogramProvider = pherogramProviderMap.get(url.toString());
+		}
+		
+		return pherogramProvider;
 	}
-	else {
-		pherogramProvider = pherogramProviderMap.get(url.toString());
-	}
-	
-	return pherogramProvider;
-}
-
 }

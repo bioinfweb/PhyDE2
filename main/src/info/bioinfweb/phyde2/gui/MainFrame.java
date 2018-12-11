@@ -25,9 +25,9 @@ import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.editsettings.EditSettings;
 import info.bioinfweb.libralign.pherogram.PherogramFormats;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.libralign.pherogram.view.PherogramView;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PherogramChangeEvent;
 import info.bioinfweb.phyde2.document.PherogramReference;
@@ -40,31 +40,25 @@ import info.bioinfweb.phyde2.gui.actions.file.SaveAction;
 import info.bioinfweb.tic.SwingComponentFactory;
 
 import java.awt.BorderLayout;
-import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import org.apache.commons.collections4.iterators.UnmodifiableIterator;
 
 
 
@@ -441,11 +435,14 @@ public class MainFrame extends JFrame {
 	public PhyDE2AlignmentModel getSelectedAlignment() {
 		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null) {
 			Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
-			if (selectedNode instanceof DefaultMutableTreeNode) {
-				Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
-				if (userObject instanceof PhyDE2AlignmentModel){
-					return (PhyDE2AlignmentModel) userObject;
+			while (selectedNode != null) {
+				if (selectedNode instanceof DefaultMutableTreeNode) {
+					Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+					if (userObject instanceof PhyDE2AlignmentModel) {
+						return (PhyDE2AlignmentModel) userObject;
+					}
 				}
+				selectedNode = ((TreeNode) selectedNode).getParent();				
 			}
 		}
 		return null;

@@ -65,10 +65,11 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		loadSymbols("Add");
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel){
-		String name = JOptionPane.showInputDialog(getMainFrame(), "New sequence name");
+		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel) {
+			String name = JOptionPane.showInputDialog(getMainFrame(), "New sequence name");
 			if (name != null) {
 				//getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(name);		
 				getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), name, null));
@@ -77,10 +78,8 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		
 		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel){
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
-			dialog.setVisible(true);
-			if ((dialog.getFilePath() != null) && !"".equals(dialog.getFilePath())) {
-				
-				
+			if (dialog.execute()) {
+				if ((dialog.getFilePath() != null) && (!"".equals(dialog.getFilePath()))) {
 					try {
 						File file = new File(dialog.getFilePath());
 						URL url = file.toURI().toURL();
@@ -95,14 +94,14 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 						e1.printStackTrace();
 					} catch (IOException e1) {
 						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
+						
 						//TODO: maybe more information for the user?
 					}
-	
-			
-			}
-			
-			else{
-				getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));
+				}
+				
+				else{
+					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));
+				}
 			}
 		}
 	}
