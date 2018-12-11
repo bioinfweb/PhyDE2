@@ -21,8 +21,8 @@ package info.bioinfweb.phyde2.document;
 
 
 public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
-	public DefaultPhyDE2AlignmentModel (){
-		super();
+	public DefaultPhyDE2AlignmentModel (Document document){
+		super(document);
 	}
 	
 	

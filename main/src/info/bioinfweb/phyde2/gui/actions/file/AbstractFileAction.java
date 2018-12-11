@@ -103,7 +103,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 
 
 	protected void writeFile() {
-		writeFile(getMainFrame().getNewDocument().getFile(), Main.DEFAULT_FORMAT);
+		writeFile(getMainFrame().getSelectedDocument().getFile(), Main.DEFAULT_FORMAT);
 	}
 	
 	
@@ -163,7 +163,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_URL, Main.APPLICATION_URL);
 			parameters.put(ReadWriteParameterMap.KEY_OBJECT_TRANSLATOR_FACTORY, createTranslatorFactory());
 			
-			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getNewDocument());
+			PhyDEDocumentDataAdapter documentAdapter = new PhyDEDocumentDataAdapter(getMainFrame().getSelectedDocument());
 			factory.getWriter(formatID).writeDocument(documentAdapter, file, parameters);
 			
 			getMainFrame().getActiveAlignment().setChanged(false);
@@ -178,7 +178,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	protected boolean promptFileName() {
 		boolean result = (getFileChooser().showSaveDialog(getMainFrame()) == JFileChooser.APPROVE_OPTION);
 		if (result) {
-			getMainFrame().getNewDocument().setFile(getFileChooser().getSelectedFile());
+			getMainFrame().getSelectedDocument().setFile(getFileChooser().getSelectedFile());
 		}
 		return result;
 	}
@@ -207,8 +207,8 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	public boolean handleUnsavedChanges() {
 		if (getMainFrame().getActiveAlignment().isChanged()) {
 			String closingTab = getMainFrame().getActiveTabTitle();
-			if (getMainFrame().getNewDocument().getFile() != null) {
-				closingTab = getMainFrame().getNewDocument().getFile().getName();
+			if (getMainFrame().getSelectedDocument().getFile() != null) {
+				closingTab = getMainFrame().getSelectedDocument().getFile().getName();
 			}
 			
 			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes " + closingTab + ". Do you want to save the changes?", 

@@ -37,24 +37,16 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	private AlignmentModel<Character> consensusModel;
 	
 	
-	public SingleReadContigAlignmentModel() {
-		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
+	public SingleReadContigAlignmentModel(Document owner) {
+		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
 	}
 	
 	
-	public SingleReadContigAlignmentModel(AlignmentModel<Character> consensusModel) {
-		super();
+	public SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> consensusModel) {
+		super(owner);
 		this.consensusModel = consensusModel;
-		//for testing:
 		
-		String id = consensusModel.addSequence("Consensus");
-//		for (int i = 0; i < 10; i++) {
-//			consensusModel.appendToken(id, 'A');
-//			consensusModel.appendToken(id, 'T');
-//			consensusModel.appendToken(id, 'G');
-//			consensusModel.appendToken(id, 'C');	
-//		}
-
+		consensusModel.addSequence("Consensus");
 	}
 	
 	

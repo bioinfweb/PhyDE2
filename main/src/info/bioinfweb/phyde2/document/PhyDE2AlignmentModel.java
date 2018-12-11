@@ -46,8 +46,9 @@ import java.util.Collection;
  */
 public class PhyDE2AlignmentModel {
 	public static final int UNDO_LIMIT = 50;
-	
-	
+	private Document document;
+
+
 	private AccessibleUndoManager undoManager;
 	
 	private boolean changed;
@@ -60,12 +61,13 @@ public class PhyDE2AlignmentModel {
 	protected Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
 	
 	
-	public PhyDE2AlignmentModel() {
-		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel());
+	public PhyDE2AlignmentModel(Document owner) {
+		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel(), owner);
+		this.document = owner;
 	}
 	
 	
-	public PhyDE2AlignmentModel(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
+	public PhyDE2AlignmentModel(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel, Document owner) {
 		super();
 		
 		undoManager = new AccessibleUndoManager();
@@ -73,9 +75,15 @@ public class PhyDE2AlignmentModel {
 		alignmentModelEditFactory = new AlignmentModelEditFactory(this);
 		this.charSetModel = charSetModel;
 		setAlignmentModel(alignmentModel);
+		
+		this.document = owner;
 	}
 	
 	
+	public Document getDocument() {
+		return document;
+	}
+
 	public void executeEdit(PhyDE2Edit edit) {
 		if (!getUndoManager().addEdit(edit)) {  // Must happen before execution, since undo switches not be activated otherwise.
 			throw new RuntimeException("The edit could not be executed.");

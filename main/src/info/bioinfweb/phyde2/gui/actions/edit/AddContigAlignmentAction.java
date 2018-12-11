@@ -43,13 +43,9 @@ public class AddContigAlignmentAction extends AbstractAddAlignmentAction impleme
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel();
+		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel(getMainFrame().getSelectedDocument());
 		String message = "Enter a label for the new contig alignment:";
 		String defaultLabel = "unnamedContig";	
 		addAlignment(contig, defaultLabel, message);
 	}
-
-	
-	@Override
-	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}  //TODO Possibly check if a file is selected in the future. (Do that in superclass.)
 }

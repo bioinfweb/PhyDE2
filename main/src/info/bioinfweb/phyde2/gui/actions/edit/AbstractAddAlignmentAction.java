@@ -48,17 +48,21 @@ public abstract class AbstractAddAlignmentAction extends AbstractPhyDEAction imp
 	//			tabTitle = tabTitle + l;
 	//			}
 			}
-			model.getAlignmentModel().setID(getMainFrame().getNewDocument().generateUniqueID());
+			model.getAlignmentModel().setID(getMainFrame().getSelectedDocument().generateUniqueID());
 			model.getAlignmentModel().setLabel(label);
-			if(getMainFrame().getNewDocument() == null){
-				System.out.println("getMainFrame().getNewDocument() is null! Gernerate new before adding alignment!");
-				//just for reminding the developer to care about this problem later.
-			}
-			else {
-				getMainFrame().getNewDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getNewDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
+			
+			getMainFrame().getSelectedDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getSelectedDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
 		
-			}
+
 			getMainFrame().showAlignment(model);
 		}
+	}
+	
+	
+	
+
+	@Override
+	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
+		setEnabled(mainframe.getSelectedDocument() != null);
 	}
 }

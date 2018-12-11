@@ -52,7 +52,7 @@ public class TreeView extends JTree {
 	
 	
 	//public FileContentTreeView(Document document, MainFrame mainframe) {
-	public TreeView(Document document, MainFrame mainframe) {
+	public TreeView(MainFrame mainframe) {
 		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
         
         //tree content

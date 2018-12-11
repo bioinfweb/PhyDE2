@@ -59,6 +59,7 @@ import javax.swing.JSplitPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -130,17 +131,6 @@ public class MainFrame extends JFrame {
 		return actionManagement;
 	}
 	
-	
-	public void addDocument(Document document) {  //TODO Remove
-		documentList.add(document);
-		//TODO fire after document added
-	}
-	
-	
-	public Iterator<Document> documentIterator() {  //TODO Remove
-		return UnmodifiableIterator.unmodifiableIterator(documentList.iterator());
-	}
-
 
 	public ObservableList<Document> getDocumentList() {
 		return documentList;
@@ -165,18 +155,18 @@ public class MainFrame extends JFrame {
 	}
 	
 	
-	public void showAlignment(PhyDE2AlignmentModel document) {
+	public void showAlignment(PhyDE2AlignmentModel phyDE2model) {
 		Tab newTab = null;
 		String tabTitle;
 		
 		// Check if document is already present in a tab
 
-			if (tabByAlignment(document) != null) {
-				getTabbedPane().setSelectedComponent(tabByAlignment(document));
+			if (tabByAlignment(phyDE2model) != null) {
+				getTabbedPane().setSelectedComponent(tabByAlignment(phyDE2model));
 			}
 			
 			else {
-				document.addAlignmentListener(new PhyDE2AlignmentModelListener() {
+				phyDE2model.addAlignmentListener(new PhyDE2AlignmentModelListener() {
 					@Override
 					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
 						refreshWindowTitle();
@@ -194,29 +184,21 @@ public class MainFrame extends JFrame {
 				});
 				
 				
-				if (document instanceof SingleReadContigAlignmentModel){
-					newTab = new ContigTab ((SingleReadContigAlignmentModel)document);	
+				if (phyDE2model instanceof SingleReadContigAlignmentModel){
+					newTab = new ContigTab ((SingleReadContigAlignmentModel)phyDE2model);	
 				}
 				else {
-					newTab = new Tab(document);
+					newTab = new Tab(phyDE2model);
 				}
 				
 				
-				tabTitle = document.getAlignmentModel().getLabel();
+				tabTitle = phyDE2model.getAlignmentModel().getLabel();
 				
 				tabbedPane.addTab(tabTitle, null, newTab, null);
 				tabbedPane.setSelectedComponent(newTab);
 			}
 		}
 
-	
-	public Document getNewDocument() {  //TODO Remove this property when FileContentTreeView uses documentList.
-		if (documentList.isEmpty()) {
-			addDocument(new Document());
-		}
-		return documentList.get(0);
-	}
-	
 
 	private Tab getActiveTab() {
 		if (tabbedPane.getSelectedComponent() instanceof Tab) {
@@ -412,7 +394,7 @@ public class MainFrame extends JFrame {
 	
 	public FileContentTreeView getFileContentTreeView () {
 		if (treeView == null) {
-			treeView = new FileContentTreeView(getNewDocument(), this);
+			treeView = new FileContentTreeView(this);
 			treeView.setLayout(new BorderLayout());
 			treeView.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 				@Override
@@ -478,6 +460,23 @@ public class MainFrame extends JFrame {
 				if(userObject instanceof PherogramReference){
 					return (PherogramReference) userObject;
 				}
+			}
+		}
+		return null;
+	}
+	
+	
+	public Document getSelectedDocument() {
+		if (getFileContentTreeView().getSelectionModel().getLeadSelectionPath() != null) {
+			Object selectedNode = getFileContentTreeView().getSelectionModel().getLeadSelectionPath().getLastPathComponent();
+			while (selectedNode != null) {
+				if (selectedNode instanceof DefaultMutableTreeNode) {
+					Object userObject = (((DefaultMutableTreeNode) selectedNode).getUserObject());
+					if (userObject instanceof Document) {
+						return (Document) userObject;
+					}
+				}
+				selectedNode = ((TreeNode) selectedNode).getParent();				
 			}
 		}
 		return null;

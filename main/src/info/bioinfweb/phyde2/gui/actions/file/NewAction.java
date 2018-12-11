@@ -47,7 +47,7 @@ public class NewAction extends AbstractFileAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		getMainFrame().getDocumentList().add(new Document());
-		getMainFrame().getNewDocument().setFile(null);
+		getMainFrame().getDocumentList().get(getMainFrame().getDocumentList().size() - 1).setFile(null);
 		//getMainFrame().getNewDocument().setChanged(false);
 	}
 

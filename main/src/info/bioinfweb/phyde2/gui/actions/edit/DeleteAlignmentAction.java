@@ -43,7 +43,7 @@ public class DeleteAlignmentAction extends AbstractPhyDEAction implements Action
 	public void actionPerformed(ActionEvent e) {
 		PhyDE2AlignmentModel model = getMainFrame().getSelectedAlignment ();
 		getMainFrame().hideAlignment(model);
-		getMainFrame().getActiveAlignment().executeEdit(new DeleteAlignmentEdit(getMainFrame().getNewDocument(), model));
+		getMainFrame().getActiveAlignment().executeEdit(new DeleteAlignmentEdit(model.getDocument(), model));
 		
 	}
 

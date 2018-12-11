@@ -43,6 +43,7 @@ import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.io.DataModelKey;
+import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
@@ -122,7 +123,7 @@ public class OpenAction extends AbstractFileAction {
 							message = "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
 						}
 						
-						PhyDE2AlignmentModel newAlignment = new PhyDE2AlignmentModel((AlignmentModel<Character>)alignmentModel, charSetModel);
+						PhyDE2AlignmentModel newAlignment = new PhyDE2AlignmentModel((AlignmentModel<Character>)alignmentModel, charSetModel, new Document());
 						String label = "newAlignment";
 						newAlignment.getAlignmentModel().setLabel(label);
 						getMainFrame().showAlignment(newAlignment);
@@ -132,7 +133,8 @@ public class OpenAction extends AbstractFileAction {
 					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 						
-						getMainFrame().getNewDocument().setFile(getOpenFileChooser().getSelectedFile());
+						getMainFrame().getDocumentList().add(new Document());
+						getMainFrame().getDocumentList().get(getMainFrame().getDocumentList().size()-1).setFile(getOpenFileChooser().getSelectedFile());
 //						
 						if (message.length() > 0) {
 							JOptionPane.showMessageDialog(getMainFrame(),

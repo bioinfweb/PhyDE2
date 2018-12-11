@@ -268,7 +268,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	
 	public TreeView getTreeView() {
 		if (treeView == null) {
-			treeView = new TreeView(owner.getNewDocument(), owner);
+			treeView = new TreeView(owner);
 		}
 		return treeView;
 	}
@@ -288,7 +288,8 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 		}
 		boolean result = (getExportFileChooser().showDialog(owner, "OK") == JFileChooser.APPROVE_OPTION);
 		if (result) {
-	    	owner.getNewDocument().setFile(getExportFileChooser().getSelectedFile());
+	    	owner.getSelectedDocument().setFile(getExportFileChooser().getSelectedFile());
+	    	//TODO: check if getSelectedDocument() is the needed argument.
 		}
 		return result;
 	}

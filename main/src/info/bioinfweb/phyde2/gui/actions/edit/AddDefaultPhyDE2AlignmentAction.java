@@ -40,13 +40,9 @@ public class AddDefaultPhyDE2AlignmentAction extends AbstractAddAlignmentAction 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DefaultPhyDE2AlignmentModel model = new DefaultPhyDE2AlignmentModel ();
+		DefaultPhyDE2AlignmentModel model = new DefaultPhyDE2AlignmentModel (getMainFrame().getSelectedDocument());
 		String message = "Enter a label for the new alignment:";
 		String defaultLabel = "unnamedAlignment";
 		addAlignment(model, defaultLabel, message);
 	}
-	
-
-	@Override
-	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {}  //TODO Possibly check if a file is selected in the future. (Do that in superclass.)
 }
