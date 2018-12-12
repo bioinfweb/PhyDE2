@@ -27,6 +27,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -103,10 +104,18 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 		}
 		{
 			JButton button = new JButton("Select local file...");
+			AddSingleReadDialog thisDialog = this;
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getOpenFileChooser().showDialog(owner,"add pherogram") == JFileChooser.APPROVE_OPTION){
-						filePathTextField.setText(getOpenFileChooser().getSelectedFile().getAbsolutePath());  //TODO toURI().toURL().toString()
+					if (getOpenFileChooser().showDialog(thisDialog,"add pherogram") == JFileChooser.APPROVE_OPTION){
+						try {
+							filePathTextField.setText(getOpenFileChooser().getSelectedFile().toURI().toURL().toString());
+						} 
+						catch (MalformedURLException ex) {
+							ex.printStackTrace();
+							throw new InternalError(ex);
+							// TODO is an invalid user input in the fileChooser possible?
+						}
 					}
 				}			
 			});

@@ -286,7 +286,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 		if (exportFileChooser != null) {
 			exportFileChooser.resetChoosableFileFilters();
 		}
-		boolean result = (getExportFileChooser().showDialog(owner, "OK") == JFileChooser.APPROVE_OPTION);
+		boolean result = (getExportFileChooser().showDialog(this, "OK") == JFileChooser.APPROVE_OPTION);
 		if (result) {
 	    	owner.getSelectedDocument().setFile(getExportFileChooser().getSelectedFile());
 		}
@@ -302,7 +302,6 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 				       // intercept the dialog created by JFileChooser
 				       JDialog dialog = super.createDialog(parent);
 				       dialog.setModal(true);  // set modality (or setModalityType)
-				       dialog.setAlwaysOnTop(true);
 				       return dialog;
 				   }
 			};
