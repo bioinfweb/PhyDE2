@@ -35,6 +35,7 @@ import java.util.TreeMap;
 public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	private Map<String, PherogramReference> pherogramModelMap = new TreeMap<String, PherogramReference>();
 	private AlignmentModel<Character> consensusModel;
+	private String consensusSequenceID;
 	
 	
 	public SingleReadContigAlignmentModel(Document owner) {
@@ -46,10 +47,15 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 		super(owner);
 		this.consensusModel = consensusModel;
 		
-		consensusModel.addSequence("Consensus");
+		consensusSequenceID = consensusModel.addSequence("Consensus");
 	}
 	
 	
+	public String getConsensusSequenceID() {
+		return consensusSequenceID;
+	}
+
+
 	public void addPherogram(String sequenceID, PherogramReference reference) {
 		if ((sequenceID != null) && (reference != null)) {
 			pherogramModelMap.put(sequenceID, reference);
@@ -57,6 +63,7 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 		}
 		else {
 			throw new NullPointerException("sequenceID and model must not be null.");
+		
 		}
 	}
 	
