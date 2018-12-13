@@ -48,6 +48,7 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+import info.bioinfweb.phyde2.gui.dialogs.AddSequenceDialog;
 import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
 
 
@@ -69,10 +70,22 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel) {
-			String name = JOptionPane.showInputDialog(getMainFrame(), "New sequence name");
-			if (name != null) {
-				//getMainFrame().getActiveAlignment().getAlignmentModel().addSequence(name);		
-				getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), name, null));
+			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
+			if (dialog.execute()){
+				SingleReadContigAlignmentModel selectedContig = dialog.getSelectedConitgModel();
+					if (selectedContig != null){
+						AddSequenceEdit edit = new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null);
+						getMainFrame().getActiveAlignment().executeEdit(edit);
+						String sequenceID = edit.getLastAddedSequenceID();
+							for (int i = 0; i < selectedContig.getConsensusModel().getSequenceLength(selectedContig.getConsensusSequenceID()); i++) {
+								getMainFrame().getActiveAlignment().getAlignmentModel().appendToken(sequenceID, 
+										selectedContig.getConsensusModel().getTokenAt(selectedContig.getConsensusSequenceID(), i));
+							}
+					
+					}
+					else{
+						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));
+					}
 			}
 		}
 		

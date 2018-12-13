@@ -48,6 +48,9 @@ public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 		this.pherogramReference = pherogramReference;
 	}
 	
+	public String getLastAddedSequenceID(){
+		return sequenceID;
+	}
 	
 	public void addSequence() throws CannotRedoException {
 		if (sequenceID == null) {
@@ -64,7 +67,10 @@ public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 			}
 			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
 		}
+		System.out.println(getLastAddedSequenceID());
 		super.redo();
+		
+		
 	}
 
 

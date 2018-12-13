@@ -129,6 +129,7 @@ public class FileContentTreeView extends JTree {
 								}
 							}
 						});
+						
 					}
 
 					@Override
