@@ -70,18 +70,15 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel) {
+			DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
 			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
 			if (dialog.execute()){
 				SingleReadContigAlignmentModel selectedContig = dialog.getSelectedConitgModel();
 					if (selectedContig != null){
-						AddSequenceEdit edit = new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null);
-						getMainFrame().getActiveAlignment().executeEdit(edit);
+						AddSequenceEdit edit = new AddSequenceEdit(model, dialog.getSequenceName(), null);
+						model.executeEdit(edit);
 						String sequenceID = edit.getLastAddedSequenceID();
-							for (int i = 0; i < selectedContig.getConsensusModel().getSequenceLength(selectedContig.getConsensusSequenceID()); i++) {
-								getMainFrame().getActiveAlignment().getAlignmentModel().appendToken(sequenceID, 
-										selectedContig.getConsensusModel().getTokenAt(selectedContig.getConsensusSequenceID(), i));
-							}
-					
+						model.addConsensus(selectedContig, sequenceID);
 					}
 					else{
 						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));

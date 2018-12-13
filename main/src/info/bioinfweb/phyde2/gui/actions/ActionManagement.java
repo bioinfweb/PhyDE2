@@ -40,6 +40,7 @@ import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoToAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RefreshConsensusSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveColumnsFromCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RenameCharSetAction;
@@ -95,6 +96,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.addDefaultPhyDE2Alignment", new AddDefaultPhyDE2AlignmentAction(mainFrame));
 		put("edit.deleteAlignment", new DeleteAlignmentAction(mainFrame));
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
+		put("edit.refreshConsensusSequence", new RefreshConsensusSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
 		put("edit.renameSequence", new RenameSequenceAction(mainFrame));
 		put("edit.removeGaps", new RemoveGapsAction(mainFrame));

@@ -18,15 +18,36 @@
  */
 package info.bioinfweb.phyde2.document;
 
-
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
+	private Map<String, SingleReadContigAlignmentModel> contigModelMap = new TreeMap<String, SingleReadContigAlignmentModel>();
+	
 	public DefaultPhyDE2AlignmentModel (Document document){
 		super(document);
 	}
 	
 	
-	public void addConsensus(SingleReadContigAlignmentModel contig) {
-		//TODO Implement
+	public void addConsensus(SingleReadContigAlignmentModel contig, String sequenceID) {
+		for (int i = 0; i < contig.getConsensusModel().getSequenceLength(contig.getConsensusSequenceID()); i++) {
+			this.getAlignmentModel().appendToken(sequenceID, contig.getConsensusModel().getTokenAt(contig.getConsensusSequenceID(), i));
+		}
+		
+		if(!sequenceHasContig(sequenceID)){
+		contigModelMap.put(sequenceID, contig);
+		}
+	}
+	
+	public SingleReadContigAlignmentModel getContig (String sequenceID){
+		return contigModelMap.get(sequenceID);
+	}
+	
+	public boolean sequenceHasContig (String sequenceID){
+		if (contigModelMap.get(sequenceID) != null){
+			return true;
+		}
+		
+	return false;
 	}
 }
