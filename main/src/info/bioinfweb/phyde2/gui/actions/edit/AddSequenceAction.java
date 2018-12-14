@@ -74,15 +74,9 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
 			if (dialog.execute()){
 				SingleReadContigAlignmentModel selectedContig = dialog.getSelectedConitgModel();
-					if (selectedContig != null){
-						AddSequenceEdit edit = new AddSequenceEdit(model, dialog.getSequenceName(), null);
-						model.executeEdit(edit);
-						String sequenceID = edit.getLastAddedSequenceID();
-						model.addConsensus(selectedContig, sequenceID);
-					}
-					else{
-						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));
-					}
+				AddSequenceEdit edit = new AddSequenceEdit(model, dialog.getSequenceName(), null, selectedContig);
+				model.executeEdit(edit);
+		
 			}
 		}
 		
@@ -95,7 +89,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 						URL url = new URL(dialog.getSelectedURL());
 						PherogramAreaModel pherogramModel = new PherogramAreaModel(PherogramProviderByURL.getInstance().getPherogramProvider(url));
 						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), 
-								new PherogramReference(pherogramModel, url)));
+								new PherogramReference(pherogramModel, url),null));
 					} 
 					catch (MalformedURLException e1) {
 						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
@@ -113,7 +107,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 				}
 				
 				else{
-					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null));
+					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null,null));
 				}
 			}
 		}

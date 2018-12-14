@@ -21,6 +21,7 @@ package info.bioinfweb.phyde2.document.undo.edit;
 
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -29,9 +30,9 @@ import javax.swing.undo.CannotUndoException;
 
 public class DeleteSequenceEdit extends AbstractAddDeleteSequenceEdit {
 	public DeleteSequenceEdit(PhyDE2AlignmentModel alignmentModel,
-			String sequenceID, String sequenceName,	PherogramReference pherogramReference) {
+			String sequenceID, String sequenceName,	PherogramReference pherogramReference, SingleReadContigAlignmentModel contigReference) {
 		
-		super(alignmentModel, sequenceID, sequenceName, pherogramReference);
+		super(alignmentModel, sequenceID, sequenceName, pherogramReference, contigReference);
 	}
 
 	

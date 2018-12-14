@@ -25,6 +25,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.LibrAlignSwingAlignmentEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingSequenceEdit;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
@@ -37,18 +38,20 @@ public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 	private String sequenceName;
 	private String sequenceID;
 	private PherogramReference pherogramReference;
+	private SingleReadContigAlignmentModel contigReference;
 	
 	
 	public AbstractAddDeleteSequenceEdit(PhyDE2AlignmentModel alignmentModel, String sequenceID, String sequenceName, 
-			PherogramReference pherogramReference) {
+			PherogramReference pherogramReference, SingleReadContigAlignmentModel contigReference) {
 		
 		super(alignmentModel);
 		this.sequenceID = sequenceID;
 		this.sequenceName = sequenceName;
 		this.pherogramReference = pherogramReference;
+		this.contigReference = contigReference;
 	}
 	
-	public String getLastAddedSequenceID(){
+	public String getLastAddedSequenceID() {
 		return sequenceID;
 	}
 	
@@ -67,17 +70,20 @@ public abstract class AbstractAddDeleteSequenceEdit extends AlignmentEdit {
 			}
 			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
 		}
-		System.out.println(getLastAddedSequenceID());
+		
+		else if (getAlignment() instanceof DefaultPhyDE2AlignmentModel && contigReference != null){
+			((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigReference, sequenceID);
+		}
+		
 		super.redo();
 		
 		
 	}
-
+	
 
 	public void deleteSequence() throws CannotUndoException {
 		getAlignment().getAlignmentModel().getUnderlyingModel().removeSequence(sequenceID);
-		//TODO vielleicht umgekehrt wegen Exception
-		if (getAlignment() instanceof SingleReadContigAlignmentModel){
+		if (getAlignment() instanceof SingleReadContigAlignmentModel) {
 			((SingleReadContigAlignmentModel) getAlignment()).removePherogramModel(sequenceID);	
 		}
 		super.undo();

@@ -18,26 +18,103 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 
-public class RefreshConsensusSequenceEdit extends AlignmentEdit{
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-	public RefreshConsensusSequenceEdit(DefaultPhyDE2AlignmentModel alignment, String sequenceID) {
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+
+
+
+public class RefreshConsensusSequenceEdit extends AlignmentEdit {
+	private List<String> sequenceIDs = null;
+	private Map<String, char[]> tokenMap = new TreeMap<String, char[]>();
+	
+	
+	public RefreshConsensusSequenceEdit(DefaultPhyDE2AlignmentModel alignment, List<String> sequenceIDs) {
 		super(alignment);
-		int sequenceLength = alignment.getAlignmentModel().getSequenceLength(sequenceID);
-		SingleReadContigAlignmentModel contigModel = alignment.getContig(sequenceID);
-		alignment.getAlignmentModel().removeTokensAt(sequenceID, 0 , sequenceLength-1);
-		alignment.addConsensus(contigModel, sequenceID);
-		
+		this.sequenceIDs = sequenceIDs;
+		for (String sequenceID : sequenceIDs){
+			int sequenceLength = alignment.getAlignmentModel().getSequenceLength(sequenceID);
+			SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getAlignment()).getContig(sequenceID);
+			char [] tokens = new char [sequenceLength];
+			for (int i = 0; i < tokens.length; i++) {
+				tokens [i] = alignment.getAlignmentModel().getTokenAt(sequenceID, i);
+			}
+			
+		tokenMap.put(sequenceID, tokens);
+		}
 	}
+
+	
+	
+	@Override
+	public void redo() throws CannotRedoException {
+		
+		for (String sequenceID : sequenceIDs){
+			if(((DefaultPhyDE2AlignmentModel)getAlignment()).sequenceHasContig(sequenceID)){
+				int sequenceLength = getAlignment().getAlignmentModel().getSequenceLength(sequenceID);
+				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getAlignment()).getContig(sequenceID);
+				getAlignment().getAlignmentModel().getUnderlyingModel().removeTokensAt(sequenceID, 0 , sequenceLength);
+				((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
+			}
+			
+		}
+		
+		super.redo();
+	}
+
+
+
+	@Override
+	public void undo() throws CannotUndoException {
+		for (String sequenceID : sequenceIDs){
+			char [] tokens = tokenMap.get(sequenceID);
+			int sequenceLength = getAlignment().getAlignmentModel().getSequenceLength(sequenceID);
+			getAlignment().getAlignmentModel().getUnderlyingModel().removeTokensAt(sequenceID, 0 , sequenceLength);
+			for (int i = 0; i < tokens.length; i++) {
+				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, tokens[i]);
+			}	
+		}
+		
+		super.undo();
+	}
+
+
 
 	@Override
 	public String getPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder result = new StringBuilder(64);
+		int counter = 0;
+		result.append("Sequence refreshed from contig in ");
+		Iterator<String> i = sequenceIDs.iterator();
+		while (i.hasNext() && (counter < 3)) {
+			result.append("\"");
+			result.append(getAlignment().getAlignmentModel().sequenceNameByID(i.next()));
+			result.append("\"");
+			if (i.hasNext() && (counter < 2)){
+				result.append(", ");
+			}
+			counter++;
+		}
+		
+		int dif = sequenceIDs.size() - 3;
+		
+		if (dif > 0){
+			result.append(" and ");
+			result.append(dif);
+			result.append(" more sequence(s)");
+		}
+		
+		result.append(".");
+		return result.toString();
 	}
 
 }
