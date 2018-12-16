@@ -301,10 +301,15 @@ public class MainFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				int i;
-				boolean close = false;
+				boolean close = true;
 				for(i = 0; i < tabbedPane.getTabCount(); i = 0) {
-					tabbedPane.setSelectedIndex(i);
-					close = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
+					if (close) {
+						tabbedPane.setSelectedIndex(i);
+						close = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
+					}
+					else {
+						break;
+					}
 				}
 				if (tabbedPane.getSelectedComponent() == null) {
 					close = true;

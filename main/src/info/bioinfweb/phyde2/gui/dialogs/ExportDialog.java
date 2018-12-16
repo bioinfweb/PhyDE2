@@ -56,12 +56,12 @@ import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.TreeView;
+import info.bioinfweb.phyde2.gui.SelectForExportTreeView;
 
 @SuppressWarnings("serial")
 public class ExportDialog extends OkCancelApplyHelpDialog {
 	private JPanel jContentPane = null;
-	private TreeView treeView = null;
+	private SelectForExportTreeView treeView = null;
 	private MainFrame owner = null;
 	private JFileChooser exportFileChooser = null;
 	private JPhyloIOReaderWriterFactory factory = new JPhyloIOReaderWriterFactory();
@@ -253,7 +253,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 			switch (JOptionPane.showConfirmDialog(this, "Exporting more than one alignment is not possible with the format " + newValue + ". Your selection will be deleted upon continuing. Do you still want to continue?", 
 					"Warning", JOptionPane.YES_NO_OPTION)) {
 			case JOptionPane.YES_OPTION:
-				treeView.setEverythingNotSelected();
+				treeView.setNothingSelected();
 				treeView.repaint();
 				return true;
 			case JOptionPane.NO_OPTION:
@@ -266,9 +266,9 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	}
 	
 	
-	public TreeView getTreeView() {
+	public SelectForExportTreeView getTreeView() {
 		if (treeView == null) {
-			treeView = new TreeView(owner);
+			treeView = new SelectForExportTreeView(owner);
 		}
 		return treeView;
 	}

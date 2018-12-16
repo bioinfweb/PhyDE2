@@ -21,8 +21,6 @@ package info.bioinfweb.phyde2.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -39,14 +37,12 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.gui.TreeView.CheckChangeEvent;
 
 
 
 @SuppressWarnings("serial")
-public class TreeView extends JTree {
+public class SelectForExportTreeView extends JTree {
 	private JTree selfPointer = this;
 	
 	private HashMap<TreePath, CheckedNode> nodesCheckingState = new HashMap<>();
@@ -54,15 +50,35 @@ public class TreeView extends JTree {
 	
 	
 	//public FileContentTreeView(Document document, MainFrame mainframe) {
-	public TreeView(MainFrame mainframe) {
+	public SelectForExportTreeView(MainFrame mainframe) {
 		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
         
         //tree content
 		setRootVisible(false);
-		this.setModel(mainframe.getFileContentTreeView().getModel());
+		DefaultTreeModel mainFrameTreeView = mainframe.getFileContentTreeView().getModel();
+		
+		DefaultTreeModel model = (DefaultTreeModel) getModel();
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+		DefaultMutableTreeNode parentRoot = (DefaultMutableTreeNode) mainFrameTreeView.getRoot();
+		
+		for (int i = 0; i < mainFrameTreeView.getChildCount(parentRoot); i++) {
+			DefaultMutableTreeNode parentDocumentNode = (DefaultMutableTreeNode) mainFrameTreeView.getChild(mainFrameTreeView.getRoot(), i);
+			DefaultMutableTreeNode documentNode = new DefaultMutableTreeNode(parentDocumentNode.getUserObject());
+			for (int j = 0; j < parentDocumentNode.getChildCount(); j++) {
+				DefaultMutableTreeNode parentAlignmentNode = (DefaultMutableTreeNode) mainFrameTreeView.getChild(parentDocumentNode, j);
+				DefaultMutableTreeNode alignmentNode = new DefaultMutableTreeNode(parentAlignmentNode.getUserObject());
+				for (int k = 0; k < parentAlignmentNode.getChildCount(); k++) {
+					alignmentNode.add(new DefaultMutableTreeNode(((DefaultMutableTreeNode) parentAlignmentNode.getChildAt(k)).getUserObject()));
+				}
+				documentNode.add(alignmentNode);
+			}
+			root.add(documentNode);
+		}
+		model.setRoot(root);
+		setModel(model);		
 		this.expandRow(0);
 		this.setToggleClickCount(0);
-		setEverythingNotSelected();
+		setNothingSelected();
 		
 		//get checkboxes
 		CheckBoxCellRenderer cellRenderer = new CheckBoxCellRenderer();
@@ -84,7 +100,7 @@ public class TreeView extends JTree {
 	}
 	
 	
-	public void setEverythingNotSelected() {
+	public void setNothingSelected() {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) selfPointer.getModel().getRoot();
 		Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
 		while (e.hasMoreElements()) {
