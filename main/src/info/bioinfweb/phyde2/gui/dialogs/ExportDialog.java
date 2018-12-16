@@ -81,7 +81,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	
 	
 	private void initialize() {
-		this.setTitle("New character set");
+		this.setTitle("Export");
         this.setIconImage(new ImageIcon(Toolkit.getDefaultToolkit().getClass().getResource(Main.ICON_PATH)).getImage());
 		this.setContentPane(getJContentPane());
 	}

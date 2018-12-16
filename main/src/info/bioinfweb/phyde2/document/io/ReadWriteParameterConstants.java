@@ -20,7 +20,7 @@ package info.bioinfweb.phyde2.document.io;
 
 import javax.xml.namespace.QName;
 
-public interface ReadWriteParamterConstants {
+public interface ReadWriteParameterConstants {
 	public static final String NAMESPACE_URI_PREFIX = "http://bioinfweb.info/xmlns/PhyDE/ReadAlignment/";  //TODO Possibly change this namespace, when according decision is made. //$NON-NLS-1$
     public static final String PREDICATE_NAMESPACE_URI = NAMESPACE_URI_PREFIX + "Predicates/"; //$NON-NLS-1$
     public static final String PREDICATE_NAMESPACE_PREFIX = "ra"; //$NON-NLS-1$

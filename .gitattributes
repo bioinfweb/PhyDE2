@@ -41,7 +41,7 @@ main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#t
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEDocumentDataAdapter.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/io/ReadWriteParamterConstants.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/io/ReadWriteParameterConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEditFactory.java -text svneol=unset#text/plain
@@ -64,6 +64,7 @@ main/src/info/bioinfweb/phyde2/document/undo/edit/RefreshConsensusSequenceEdit.j
 main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/ClosableJTabbedPane.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ContigTab.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/FileContentTreeView.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain

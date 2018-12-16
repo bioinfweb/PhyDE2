@@ -27,7 +27,6 @@ import info.bioinfweb.libralign.editsettings.EditSettings;
 import info.bioinfweb.libralign.pherogram.PherogramFormats;
 import info.bioinfweb.libralign.pherogram.view.PherogramView;
 import info.bioinfweb.phyde2.Main;
-import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PherogramChangeEvent;
 import info.bioinfweb.phyde2.document.PherogramReference;
@@ -77,7 +76,7 @@ public class MainFrame extends JFrame {
 	private JSplitPane splitPane = null;
 	private JSplitPane contentSplitPane = null;
 	private PherogramView pherogramView = null;
-	private JTabbedPane tabbedPane = null;
+	public ClosableJTabbedPane tabbedPane = null;
 	private JPanel jContentPane = null;  // ?
 	
 	private JMenuBar mainMenu = null;
@@ -132,8 +131,8 @@ public class MainFrame extends JFrame {
 
 
 	private Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
-		for (int j = 0; j < getTabbedPane().getComponentCount(); j++) {
-			Tab tab = (Tab)getTabbedPane().getComponentAt(j); 
+		for (int j = 0; j < getTabbedPane().getTabCount(); j++) {
+			Tab tab = (Tab)tabbedPane.getTabAt(j);
 			if (tab.getDocument() == alignment) {
 				return tab;
 			}
@@ -185,11 +184,9 @@ public class MainFrame extends JFrame {
 					newTab = new Tab(phyDE2model);
 				}
 				
-				
 				tabTitle = phyDE2model.getAlignmentModel().getLabel();
 				
 				tabbedPane.addTab(tabTitle, null, newTab, null);
-				tabbedPane.setSelectedComponent(newTab);
 			}
 		}
 
@@ -206,9 +203,6 @@ public class MainFrame extends JFrame {
 	
 	public void removeTab() {
 		int i = tabbedPane.getSelectedIndex();
-		if (i+1 < tabbedPane.getComponentCount()) {
-			tabbedPane.setSelectedIndex(i+1);
-		}
 		tabbedPane.removeTabAt(i);
 	}
 	
@@ -216,6 +210,7 @@ public class MainFrame extends JFrame {
 	public void setActiveTabTitleTip(String title, String tooltip) {
 		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
 		tabbedPane.setToolTipTextAt(tabbedPane.getSelectedIndex(), tooltip);
+		tabbedPane.addCloseButton(title);
 	}
 	
 	
@@ -226,7 +221,6 @@ public class MainFrame extends JFrame {
 	
 	public PhyDE2AlignmentModel getActiveAlignment() {
 		if (getActiveTab() != null) {
-			//System.out.println(getActiveTab().getDocument().getClass());
 			return getActiveTab().getDocument();
 		}
 		else {
@@ -308,7 +302,7 @@ public class MainFrame extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				int i;
 				boolean close = false;
-				for(i = 0; i < tabbedPane.getComponentCount(); i = 0) {
+				for(i = 0; i < tabbedPane.getTabCount(); i = 0) {
 					tabbedPane.setSelectedIndex(i);
 					close = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
 				}
@@ -349,7 +343,7 @@ public class MainFrame extends JFrame {
 	
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
-			tabbedPane = new JTabbedPane();
+			tabbedPane = new ClosableJTabbedPane();
 			tabbedPane.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent changeEvent) {
 					refreshWindowTitle();

@@ -54,8 +54,12 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 	
 	public PhyDEDocumentDataAdapter(Set<PhyDE2AlignmentModel> models) {
 		super();
+		String idPrefix;
+		Integer i = 0;
 		for (PhyDE2AlignmentModel model : models) {
-			getMatrices().add(new PhyDEAlignmentDataAdapter(model));
+			idPrefix = ReadWriteConstants.DEFAULT_SEQUENCE_SET_ID_PREFIX + i;
+			getMatrices().add(new PhyDEAlignmentDataAdapter(model, idPrefix));
+			i++;
 		}
 	}
 
