@@ -46,8 +46,8 @@ private PherogramArea pherogramArea = null;
 				DataAreaList sequenceDataAreaList = getMainFrame().getActiveAlignmentArea().getDataAreas().getSequenceAreas(id);
 				
 				if (sequenceDataAreaList.get(sequenceDataAreaList.size()-1) instanceof PherogramArea){// da als letztes hinzugefügt
-				pherogramArea = (PherogramArea) sequenceDataAreaList.get(sequenceDataAreaList.size()-1); 
-				pherogramArea.setLeftCutPositionBySelection();
+					pherogramArea = (PherogramArea) sequenceDataAreaList.get(sequenceDataAreaList.size()-1); 
+					pherogramArea.setLeftCutPositionBySelection();
 				}
 				
 			}

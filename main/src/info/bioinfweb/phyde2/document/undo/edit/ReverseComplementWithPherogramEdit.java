@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben St�ver, Jonas Bohn, Kai M�ller
+ * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -18,10 +18,8 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
-
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.undo.CannotRedoException;
@@ -30,60 +28,82 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
+import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 
+public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
 
-
-public class ReverseComplementEdit extends AlignmentEdit {
+	private Collection <String> sequenceIDs;
+	private TreeMap<String, Integer> sequenceLengthStorage = new TreeMap<>(); 
+	private AlignmentModel<Character> underlyingModel;
 	private int firstColumn;
 	private int lastColumn;
-	private AlignmentModel<Character> underlyingModel;
-	private Collection<String> sequenceIDs;  
-	private TreeMap<String, Integer> sequenceLengthStorage = new TreeMap<>(); 
-	 
 	
-	public ReverseComplementEdit(PhyDE2AlignmentModel model, int firstColumn, int lastColumn, Collection<String> sequenceIDs) {
-		super(model);
-		this.firstColumn = firstColumn;
-		this.lastColumn = lastColumn;
+	public ReverseComplementWithPherogramEdit(PhyDE2AlignmentModel alignment, Collection<String> sequenceIDs) {
+		super(alignment);
 		this.sequenceIDs = sequenceIDs;
-		underlyingModel = getAlignment().getAlignmentModel().getUnderlyingModel(); // Underlying model used to avoid creation of edits by SwingUndoAlignmentModel.
+		underlyingModel = getAlignment().getAlignmentModel().getUnderlyingModel();
+		firstColumn = 0;
+		lastColumn = underlyingModel.getMaxSequenceLength() - 1;
+		
+		
 		for (String sequenceID : sequenceIDs) {
-			int diff = lastColumn - underlyingModel.getSequenceLength(sequenceID);
+			int diff = lastColumn + 1 - underlyingModel.getSequenceLength(sequenceID);
 			sequenceLengthStorage.put(sequenceID, diff);
 		}
 	}
 
-	
-	private void reverseComplement() { 
+	private void reverseComplement() {
+	   	//SelectionModel selection = getReadsArea().getSelection();  
     	for (String sequenceID : sequenceIDs) {
+    		PherogramReference pherogramReference = ((SingleReadContigAlignmentModel) getAlignment()).getPherogramModel(sequenceID);
+    		PherogramAreaModel pherogramModel = pherogramReference.getModel();
+    		
     		int diff = sequenceLengthStorage.get(sequenceID);
-    		for (int i = 0; i <= diff; i++) {
+    		for (int i = 0; i < diff; i++) {
     			underlyingModel.appendToken(sequenceID, '-');
-    			//TODO: Check if <= is right here.
 			}
-    		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
-		
+    		
+    		if (pherogramModel != null){
+    			 PherogramAlignmentRelation rightRelation = pherogramModel.editableIndexByBaseCallIndex(
+    	                    pherogramModel.getRightCutPosition());
+    	            int rightBorder;
+    	            if (rightRelation.getCorresponding() == PherogramAlignmentRelation.OUT_OF_RANGE) {
+    	                rightBorder = rightRelation.getBeforeValidIndex() + 1;
+    	            }
+    	            else {
+    	                rightBorder = rightRelation.getAfterValidIndex();
+    	            }
+    	            
+    	            int shift = lastColumn-rightBorder;
+    	            
+    	            pherogramModel.reverseComplement();
+    	            pherogramModel.setFirstSeqPos(shift+1);
+    		}	
+    		
 		}
 
 	}
 	
-	
 	@Override
 	public void redo() throws CannotRedoException {
 		reverseComplement();
-		super.redo();	
+		super.redo();
 	}
 
 
 	@Override
 	public void undo() throws CannotUndoException {
-		for (String sequenceID : sequenceIDs) {
-			AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
-			int originalSequenceLength = underlyingModel.getSequenceLength(sequenceID)-sequenceLengthStorage.get(sequenceID);
-			underlyingModel.removeTokensAt(sequenceID, originalSequenceLength-1, underlyingModel.getSequenceLength(sequenceID));
+		reverseComplement();
+		for (String sequenceID : sequenceIDs){
+			int originalSequenceLength = lastColumn + 1 - sequenceLengthStorage.get(sequenceID);
+			underlyingModel.removeTokensAt(sequenceID, originalSequenceLength, underlyingModel.getSequenceLength(sequenceID));
 		}
+		
 		super.undo();
 	}
 
@@ -95,24 +115,13 @@ public class ReverseComplementEdit extends AlignmentEdit {
 		int counter = 0;
 		int dif;
 
-		result.append("Reverse complement ");
-		if ((firstColumn-lastColumn) < 0){
-			result.append("between column ");
-			result.append(firstColumn + 1);
-			result.append(" and ");
-		}
-		else {
-			result.append("in column ");
-		}
-		result.append(lastColumn + 1);
+		result.append("Reverse complement in sequence");
 		
-		result.append(" in sequence");
 		if (sequenceIDs.size() > 1) {
 			result.append("s");
 		}
 		result.append(" ");
-		
-		
+			
 		Iterator<String> i = sequenceIDs.iterator();
 		while (i.hasNext() && (counter < 3)) {
 			result.append("\"");
@@ -136,4 +145,6 @@ public class ReverseComplementEdit extends AlignmentEdit {
 		
 		return result.toString();
 	}
+	
+
 }
