@@ -236,7 +236,7 @@ public class ExportDialog extends OkCancelApplyHelpDialog {
 	
 	private void getAllowedSelectedAlignments() {
 		allowedSelectedAlignments.put("FASTA", 1);
-		allowedSelectedAlignments.put("Nexus", 1);		
+		allowedSelectedAlignments.put("Phylip", 1);		
 	}
 	
 	

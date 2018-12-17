@@ -129,13 +129,13 @@ public class OpenAction extends AbstractFileAction {
 						getMainFrame().showAlignment(newAlignment);
 						getMainFrame().getActiveAlignment().setChanged(false);
 					}
-//					
+					
 					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 						
 						getMainFrame().getDocumentList().add(new Document());
 						getMainFrame().getDocumentList().get(getMainFrame().getDocumentList().size()-1).setFile(getOpenFileChooser().getSelectedFile());
-//						
+						
 						if (message.length() > 0) {
 							JOptionPane.showMessageDialog(getMainFrame(),
 									message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);

@@ -116,7 +116,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		
 		if (overlappingCharSet) {
 			//save, saveAs and Export Action will ask if the character bars has to be saved
-			switch(JOptionPane.showConfirmDialog(getMainFrame() , "There are Character sets which are longer as the Sequences. Do you want to save the invisable bars?", "Character sets are too long!", JOptionPane.YES_NO_CANCEL_OPTION)) {
+			switch(JOptionPane.showConfirmDialog(getMainFrame() , "There are character sets that are longer than the sequences. Do you want to save the invisible bars?", "Character sets are too long!", JOptionPane.YES_NO_CANCEL_OPTION)) {
 			case JOptionPane.YES_OPTION:
 				return false;
 			case JOptionPane.NO_OPTION:
