@@ -82,11 +82,11 @@ public class FileContentTreeView extends JTree {
 				document.addDocumentListener(new DocumentListener() {  //TODO Move this to listener above.
 					@Override
 					public void afterAlignmentModelAdded(DocumentChangeEvent e) {
-						if (e.getModel() instanceof DefaultPhyDE2AlignmentModel){
+						if (e.getModel() instanceof DefaultPhyDE2AlignmentModel) {
 							((DefaultMutableTreeNode)file.getChildAt(0)).add(new DefaultMutableTreeNode(e.getModel()));
 							getModel().reload(file.getChildAt(0));
 						}
-						else if (e.getModel() instanceof SingleReadContigAlignmentModel)	{
+						else if (e.getModel() instanceof SingleReadContigAlignmentModel) {
 							((DefaultMutableTreeNode)file.getChildAt(1)).add(new DefaultMutableTreeNode(e.getModel()));
 							getModel().reload(file.getChildAt(1));
 						}
@@ -118,11 +118,9 @@ public class FileContentTreeView extends JTree {
 											}
 										}
 									}
-									else if (phyDE2Model instanceof DefaultPhyDE2AlignmentModel)	{
-									
-									}
 									break;
 								case DELETION:
+									//TODO implement.
 									break;
 								default:
 									break;

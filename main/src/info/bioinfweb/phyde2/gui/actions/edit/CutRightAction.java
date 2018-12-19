@@ -16,19 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.gui.actions.view;
+package info.bioinfweb.phyde2.gui.actions.edit;
+
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.dataarea.DataAreaList;
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
+import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
+import info.bioinfweb.phyde2.document.undo.edit.CutLeftEdit;
+import info.bioinfweb.phyde2.document.undo.edit.CutRightEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+
+
 
 public class CutRightAction extends AbstractPhyDEAction implements Action{
 	private PherogramArea pherogramArea = null;
@@ -38,31 +46,32 @@ public class CutRightAction extends AbstractPhyDEAction implements Action{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
-			for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-				String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
-				DataAreaList sequenceDataAreaList = getMainFrame().getActiveAlignmentArea().getDataAreas().getSequenceAreas(id);
-				
-				if (sequenceDataAreaList.get(sequenceDataAreaList.size()-1) instanceof PherogramArea){// da als letztes hinzugefügt
-				pherogramArea = (PherogramArea) sequenceDataAreaList.get(sequenceDataAreaList.size()-1); 
-				pherogramArea.setRightCutPositionBySelection();
-				}
-				
-			}
-		}
-		catch (IndexOutOfBoundsException e1){
-			
+		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
+		String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
+		DataAreaList sequenceDataAreaList = MainFrame.getInstance().getActiveAlignmentArea().getDataAreas().getSequenceAreas(sequenceID);
+		PherogramArea pherogramArea = null;
+		
+		if (sequenceDataAreaList.get(sequenceDataAreaList.size()-1) instanceof PherogramArea){
+			pherogramArea = (PherogramArea) sequenceDataAreaList.get(sequenceDataAreaList.size()-1);
 		}
 		
+		if (pherogramArea != null){
+			PherogramAlignmentRelation relation = pherogramArea.getModel().baseCallIndexByEditableIndex(selection.getLastColumn());
+			int oldPos = pherogramArea.getModel().getRightCutPosition();
+			int newPos = relation.getAfter();
+			if (newPos == PherogramAlignmentRelation.OUT_OF_RANGE) {
+				newPos = relation.getBefore() + 1;  // Set cut position behind the end of the pherogram.
+			}
+			getMainFrame().getActiveAlignment().executeEdit(new CutRightEdit(getMainFrame().getActiveAlignment(), sequenceID, newPos, oldPos));
+		}
+				
 	}
+		
 	
 
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
-		//setEnabled (pherogramArea != null);
-		//Das Funktioniert nicht, da die pherogramArea noch gar nicht bekannt ist. 
-		setEnabled(mainframe.getActiveAlignment() instanceof SingleReadContigAlignmentModel);
+		setEnabled((mainframe.getActiveAlignment() instanceof SingleReadContigAlignmentModel) && (mainframe.getActiveAlignmentArea().getSelection().getCursorHeight() == 1));
 		
 	}
 

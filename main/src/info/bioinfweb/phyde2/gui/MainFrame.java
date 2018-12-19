@@ -503,11 +503,6 @@ public class MainFrame extends JFrame {
 			viewMenu.add(getActionManagement().get("view.switchInsertOverwriteAction"));
 			viewMenu.add(getActionManagement().get("view.showHideBasecalllinesAction"));
 			viewMenu.add(getActionManagement().get("view.showHideProbabilityValuesAction"));
-			viewMenu.addSeparator();
-			viewMenu.add(getActionManagement().get("view.cutRightAction"));
-			viewMenu.add(getActionManagement().get("view.cutLeftAction"));
-			
-			
 		}
 		return viewMenu;
 	}
@@ -540,6 +535,9 @@ public class MainFrame extends JFrame {
 			editMenu.add(getActionManagement().get("edit.renameCharSet"));
 			editMenu.add(getActionManagement().get("edit.reverseComplement"));
 			editMenu.add(getActionManagement().get("edit.reverseComplementWithPherogram"));
+			editMenu.addSeparator();
+			editMenu.add(getActionManagement().get("edit.cutRightAction"));
+			editMenu.add(getActionManagement().get("edit.cutLeftAction"));
 		}
 		return editMenu;
 	}

@@ -57,6 +57,8 @@ main/src/info/bioinfweb/phyde2/document/undo/edit/AddDeleteCharSetEdit.java -tex
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddRemoveCharSetColumns.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddSequenceEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ChangeCharSetColorEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/CutLeftEdit.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/undo/edit/CutRightEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteAlignmentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteSequenceEdit.java -text svneol=unset#text/plain
@@ -83,6 +85,8 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/AddContigAlignmentAction.java -t
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddDefaultPhyDE2AlignmentAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/ChangeCharSetColorAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/CutLeftAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/CutRightAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteAlignmentAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteSequenceAction.java -text svneol=unset#text/plain
@@ -110,8 +114,6 @@ main/src/info/bioinfweb/phyde2/gui/actions/help/BioinfWebMainPageAction.java -te
 main/src/info/bioinfweb/phyde2/gui/actions/help/PhyDEMainPageAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/TwitterAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/help/WebsiteAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/gui/actions/view/CutLeftAction.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/gui/actions/view/CutRightAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/view/DisplayQualityScoresAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/view/ShowHideBasecalllinesAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/view/ShowHideProbabilityValuesAction.java -text svneol=unset#text/plain

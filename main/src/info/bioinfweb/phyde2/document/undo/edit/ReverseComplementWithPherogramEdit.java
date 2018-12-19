@@ -68,6 +68,8 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
     			underlyingModel.appendToken(sequenceID, '-');
 			}
     		
+    		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
+    		
     		if (pherogramModel != null){
     			 PherogramAlignmentRelation rightRelation = pherogramModel.editableIndexByBaseCallIndex(
     	                    pherogramModel.getRightCutPosition());

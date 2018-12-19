@@ -35,6 +35,8 @@ import info.bioinfweb.phyde2.gui.actions.edit.AddContigAlignmentAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddDefaultPhyDE2AlignmentAction;
 import info.bioinfweb.phyde2.gui.actions.edit.AddSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.ChangeCharSetColorAction;
+import info.bioinfweb.phyde2.gui.actions.edit.CutLeftAction;
+import info.bioinfweb.phyde2.gui.actions.edit.CutRightAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteAlignmentAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
@@ -59,8 +61,6 @@ import info.bioinfweb.phyde2.gui.actions.help.AboutAction;
 import info.bioinfweb.phyde2.gui.actions.help.BioinfWebMainPageAction;
 import info.bioinfweb.phyde2.gui.actions.help.PhyDEMainPageAction;
 import info.bioinfweb.phyde2.gui.actions.help.TwitterAction;
-import info.bioinfweb.phyde2.gui.actions.view.CutLeftAction;
-import info.bioinfweb.phyde2.gui.actions.view.CutRightAction;
 import info.bioinfweb.phyde2.gui.actions.view.DisplayQualityScoresAction;
 import info.bioinfweb.phyde2.gui.actions.view.ShowHideBasecalllinesAction;
 import info.bioinfweb.phyde2.gui.actions.view.ShowHideProbabilityValuesAction;
@@ -109,14 +109,15 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.renameCharSet", new RenameCharSetAction(mainFrame));
 		put("edit.reverseComplement", new ReverseComplementAction(mainFrame));
 		put("edit.reverseComplementWithPherogram", new ReverseComplementWithPherogramAction(mainFrame));
+		put("edit.cutRightAction", new CutRightAction(mainFrame));
+		put("edit.cutLeftAction", new CutLeftAction(mainFrame));
 		
 		put("view.switchLeftRightInsertion", new SwitchLeftRightInsertionAction(mainFrame));
 		put("view.switchInsertOverwriteAction", new SwitchInsertOverwriteAction (mainFrame));
 		put("view.showHideBasecalllinesAction", new ShowHideBasecalllinesAction(mainFrame));
 		put("view.displayQualityScoresAction", new DisplayQualityScoresAction(mainFrame));
 		put("view.showHideProbabilityValuesAction", new ShowHideProbabilityValuesAction(mainFrame));
-		put("view.cutRightAction", new CutRightAction(mainFrame));
-		put("view.cutLeftAction", new CutLeftAction(mainFrame));
+		
 		
 		// TODO add Links
 		put("help.about", new AboutAction(mainFrame));
