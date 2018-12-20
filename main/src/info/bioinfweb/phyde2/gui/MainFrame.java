@@ -291,7 +291,7 @@ public class MainFrame extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				int i;
 				int closeOption = 0;
-				boolean close = true;
+				boolean close = false;
 				for(i = 0; i < tabbedPane.getTabCount(); i = 0) {
 					if (closeOption == 1) {
 //						close = ((SaveAction)getActionManagement().get("file.save")).save();
@@ -303,6 +303,10 @@ public class MainFrame extends JFrame {
 					else if (closeOption != 4) {
 						tabbedPane.setSelectedIndex(i);
 						closeOption = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
+						if (closeOption == 2) {
+							removeTab();
+							close = true;
+						}
 					}
 					else {
 						break;
