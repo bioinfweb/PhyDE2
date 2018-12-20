@@ -202,28 +202,52 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 	}
 	
 	   
-	public boolean handleUnsavedChanges() {
+	public int handleUnsavedChanges() {
 		if (getMainFrame().getActiveAlignment().isChanged()) {
 			String closingTab = getMainFrame().getActiveTabTitle();
 			if (getMainFrame().getSelectedDocument().getFile() != null) {
 				closingTab = getMainFrame().getSelectedDocument().getFile().getName();
 			}
 			
-			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes in " + closingTab + ". Do you want to save the changes?", 
-					"Unsaved changes", JOptionPane.YES_NO_CANCEL_OPTION)) {
-					case JOptionPane.YES_OPTION:
-						return save();
-					case JOptionPane.NO_OPTION:
-						getMainFrame().removeTab();
-						return true;
-					case JOptionPane.CANCEL_OPTION:
-						return false;
+			String[] buttons = { "Yes", "Yes to all", "No", "No to all", "Cancel" };
+			
+			switch (JOptionPane.showOptionDialog(getMainFrame(), "There are unsaved changes in " + closingTab + ". Do you want to save the changes?", 
+					"Unsaved changes", JOptionPane.ERROR_MESSAGE, 0, null, buttons, buttons[2])) {
+					case 0:
+						if (save()) {
+							return 0;
+						}
+						else {
+							return 2;
+						}
+					case 1:
+						return 1;
+					case 2:
+						return 2;
+					case 3:
+						return 3;
+					case 4:
+						return 4;
 			}
-			return false;
+			return 2;
 		}
+//			
+//			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes in " + closingTab + ". Do you want to save the changes?", 
+//					"Unsaved changes", JOptionPane.YES_NO_CANCEL_OPTION)) {
+//					case JOptionPane.YES_OPTION:
+//						return save();
+//					case JOptionPane.NO_OPTION:
+//						getMainFrame().removeTab();
+//						return true;
+//					case JOptionPane.CANCEL_OPTION:
+//						return false;
+//			}
+//			return false;
+//		}
 		else {
 			getMainFrame().removeTab();
-			return true;
+//			return true;
+			return 0;
 		}
 	}
 }

@@ -44,7 +44,7 @@ import java.util.Collection;
  * 
  * @author Ben St&ouml;ver
  */
-public class PhyDE2AlignmentModel {
+public abstract class PhyDE2AlignmentModel {
 	public static final int UNDO_LIMIT = 50;
 	private Document document;
 
@@ -62,12 +62,12 @@ public class PhyDE2AlignmentModel {
 	
 	
 	public PhyDE2AlignmentModel(Document owner) {
-		this(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel(), owner);
+		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel());
 		this.document = owner;
 	}
 	
 	
-	public PhyDE2AlignmentModel(AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel, Document owner) {
+	public PhyDE2AlignmentModel(Document owner, AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
 		super();
 		
 		undoManager = new AccessibleUndoManager();
@@ -78,6 +78,9 @@ public class PhyDE2AlignmentModel {
 		
 		this.document = owner;
 	}
+	
+	
+	public abstract AlignmentType getType();
 	
 	
 	public Document getDocument() {

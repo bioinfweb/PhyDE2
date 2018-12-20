@@ -88,7 +88,7 @@ public class ContigTab extends Tab {
 
 	
 	@Override
-	public SingleReadContigAlignmentModel getDocument() {
-		return (SingleReadContigAlignmentModel)super.getDocument();
+	public SingleReadContigAlignmentModel getAlignmentModel() {
+		return (SingleReadContigAlignmentModel)super.getAlignmentModel();
 	}
 }

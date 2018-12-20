@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.document;
 
 
 import info.bioinfweb.commons.collections.ListChangeType;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
@@ -39,18 +40,29 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	
 	
 	public SingleReadContigAlignmentModel(Document owner) {
-		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
+		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), 
+				new CharSetDataModel(), new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
 	}
 	
 	
-	public SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> consensusModel) {
-		super(owner);
-		this.consensusModel = consensusModel;
-		
-		consensusSequenceID = consensusModel.addSequence("Consensus");
+	public SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> singleReadModel, CharSetDataModel charSetModel, AlignmentModel<Character> consensusModel) {
+		super(owner, singleReadModel, charSetModel);
+		if (consensusModel == null) {
+			this.consensusModel = new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true));
+		}
+		else {
+			this.consensusModel = consensusModel;
+		}
+		consensusSequenceID = this.consensusModel.addSequence("Consensus");
 	}
 	
 	
+	@Override
+	public AlignmentType getType() {
+		return AlignmentType.SINGLE_READ_CONTIG;
+	}
+
+
 	public String getConsensusSequenceID() {
 		return consensusSequenceID;
 	}
@@ -77,7 +89,7 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 		}
 	}
 	
-	public PherogramReference getPherogramModel(String sequenceID) {
+	public PherogramReference getPherogramReference(String sequenceID) {
 		return pherogramModelMap.get(sequenceID);
 	}
 	

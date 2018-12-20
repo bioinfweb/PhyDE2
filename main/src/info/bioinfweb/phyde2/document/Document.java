@@ -33,8 +33,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 
 
 public class Document {
@@ -167,7 +165,7 @@ public class Document {
 	}
 	
 
-	public void addAlignmentModel(PhyDE2AlignmentModel model) {		
+	public void addAlignmentModel(PhyDE2AlignmentModel model) {
 		String id = model.getAlignmentModel().getID();
 		if (id == null) {
 			throw new IllegalArgumentException("The ID of the specified alignment model must not be null");

@@ -60,7 +60,7 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
 	private void reverseComplement() {
 	   	//SelectionModel selection = getReadsArea().getSelection();  
     	for (String sequenceID : sequenceIDs) {
-    		PherogramReference pherogramReference = ((SingleReadContigAlignmentModel) getAlignment()).getPherogramModel(sequenceID);
+    		PherogramReference pherogramReference = ((SingleReadContigAlignmentModel) getAlignment()).getPherogramReference(sequenceID);
     		PherogramAreaModel pherogramModel = pherogramReference.getModel();
     		
     		int diff = sequenceLengthStorage.get(sequenceID);

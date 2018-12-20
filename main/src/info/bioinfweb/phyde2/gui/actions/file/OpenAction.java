@@ -23,6 +23,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -43,10 +44,16 @@ import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.io.DataModelKey;
+import info.bioinfweb.phyde2.document.AlignmentType;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
+import info.bioinfweb.phyde2.document.io.AlignmentTypeDataModel;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
+import info.bioinfweb.phyde2.document.undo.edit.AddAlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -108,10 +115,12 @@ public class OpenAction extends AbstractFileAction {
 				}
 				else {  // File contains at least one alignment.
 					//	create new Document:
-					
+					Document document = new Document();
+					getMainFrame().getDocumentList().add(document); // Workaround - Listener of FileContentTreeView has to be updated to add all alignments already belonging to the document to the tree
 					for (AlignmentModel<?> alignmentModel : mainReader.getAlignmentModelReader().getCompletedModels()) {
 						Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
 						CharSetDataModel charSetModel;
+						PhyDE2AlignmentModel newAlignment = null;
 						if (charSetModels.isEmpty()) {
 							charSetModel = new CharSetDataModel();
 						}
@@ -120,26 +129,57 @@ public class OpenAction extends AbstractFileAction {
 						}
 						
 						if (charSetModels.size() > 1) {
-							message = "The file contained more than one character set for the loaded alignment. Only the first one was loaded.";
+							message = "The file contained more than one set of character sets for the loaded alignment. Only the first one was loaded.";
 						}
 						
-						PhyDE2AlignmentModel newAlignment = new PhyDE2AlignmentModel((AlignmentModel<Character>)alignmentModel, charSetModel, new Document());
-						String label = "newAlignment";
-						newAlignment.getAlignmentModel().setLabel(label);
-						getMainFrame().showAlignment(newAlignment);
-						getMainFrame().getActiveAlignment().setChanged(false);
+						Collection<AlignmentTypeDataModel> alignmentTypeModels = mainReader.getAlignmentTypeReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+						AlignmentType alignmentType = AlignmentType.DEFAULT;
+						String alignmentTypeString = null;
+						if (!alignmentTypeModels.isEmpty()) {
+							alignmentType = AlignmentType.valueOf(alignmentTypeModels.iterator().next().getAlignmentType());
+							alignmentTypeString = alignmentTypeModels.iterator().next().getAlignmentType();
+						}
+						
+						switch (alignmentType) {
+							case DEFAULT:
+								newAlignment = new DefaultPhyDE2AlignmentModel(document, (AlignmentModel<Character>)alignmentModel, charSetModel);
+								break;
+							case SINGLE_READ_CONTIG:
+								newAlignment = new SingleReadContigAlignmentModel(document, (AlignmentModel<Character>)alignmentModel, charSetModel, null);
+								Iterator<String> ids =  newAlignment.getAlignmentModel().sequenceIDIterator();
+								while (ids.hasNext()) {
+								    String id = ids.next();
+								    Collection<PherogramReference> pherogramReferences =  mainReader.getPherogramEventReader().getCompletedModels().get(new DataModelKey(newAlignment.getAlignmentModel().getID(), id));
+								    Iterator<DataModelKey> keys = mainReader.getPherogramEventReader().getCompletedModels().keySet().iterator();
+								    Iterator<PherogramReference> references = pherogramReferences.iterator();
+								    while (references.hasNext()) {
+								    	PherogramReference reference = references.next();
+									    ((SingleReadContigAlignmentModel) newAlignment).addPherogram(id, reference);
+								    }
+								}
+								break;
+							default:
+								// TODO: String builder for message that contains all the alignments that did not belong to one of the two categories
+								System.out.println(alignmentTypeString);
+								break;
+						}
+						
+						if (newAlignment != null) {
+							if (newAlignment.getAlignmentModel().getLabel() == null) {
+								newAlignment.getAlignmentModel().setLabel("newAlignment");
+							}
+							document.addAlignmentModel(newAlignment);
+							getMainFrame().showAlignment(newAlignment);
+							getMainFrame().getActiveAlignment().setChanged(false);
+						}
 					}
 					
-					
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
-						
-						getMainFrame().getDocumentList().add(new Document());
 						getMainFrame().getDocumentList().get(getMainFrame().getDocumentList().size()-1).setFile(getOpenFileChooser().getSelectedFile());
-						
-						if (message.length() > 0) {
-							JOptionPane.showMessageDialog(getMainFrame(),
-									message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);
-						}
+					}
+					if (message.length() > 0) {
+						JOptionPane.showMessageDialog(getMainFrame(),
+								message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}

@@ -32,6 +32,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+
 
 
 @SuppressWarnings("serial")
@@ -120,16 +122,12 @@ public class ClosableJTabbedPane extends JTabbedPane {
 		}.init(title));
 	}
 	
-
-	public Tab getTabAt(int i) {
-		int tabCounter = 0;
-		for (int currentComponent = 0; currentComponent <= getComponentCount(); currentComponent++) {
-			Component component = getComponentAt(currentComponent);
-			if (component instanceof Tab) {
-				if (tabCounter == i) {
-					return (Tab)component;
-				}
-				tabCounter++;
+	
+	public Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
+		for (int i = 0; i < getTabCount(); i++) {
+			Component component = getComponentAt(i);
+			if (((Tab)component).getAlignmentModel() == alignment) {
+				return (Tab)component;
 			}
 		}
 		return null;

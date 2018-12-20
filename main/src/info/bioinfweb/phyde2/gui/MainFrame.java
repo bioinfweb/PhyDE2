@@ -128,22 +128,11 @@ public class MainFrame extends JFrame {
 	public ObservableList<Document> getDocumentList() {
 		return documentList;
 	}
-
-
-	private Tab tabByAlignment(PhyDE2AlignmentModel alignment) {
-		for (int j = 0; j < getTabbedPane().getTabCount(); j++) {
-			Tab tab = (Tab)tabbedPane.getTabAt(j);
-			if (tab.getDocument() == alignment) {
-				return tab;
-			}
-		}
-		return null;
-	}
 	
 	
-	public void hideAlignment (PhyDE2AlignmentModel document){
-		if (tabByAlignment(document) != null){
-			getTabbedPane().remove(tabByAlignment(document));
+	public void hideAlignment (PhyDE2AlignmentModel alignmentModel){
+		if (tabbedPane.tabByAlignment(alignmentModel) != null){
+			getTabbedPane().remove(tabbedPane.tabByAlignment(alignmentModel));
 		}
 	}
 	
@@ -154,8 +143,8 @@ public class MainFrame extends JFrame {
 		
 		// Check if document is already present in a tab
 
-			if (tabByAlignment(phyDE2model) != null) {
-				getTabbedPane().setSelectedComponent(tabByAlignment(phyDE2model));
+			if (tabbedPane.tabByAlignment(phyDE2model) != null) {
+				getTabbedPane().setSelectedComponent(tabbedPane.tabByAlignment(phyDE2model));
 			}
 			
 			else {
@@ -221,7 +210,7 @@ public class MainFrame extends JFrame {
 	
 	public PhyDE2AlignmentModel getActiveAlignment() {
 		if (getActiveTab() != null) {
-			return getActiveTab().getDocument();
+			return getActiveTab().getAlignmentModel();
 		}
 		else {
 			return null;
@@ -301,11 +290,19 @@ public class MainFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				int i;
+				int closeOption = 0;
 				boolean close = true;
 				for(i = 0; i < tabbedPane.getTabCount(); i = 0) {
-					if (close) {
+					if (closeOption == 1) {
+//						close = ((SaveAction)getActionManagement().get("file.save")).save();
+					}
+					else if (closeOption == 3) {
+						removeTab();
+						close = true;
+					}
+					else if (closeOption != 4) {
 						tabbedPane.setSelectedIndex(i);
-						close = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
+						closeOption = ((SaveAction)getActionManagement().get("file.save")).handleUnsavedChanges();
 					}
 					else {
 						break;

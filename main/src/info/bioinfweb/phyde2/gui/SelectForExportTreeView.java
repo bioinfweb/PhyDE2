@@ -100,6 +100,7 @@ public class SelectForExportTreeView extends JTree {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public void setNothingSelected() {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) selfPointer.getModel().getRoot();
 		Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();

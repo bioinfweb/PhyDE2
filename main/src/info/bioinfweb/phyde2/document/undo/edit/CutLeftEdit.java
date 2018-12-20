@@ -45,7 +45,7 @@ public class CutLeftEdit extends AlignmentEdit {
 		this.sequenceID = sequenceIDs;
 		this.newBaseCallCutPos = newBaseCallCutPos;
 		this.oldBaseCallCutPosition = oldBaseCallCutPosition;
-		pherogramModel = ((SingleReadContigAlignmentModel) alignment).getPherogramModel (sequenceID).getModel();
+		pherogramModel = ((SingleReadContigAlignmentModel) alignment).getPherogramReference (sequenceID).getModel();
 	}
 	
 	//Info: at the moment two undo steps have to be executed in PhyDE to undo the set of a new cut-position, because

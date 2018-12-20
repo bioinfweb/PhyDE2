@@ -21,12 +21,26 @@ package info.bioinfweb.phyde2.document;
 import java.util.Map;
 import java.util.TreeMap;
 
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
+
 public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 	private Map<String, SingleReadContigAlignmentModel> contigModelMap = new TreeMap<String, SingleReadContigAlignmentModel>();
 	
 	
 	public DefaultPhyDE2AlignmentModel (Document document){
 		super(document);
+	}
+	
+	
+	public DefaultPhyDE2AlignmentModel(Document owner, AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
+		super(owner, alignmentModel, charSetModel);
+	}
+	
+	
+	@Override
+	public AlignmentType getType() {
+		return AlignmentType.DEFAULT;
 	}
 	
 	

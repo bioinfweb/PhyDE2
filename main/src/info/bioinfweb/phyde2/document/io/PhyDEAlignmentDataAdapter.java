@@ -21,6 +21,8 @@ package info.bioinfweb.phyde2.document.io;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
+
 import info.bioinfweb.commons.io.W3CXSConstants;
 import info.bioinfweb.jphyloio.ReadWriteConstants;
 import info.bioinfweb.jphyloio.ReadWriteParameterMap;
@@ -33,6 +35,8 @@ import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataAdapter;
 import info.bioinfweb.libralign.model.io.AlignmentModelDataAdapter;
 import info.bioinfweb.libralign.pherogram.provider.ReverseComplementPherogramProvider;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
@@ -49,7 +53,7 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 	
 	
 	public PhyDEAlignmentDataAdapter(PhyDE2AlignmentModel model) {
-		super(model.getAlignmentModel().getID(), new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, model.getAlignmentModel().getID(), null, null), 
+		super(model.getAlignmentModel().getID(), new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, model.getAlignmentModel().getID(), model.getAlignmentModel().getLabel(), null), 
 				model.getAlignmentModel(), false); 
 		//TODO ensure that prefix is not added on each write operation again
 		this.model = model;
@@ -58,8 +62,8 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 	
 	
 	public PhyDEAlignmentDataAdapter(PhyDE2AlignmentModel model, String idPrefix) {
-		super(idPrefix ,new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, model.getAlignmentModel().getID(), null, null), 
-				model.getAlignmentModel(), false); 
+		super(idPrefix ,new LinkedLabeledIDEvent(EventContentType.ALIGNMENT, model.getAlignmentModel().getID(), model.getAlignmentModel().getLabel(), null), 
+				model.getAlignmentModel(), false);
 		//TODO ensure that prefix is not added on each write operation again
 		this.model = model;
 		sequenceStart = idPrefix.length();
@@ -75,6 +79,14 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 
 
 	@Override
+	public void writeMetadata(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver) throws IOException {
+		super.writeMetadata(parameters, receiver);
+		JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
+				model.getAlignmentModel().getID() + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "1", null, ReadWriteParameterConstants.PREDICATE_ALIGNMENT_TYPE, W3CXSConstants.DATA_TYPE_STRING, model.getType());
+	}
+
+
+	@Override
 	protected void writeSequenceMetadata(JPhyloIOEventReceiver receiver, String prefixSequenceID)
 			throws IOException, IllegalArgumentException {
 		super.writeSequenceMetadata(receiver, prefixSequenceID);
@@ -82,28 +94,32 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 		if (model instanceof SingleReadContigAlignmentModel) {
 			SingleReadContigAlignmentModel contigModel = (SingleReadContigAlignmentModel)model;
 			String sequenceID = prefixSequenceID.substring(sequenceStart);
+			PherogramReference reference = contigModel.getPherogramReference(sequenceID);
 			
 			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
 					prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "1", null, ReadWriteParameterConstants.PREDICATE_IS_SINGLE_READ, W3CXSConstants.DATA_TYPE_BOOLEAN, true); 
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver,
-					prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "2", null,
-					ReadWriteParameterConstants.PREDICATE_IS_REVERSE_COMPLEMENTED, W3CXSConstants.DATA_TYPE_BOOLEAN, 
-					contigModel.getPherogramModel(sequenceID).getModel().getPherogramProvider() instanceof ReverseComplementPherogramProvider); // TODO use boolean method of PhyDE2 or LibrAlign in the future
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
-					prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "3", null, 
-					ReadWriteParameterConstants.PREDICATE_HAS_LEFT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
-					contigModel.getPherogramModel(sequenceID).getModel().getLeftCutPosition());
-			JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
-					prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "4", null, 
-					ReadWriteParameterConstants.PREDICATE_HAS_RIGHT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
-					contigModel.getPherogramModel(sequenceID).getModel().getRightCutPosition());
-			try {
-				JPhyloIOWritingUtils.writeTerminalResourceMetadata(receiver, 
-						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "5", null, 
-						ReadWriteParameterConstants.PREDICATE_HAS_PHEROGRAM, contigModel.getPherogramModel(sequenceID).getURL().toURI());
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				throw new InternalError(e);
+			
+			if (reference != null) {
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver,
+						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "2", null,
+						ReadWriteParameterConstants.PREDICATE_IS_REVERSE_COMPLEMENTED, W3CXSConstants.DATA_TYPE_BOOLEAN, 
+						contigModel.getPherogramReference(sequenceID).getModel().getPherogramProvider() instanceof ReverseComplementPherogramProvider); // TODO use boolean method of PhyDE2 or LibrAlign in the future
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
+						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "3", null, 
+						ReadWriteParameterConstants.PREDICATE_HAS_LEFT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
+						contigModel.getPherogramReference(sequenceID).getModel().getLeftCutPosition());
+				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
+						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "4", null, 
+						ReadWriteParameterConstants.PREDICATE_HAS_RIGHT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
+						contigModel.getPherogramReference(sequenceID).getModel().getRightCutPosition());
+				try {
+					JPhyloIOWritingUtils.writeTerminalResourceMetadata(receiver, 
+							prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "5", null, 
+							ReadWriteParameterConstants.PREDICATE_HAS_PHEROGRAM, contigModel.getPherogramReference(sequenceID).getURL().toURI());
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+					throw new InternalError(e);
+				}
 			}
 		}
 		

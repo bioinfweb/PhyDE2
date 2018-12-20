@@ -39,6 +39,8 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	private FormatVersion formatVersion = null;;
 	private ApplicationVersion applicationVersion = null;
 	private CharSetEventReader charSetReader;
+	private PherogramEventReader pherogramReader;
+	private AlignmentTypeDataReader alignmentTypeReader;
 	
 	
 	public PhyDEAlignmentDataReader(JPhyloIOEventReader reader) {
@@ -46,6 +48,10 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 		this.reader = reader;
 		charSetReader = new CharSetEventReader(this, new URIOrStringIdentifier(null, PREDICATE_COLOR));
 		addDataModelReader(charSetReader);
+		pherogramReader = new PherogramEventReader(this);
+		addDataModelReader(pherogramReader);
+		alignmentTypeReader = new AlignmentTypeDataReader(this);
+		addDataModelReader(alignmentTypeReader);
 	}
 
 	
@@ -61,6 +67,16 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 
 	public CharSetEventReader getCharSetReader() {
 		return charSetReader;
+	}
+	
+	
+	public PherogramEventReader getPherogramEventReader() {
+		return pherogramReader;
+	}
+	
+	
+	public AlignmentTypeDataReader getAlignmentTypeReader() {
+		return alignmentTypeReader;
 	}
 
 

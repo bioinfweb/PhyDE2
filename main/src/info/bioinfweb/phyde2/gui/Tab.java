@@ -35,7 +35,7 @@ import info.bioinfweb.tic.SwingComponentFactory;
 
 @SuppressWarnings("serial")
 public class Tab extends JPanel {
-	private PhyDE2AlignmentModel document = null;
+	private PhyDE2AlignmentModel alignmentModel = null;
 	private AlignmentArea mainArea = null;
 	private MultipleAlignmentsContainer container = null;
 	private AlignmentArea sequenceIndexAlignmentArea = null;
@@ -53,14 +53,14 @@ public class Tab extends JPanel {
 	}
 	
 	
-	public PhyDE2AlignmentModel getDocument() {
-		return document;
+	public PhyDE2AlignmentModel getAlignmentModel() {
+		return alignmentModel;
 	}
 	
 	
-	public Tab(PhyDE2AlignmentModel document) {
+	public Tab(PhyDE2AlignmentModel alignmentModel) {
 		super();
-		this.document = document;
+		this.alignmentModel = alignmentModel;
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		JComponent alignmentsContainer = SwingComponentFactory.getInstance().getSwingComponent(getAlignmentsContainer());
@@ -77,7 +77,7 @@ public class Tab extends JPanel {
 			sequenceIndexAlignmentArea = new AlignmentArea(container);
 			characterSetAlignmentArea = new AlignmentArea(container);
 			mainArea = new AlignmentArea(container);
-			charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getDocument().getCharSetModel());
+			charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getAlignmentModel().getCharSetModel());
 			charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
 				@Override
 				public void selectionChanged(GenericEventObject<CharSetArea> event) {
@@ -95,7 +95,7 @@ public class Tab extends JPanel {
 			//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
 					
 			// Prepare main area:
-			mainArea.setAlignmentModel(getDocument().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displaying its contents is solved.
+			mainArea.setAlignmentModel(getAlignmentModel().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displaying its contents is solved.
 			mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
 				@Override
 				public void selectionChanged(GenericEventObject<SelectionModel> event) {

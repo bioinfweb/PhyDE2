@@ -21,11 +21,12 @@ package info.bioinfweb.phyde2.document;
 
 import java.net.URL;
 
+import info.bioinfweb.libralign.model.data.DataModel;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 
 
 
-public class PherogramReference {
+public class PherogramReference implements DataModel {
 	private PherogramAreaModel model;
 	private URL url;
 	
