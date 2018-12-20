@@ -209,10 +209,10 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 				closingTab = getMainFrame().getSelectedDocument().getFile().getName();
 			}
 			
-			String[] buttons = { "Yes", "Yes to all", "No", "No to all", "Cancel" };
+			String[] buttons = { "Yes", "Yes to all", "No", "No to all", "Cancel" }; // TODO Ticket ID: 0000268
 			
 			switch (JOptionPane.showOptionDialog(getMainFrame(), "There are unsaved changes in " + closingTab + ". Do you want to save the changes?", 
-					"Unsaved changes", JOptionPane.ERROR_MESSAGE, 0, null, buttons, buttons[2])) {
+					"Unsaved changes", JOptionPane.ERROR_MESSAGE, 0, null, buttons, buttons[0])) {
 					case 0:
 						if (save()) {
 							return 0;
@@ -231,22 +231,8 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 			}
 			return 2;
 		}
-//			
-//			switch (JOptionPane.showConfirmDialog(getMainFrame(), "There are unsaved changes in " + closingTab + ". Do you want to save the changes?", 
-//					"Unsaved changes", JOptionPane.YES_NO_CANCEL_OPTION)) {
-//					case JOptionPane.YES_OPTION:
-//						return save();
-//					case JOptionPane.NO_OPTION:
-//						getMainFrame().removeTab();
-//						return true;
-//					case JOptionPane.CANCEL_OPTION:
-//						return false;
-//			}
-//			return false;
-//		}
 		else {
 			getMainFrame().removeTab();
-//			return true;
 			return 0;
 		}
 	}

@@ -124,5 +124,40 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 		}
 		
 	}
+
+
+//	@Override
+//	public long getSequenceCount(ReadWriteParameterMap parameters) {
+//		return super.getSequenceCount(parameters) + 1;
+//	}
+
+
+//	@Override
+//	public Iterator<String> getSequenceIDIterator(ReadWriteParameterMap parameters) {
+//		// TODO Auto-generated method stub
+//		return super.getSequenceIDIterator(parameters);
+//	}
+
+
+//	@Override
+//	public LinkedLabeledIDEvent getSequenceStartEvent(ReadWriteParameterMap parameters, String sequenceID) {
+//		// TODO Auto-generated method stub
+//		return super.getSequenceStartEvent(parameters, sequenceID);
+//	}
+
+
+//	@Override
+//	public long getSequenceLength(ReadWriteParameterMap parameters, String sequenceID) throws IllegalArgumentException {
+//		// TODO Auto-generated method stub
+//		return super.getSequenceLength(parameters, sequenceID);
+//	}
+
+
+//	@Override
+//	public void writeSequencePartContentData(ReadWriteParameterMap parameters, JPhyloIOEventReceiver receiver,
+//			String sequenceID, long startColumn, long endColumn) throws IOException, IllegalArgumentException {
+//		// TODO Auto-generated method stub
+//		super.writeSequencePartContentData(parameters, receiver, sequenceID, startColumn, endColumn);
+//	}
 	
 }

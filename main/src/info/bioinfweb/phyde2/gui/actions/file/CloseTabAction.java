@@ -41,7 +41,7 @@ public class CloseTabAction extends AbstractFileAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		handleUnsavedChanges();
+		handleUnsavedChanges(); // TODO Ticket ID: 0000268
 		getMainFrame().refreshMenue(); //move to eventlistener
 	}
 
