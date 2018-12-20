@@ -116,13 +116,13 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 					JPhyloIOWritingUtils.writeTerminalResourceMetadata(receiver, 
 							prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "5", null, 
 							ReadWriteParameterConstants.PREDICATE_HAS_PHEROGRAM, contigModel.getPherogramReference(sequenceID).getURL().toURI());
-				} catch (URISyntaxException e) {
+				}
+				catch (URISyntaxException e) {
 					e.printStackTrace();
 					throw new InternalError(e);
 				}
 			}
 		}
-		
 	}
 
 
