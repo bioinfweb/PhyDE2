@@ -30,5 +30,7 @@ public interface PhyDE2AlignmentModelListener extends EventListener {
 	
 	public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e);
 	
-	public void afterPherogramAddedOrDeleted(PherogramChangeEvent e);
+	public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e);
+	
+	public void afterContigReferenceAddedOrDeleted (ContigReferenceChangeEvent e);
 }

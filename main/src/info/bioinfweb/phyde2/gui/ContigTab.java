@@ -22,7 +22,8 @@ package info.bioinfweb.phyde2.gui;
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.phyde2.document.PherogramChangeEvent;
+import info.bioinfweb.phyde2.document.ContigReferenceChangeEvent;
+import info.bioinfweb.phyde2.document.PherogramReferenceChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
@@ -42,7 +43,7 @@ public class ContigTab extends Tab {
 		contigAlignment.addAlignmentListener(new PhyDE2AlignmentModelListener() {
 			
 			@Override
-			public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
+			public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {
 				PherogramAreaModel pherogramModel = e.getPherogramReference().getModel();
 				String sequenceID = e.getSequenceID();
 				AlignmentArea alignmentArea = MainFrame.getInstance().getActiveAlignmentArea();
@@ -83,6 +84,9 @@ public class ContigTab extends Tab {
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void afterContigReferenceAddedOrDeleted(ContigReferenceChangeEvent e) {}
 		});
 	}
 

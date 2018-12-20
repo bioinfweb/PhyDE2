@@ -26,17 +26,25 @@ import java.net.URL;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 
 import info.bioinfweb.commons.collections.observable.ListAddEvent;
 import info.bioinfweb.commons.collections.observable.ListChangeListener;
 import info.bioinfweb.commons.collections.observable.ListRemoveEvent;
 import info.bioinfweb.commons.collections.observable.ListReplaceEvent;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.AlignmentModelChangeAdapter;
+import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
+import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
+import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
+import info.bioinfweb.libralign.model.events.TokenChangeEvent;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.phyde2.document.ContigReferenceChangeEvent;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.DocumentChangeEvent;
 import info.bioinfweb.phyde2.document.DocumentListener;
-import info.bioinfweb.phyde2.document.PherogramChangeEvent;
+import info.bioinfweb.phyde2.document.PherogramReferenceChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
@@ -46,16 +54,10 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 @SuppressWarnings("serial")
 public class FileContentTreeView extends JTree {
-	//private PhyDE2AlignmentModel model = new PhyDE2AlignmentModel();
-	
-	
-	//public FileContentTreeView(Document document, MainFrame mainframe) {
 	public FileContentTreeView(MainFrame mainframe) {
 		super(new DefaultTreeModel(new DefaultMutableTreeNode()));
 		setRootVisible(false);
 		
-		
-		//mainFrame.addDocumentListListener()
 		mainframe.getDocumentList().addListChangeListener(new ListChangeListener<Document>() {
 			
 			@Override
@@ -79,7 +81,7 @@ public class FileContentTreeView extends JTree {
 				root.add(file);
 				getModel().reload();
 				
-				document.addDocumentListener(new DocumentListener() {  //TODO Move this to listener above.
+				document.addDocumentListener(new DocumentListener() {
 					@Override
 					public void afterAlignmentModelAdded(DocumentChangeEvent e) {
 						if (e.getModel() instanceof DefaultPhyDE2AlignmentModel) {
@@ -91,6 +93,7 @@ public class FileContentTreeView extends JTree {
 							getModel().reload(file.getChildAt(1));
 						}
 						
+						// Listen to future events of PhyDE2AlignmentModel:
 						e.getModel().addAlignmentListener(new PhyDE2AlignmentModelListener() {
 							@Override
 							public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
@@ -101,10 +104,10 @@ public class FileContentTreeView extends JTree {
 							public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
 
 							@Override
-							public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {
+							public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {
 							
 							PhyDE2AlignmentModel phyDE2Model = e.getSource();
-							String sequneceID = e.getSequenceID();
+							String sequenceID = e.getSequenceID();
 							URL url = e.getPherogramReference().getURL();
 							switch (e.getListChangeType()) {
 								case INSERTION: 	
@@ -113,20 +116,86 @@ public class FileContentTreeView extends JTree {
 											if (phyDE2Model.getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
 													((DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i)).getUserObject()).getAlignmentModel().getID())) {
 											
-												((DefaultMutableTreeNode) file.getChildAt(1).getChildAt(i)).add(new DefaultMutableTreeNode(e.getPherogramReference()));
+												((DefaultMutableTreeNode) file.getChildAt(1).getChildAt(i)).add(new PherogramReferenceTreeNode(sequenceID, e.getPherogramReference()));
 												getModel().reload(file.getChildAt(1).getChildAt(i));
 											}
 										}
 									}
 									break;
+									
 								case DELETION:
-									//TODO implement.
-									break;
-								default:
+									if (phyDE2Model instanceof SingleReadContigAlignmentModel) {
+										for (int i = 0; i < file.getChildAt(1).getChildCount(); i++) {
+											DefaultMutableTreeNode parent = (DefaultMutableTreeNode)file.getChildAt(1).getChildAt(i);
+											if (phyDE2Model.getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+													parent.getUserObject()).getAlignmentModel().getID())) {
+												
+													for (int j = 0; j < parent.getChildCount(); j++ ) {
+														if (parent.getChildAt(j) instanceof PherogramReferenceTreeNode) {
+															PherogramReferenceTreeNode pherogramReferenceTreeNode = (PherogramReferenceTreeNode)parent.getChildAt(j);
+															if (sequenceID.equals(pherogramReferenceTreeNode.getSequenceID())) {
+																parent.remove(j);
+															}
+														}
+													}
+												
+												getModel().reload(parent);
+											}
+										}
+									}
 									break;
 								}
 							}
+
+							@Override
+							public void afterContigReferenceAddedOrDeleted(ContigReferenceChangeEvent e) {
+								PhyDE2AlignmentModel phyDE2Model = e.getSource();
+								String sequenceID = e.getSequenceID();
+								SingleReadContigAlignmentModel contigReference = e.getContigReference();
+								
+								switch (e.getListChangeType()){
+								case INSERTION:
+									if (phyDE2Model instanceof DefaultPhyDE2AlignmentModel){
+										for (int i = 0; i < file.getChildAt(0).getChildCount(); i++) {
+											if (phyDE2Model.getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+													((DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i)).getUserObject()).getAlignmentModel().getID())) {
+											
+												((DefaultMutableTreeNode) file.getChildAt(0).getChildAt(i)).add(new ContigReferenceTreeNode(sequenceID, contigReference));
+												getModel().reload(file.getChildAt(0).getChildAt(i));
+											}
+										}
+									}
+									break;
+									
+									
+								case DELETION:
+									if (phyDE2Model instanceof DefaultPhyDE2AlignmentModel) {
+										for (int i = 0; i < file.getChildAt(0).getChildCount(); i++) {
+											DefaultMutableTreeNode parent = (DefaultMutableTreeNode)file.getChildAt(0).getChildAt(i);
+											if (phyDE2Model.getAlignmentModel().getID().equals(((PhyDE2AlignmentModel) 
+													parent.getUserObject()).getAlignmentModel().getID())) {
+					
+													for (int j = 0; j < parent.getChildCount(); j++ ) {
+														
+														if (parent.getChildAt(j) instanceof ContigReferenceTreeNode) {
+															ContigReferenceTreeNode contigReferenceTreeNode = (ContigReferenceTreeNode)parent.getChildAt(j);
+													
+															if (sequenceID.equals(contigReferenceTreeNode.getSequenceID())) {
+																parent.remove(j);
+															}
+														}
+													}
+												
+												getModel().reload(parent);
+											}
+										}
+									}
+									break;
+								}
+								
+							}
 						});
+						
 						
 					}
 

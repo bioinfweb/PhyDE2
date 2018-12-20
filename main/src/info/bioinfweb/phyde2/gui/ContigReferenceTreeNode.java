@@ -16,43 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package info.bioinfweb.phyde2.document.undo.edit;
+package info.bioinfweb.phyde2.gui;
 
 
-import info.bioinfweb.phyde2.document.PherogramReference;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 
-public class DeleteSequenceEdit extends AbstractAddDeleteSequenceEdit {
-	public DeleteSequenceEdit(PhyDE2AlignmentModel alignmentModel,
-			String sequenceID, String sequenceName,	PherogramReference pherogramReference, SingleReadContigAlignmentModel contigReference) {
-		
-		super(alignmentModel, sequenceID, sequenceName, pherogramReference, contigReference);
+public class ContigReferenceTreeNode extends DefaultMutableTreeNode{
+	private String sequenceID;
+	private SingleReadContigAlignmentModel contig;
+
+	
+	public ContigReferenceTreeNode(String sequenceID, SingleReadContigAlignmentModel contig) {
+		super();
+		this.sequenceID = sequenceID;
+		this.contig = contig;
 	}
 
 	
-	@Override
-	public void redo() throws CannotRedoException {
-		deleteSequence();
-		super.redo();
+	public String getSequenceID() {
+		return sequenceID;
 	}
 
 	
-	@Override
-	public void undo() throws CannotUndoException {
-		addSequence();
-		super.undo();
+	public SingleReadContigAlignmentModel getContig() {
+		return contig;
 	}
+
 	
-	
-	@Override
-	public String getPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String toString() {
+		return contig.toString();
+	}	
 }

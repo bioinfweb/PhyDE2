@@ -59,15 +59,16 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 				if (model instanceof DefaultPhyDE2AlignmentModel){
 					SelectionModel selection = mainframe.getActiveAlignmentArea().getSelection();
 					boolean hasContig = false; 
-					if (model.getAlignmentModel().getSequenceCount()>0){
-						for (int row = selection.getFirstRow(); row<=selection.getLastRow(); row++){
+					if (model.getAlignmentModel().getSequenceCount() > 0) {
+						
+						for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++){
 							if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row))) {
 								hasContig = true;
 							}
 						}
 					}
 					
-					enabled= ((model != null) && (model.getAlignmentModel().getSequenceCount() != 0 && hasContig));		
+					enabled = ((model != null) && (model.getAlignmentModel().getSequenceCount() != 0) && hasContig);		
 				}
 				
 			}

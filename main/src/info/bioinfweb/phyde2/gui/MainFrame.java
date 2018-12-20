@@ -27,8 +27,9 @@ import info.bioinfweb.libralign.editsettings.EditSettings;
 import info.bioinfweb.libralign.pherogram.PherogramFormats;
 import info.bioinfweb.libralign.pherogram.view.PherogramView;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.ContigReferenceChangeEvent;
 import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.PherogramChangeEvent;
+import info.bioinfweb.phyde2.document.PherogramReferenceChangeEvent;
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
@@ -162,7 +163,11 @@ public class MainFrame extends JFrame {
 					}
 
 					@Override
-					public void afterPherogramAddedOrDeleted(PherogramChangeEvent e) {}
+					public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {}
+
+					@Override
+					public void afterContigReferenceAddedOrDeleted(
+							ContigReferenceChangeEvent e) {}
 				});
 				
 				

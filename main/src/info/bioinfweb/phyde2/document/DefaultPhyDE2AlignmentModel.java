@@ -18,11 +18,16 @@
  */
 package info.bioinfweb.phyde2.document;
 
+
+import info.bioinfweb.commons.collections.ListChangeType;
+
 import java.util.Map;
 import java.util.TreeMap;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
+
+
 
 public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 	private Map<String, SingleReadContigAlignmentModel> contigModelMap = new TreeMap<String, SingleReadContigAlignmentModel>();
@@ -49,20 +54,40 @@ public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 			this.getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, contig.getConsensusModel().getTokenAt(contig.getConsensusSequenceID(), i));
 		}
 		
-		if(!sequenceHasContig(sequenceID)){
-		contigModelMap.put(sequenceID, contig);
+		if (!sequenceHasContig(sequenceID)){
+			contigModelMap.put(sequenceID, contig);
 		}
+		
+		fireAfterContigReferenceAddedOrDeleted(this, ListChangeType.INSERTION, sequenceID, contigModelMap.get(sequenceID));
 	}
+	
 	
 	public SingleReadContigAlignmentModel getContig (String sequenceID){
 		return contigModelMap.get(sequenceID);
 	}
+	
+	
+	public void removeConsensusReference(String sequenceID){
+		if (contigModelMap.remove(sequenceID) != null) {
+			fireAfterContigReferenceAddedOrDeleted(this, ListChangeType.DELETION, sequenceID, contigModelMap.get(sequenceID));
+		}
+	}
+	
+	protected void fireAfterContigReferenceAddedOrDeleted(PhyDE2AlignmentModel source, ListChangeType listChangeType, String sequenceID, 
+			SingleReadContigAlignmentModel contigReference) {
+		
+		ContigReferenceChangeEvent e = new ContigReferenceChangeEvent(source, listChangeType, sequenceID, contigReference);
+		for (PhyDE2AlignmentModelListener listener : listeners){
+			listener.afterContigReferenceAddedOrDeleted(e);
+		}		
+	}
+	
 	
 	public boolean sequenceHasContig (String sequenceID){
 		if (contigModelMap.get(sequenceID) != null){
 			return true;
 		}
 		
-	return false;
+		return false;
 	}
 }

@@ -23,32 +23,19 @@ import info.bioinfweb.commons.collections.ListChangeType;
 
 
 
-public class PherogramChangeEvent extends PhyDE2AlignmentModelChangeEvent{
-	private ListChangeType listChangeType;
+public class PherogramReferenceChangeEvent extends SequenceReferenceChangeEvent {
 	private PherogramReference pherogramReference;
-	private String sequenceID;
 	
 	
-	public PherogramChangeEvent(PhyDE2AlignmentModel source, ListChangeType listChangeType, PherogramReference pherogramReference, 
-			String sequenceID) {
+	public PherogramReferenceChangeEvent(PhyDE2AlignmentModel source, ListChangeType listChangeType, String sequenceID, 
+			PherogramReference pherogramReference) {
 		
-		super(source);
-		this.listChangeType = listChangeType;
+		super(source, listChangeType, sequenceID);
 		this.pherogramReference = pherogramReference;
-		this.sequenceID = sequenceID;
-	}
-
-
-	public ListChangeType getListChangeType() {
-		return listChangeType;
 	}
 
 
 	public PherogramReference getPherogramReference() {
 		return pherogramReference;
-	}
-	
-	public String getSequenceID (){
-		return sequenceID;
 	}
 }

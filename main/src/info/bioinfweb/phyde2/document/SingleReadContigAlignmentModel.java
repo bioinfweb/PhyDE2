@@ -83,15 +83,17 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	protected void fireAfterPherogramAddedOrDeleted(ListChangeType listChangeType, PherogramReference pherogramReference, 
 			String sequenceID) {
 		
-		PherogramChangeEvent e = new PherogramChangeEvent(this, listChangeType, pherogramReference, sequenceID);
+		PherogramReferenceChangeEvent e = new PherogramReferenceChangeEvent(this, listChangeType, sequenceID, pherogramReference);
 		for (PhyDE2AlignmentModelListener listener : listeners){
 			listener.afterPherogramAddedOrDeleted(e);
 		}
 	}
+
 	
 	public PherogramReference getPherogramReference(String sequenceID) {
 		return pherogramModelMap.get(sequenceID);
 	}
+	
 	
 	public PherogramReference removePherogramModel(String sequenceID){
 		PherogramReference pherogramReference = pherogramModelMap.remove(sequenceID);

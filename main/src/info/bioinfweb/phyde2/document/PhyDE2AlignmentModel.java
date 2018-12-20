@@ -86,6 +86,7 @@ public abstract class PhyDE2AlignmentModel {
 	public Document getDocument() {
 		return document;
 	}
+	
 
 	public void executeEdit(PhyDE2Edit edit) {
 		if (!getUndoManager().addEdit(edit)) {  // Must happen before execution, since undo switches not be activated otherwise.

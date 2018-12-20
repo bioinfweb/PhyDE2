@@ -19,17 +19,20 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.undo.edit.DeleteSequencesEdit;
+import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 
 
@@ -48,11 +51,12 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
-
+		Collection <String> sequenceIDs = new ArrayList<>();
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
-			getMainFrame().getActiveAlignment().getAlignmentModel().removeSequence(id);
+			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
 		}
+		
+		getMainFrame().getActiveAlignment().executeEdit(new DeleteSequencesEdit(getMainFrame().getActiveAlignment(), sequenceIDs) );
 	}
 
 
