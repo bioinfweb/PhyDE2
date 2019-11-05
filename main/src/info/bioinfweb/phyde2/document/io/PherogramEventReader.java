@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.document.io;
 
+
 import java.io.IOException;
 import java.net.URL;
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
@@ -33,6 +34,8 @@ import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.PherogramProviderByURL;
 import info.bioinfweb.phyde2.document.PherogramReference;
 
+
+
 public class PherogramEventReader extends AbstractDataModelEventReader<PherogramReference>{
 	private URIOrStringIdentifier predicate;
 	private String currentSequenceID = null;
@@ -43,9 +46,11 @@ public class PherogramEventReader extends AbstractDataModelEventReader<Pherogram
 	private URL pherogramURL;
 	private boolean isSingleRead;
 	
+	
 	public PherogramEventReader(AlignmentDataReader mainReader) {
 		super(mainReader, null);
 	}
+	
 	
 	private void getPherogramAreaModel() {
 		PherogramAreaModel model = null;
@@ -70,6 +75,7 @@ public class PherogramEventReader extends AbstractDataModelEventReader<Pherogram
 			getCompletedModels().put(key, reference);
 		}
 	}
+	
 
 	@Override
 	public void processEvent(JPhyloIOEventReader source, JPhyloIOEvent event) throws IOException {

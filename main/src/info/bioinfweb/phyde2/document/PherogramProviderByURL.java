@@ -51,7 +51,7 @@ public class PherogramProviderByURL {
 	}
 	
 	
-	public PherogramProvider getPherogramProvider (URL url) throws UnsupportedChromatogramFormatException, IOException{
+	public PherogramProvider getPherogramProvider(URL url) throws UnsupportedChromatogramFormatException, IOException {
 		PherogramProvider pherogramProvider = null;
 		
 		if (pherogramProviderMap.get(url.toString()) == null){
