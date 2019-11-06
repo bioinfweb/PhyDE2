@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -33,13 +34,16 @@ import info.bioinfweb.phyde2.document.undo.edit.ChangeCharSetColorEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
+
+
 /**
- * @author j_bohn06
- *
+ * Allows to edit the color of a character set.
+ * 
+ * @author Ben St&ouml;ver
+ * @author Jonas Bohn
  */
 @SuppressWarnings("serial")
 public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Action {
-	
 	public ChangeCharSetColorAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Change character set color"); 
@@ -47,18 +51,20 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 		putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
 	}
 	
+	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		CharSetDataModel model = new CharSetDataModel();
 		String id = getSelectedCharSetID();
 		
 		if (id == null) {
-			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want change the color.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getMainFrame(), "A character set needs to be selected in order to edit its color.", "No character set selected", 
+					JOptionPane.ERROR_MESSAGE);
 		}
 		else {
 			model = getMainFrame().getActiveCharSetArea().getModel();
 			CharSet charSet = model.get(id);
-			Color color = JColorChooser.showDialog(getMainFrame(), "Change character set color", charSet.getColor());
+			Color color = JColorChooser.showDialog(getMainFrame(), "Edit character set color", charSet.getColor());
 			if (color != null) {
 				getMainFrame().getActiveAlignment().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveAlignment(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
 			}
@@ -69,7 +75,5 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(getSelectedCharSetID() != null);
-	}	
-	
-	
+	}
 }
