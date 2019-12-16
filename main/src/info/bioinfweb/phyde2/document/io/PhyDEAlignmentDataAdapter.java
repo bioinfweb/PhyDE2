@@ -103,15 +103,15 @@ public class PhyDEAlignmentDataAdapter extends AlignmentModelDataAdapter<Charact
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver,
 						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "2", null,
 						ReadWriteParameterConstants.PREDICATE_IS_REVERSE_COMPLEMENTED, W3CXSConstants.DATA_TYPE_BOOLEAN, 
-						contigModel.getPherogramReference(sequenceID).getModel().getPherogramProvider() instanceof ReverseComplementPherogramProvider); // TODO use boolean method of PhyDE2 or LibrAlign in the future
+						contigModel.getPherogramReference(sequenceID).getPherogramProvider() instanceof ReverseComplementPherogramProvider); // TODO use boolean method of PhyDE2 or LibrAlign in the future
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
 						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "3", null, 
 						ReadWriteParameterConstants.PREDICATE_HAS_LEFT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
-						contigModel.getPherogramReference(sequenceID).getModel().getLeftCutPosition());
+						contigModel.getPherogramReference(sequenceID).getLeftCutPosition());
 				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
 						prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "4", null, 
 						ReadWriteParameterConstants.PREDICATE_HAS_RIGHT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
-						contigModel.getPherogramReference(sequenceID).getModel().getRightCutPosition());
+						contigModel.getPherogramReference(sequenceID).getRightCutPosition());
 				try {
 					JPhyloIOWritingUtils.writeTerminalResourceMetadata(receiver, 
 							prefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "5", null, 

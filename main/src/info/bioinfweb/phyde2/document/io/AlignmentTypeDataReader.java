@@ -18,15 +18,18 @@
  */
 package info.bioinfweb.phyde2.document.io;
 
+
 import java.io.IOException;
 import info.bioinfweb.jphyloio.JPhyloIOEventReader;
 import info.bioinfweb.jphyloio.events.JPhyloIOEvent;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
-import info.bioinfweb.libralign.model.io.AbstractDataModelEventReader;
+import info.bioinfweb.libralign.model.io.AbstractDataElementEventReader;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
-import info.bioinfweb.libralign.model.io.DataModelKey;
+import info.bioinfweb.libralign.model.io.DataElementKey;
 
-public class AlignmentTypeDataReader extends AbstractDataModelEventReader<AlignmentTypeDataModel> implements ReadWriteParameterConstants {
+
+
+public class AlignmentTypeDataReader extends AbstractDataElementEventReader<AlignmentTypeDataModel> implements ReadWriteParameterConstants {
 	private boolean isPredicate;
 	private String currentAlignmentID;
 	
@@ -48,7 +51,7 @@ public class AlignmentTypeDataReader extends AbstractDataModelEventReader<Alignm
 				}
 				break;
 			case LITERAL_META:
-				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
+				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {  // The condition in the LITERAL_META_CONTENT case makes sure that such metadata is only recognized within an alignment. (It could theoretically be inside a subelement, currently.)
 					if (PREDICATE_ALIGNMENT_TYPE.equals(event.asLiteralMetadataEvent().getPredicate().getURI())) {
 						isPredicate = true;
 					}
@@ -60,7 +63,8 @@ public class AlignmentTypeDataReader extends AbstractDataModelEventReader<Alignm
 			case LITERAL_META_CONTENT:
 				if (isPredicate && (currentAlignmentID != null)) {
 					Object value = event.asLiteralMetadataContentEvent().getObjectValue();
-					getCompletedModels().put(new DataModelKey(currentAlignmentID), new AlignmentTypeDataModel((String) value));
+					getCompletedElements().put(new DataElementKey(currentAlignmentID), 
+							new AlignmentTypeDataModel(getMainReader().getAlignmentModelReader().getCurrentModel(), (String) value));
 				}
 				break;
 			default:

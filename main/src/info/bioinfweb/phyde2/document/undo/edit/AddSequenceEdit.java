@@ -19,15 +19,19 @@
 package info.bioinfweb.phyde2.document.undo.edit;
 
 
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+
+import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
+
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
-
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 
 
 
@@ -38,13 +42,18 @@ public class AddSequenceEdit extends AlignmentEdit {
 	private SingleReadContigAlignmentModel contigReference;
 	
 	
-	public AddSequenceEdit(PhyDE2AlignmentModel alignmentModel, String sequenceName, 
-			PherogramReference pherogramReference, SingleReadContigAlignmentModel contigReference) {
+	public AddSequenceEdit(PhyDE2AlignmentModel alignmentModel, String sequenceName, URL url, SingleReadContigAlignmentModel contigReference) 
+			throws UnsupportedChromatogramFormatException, IOException {
 		
 		super(alignmentModel);
 	
 		this.sequenceName = sequenceName;
-		this.pherogramReference = pherogramReference;
+		if (url == null) {
+			pherogramReference = null;
+		}
+		else {
+			this.pherogramReference = new PherogramReference(getAlignment().getAlignmentModel(), url, sequenceID);
+		}
 		this.contigReference = contigReference;
 	}
 
@@ -58,10 +67,9 @@ public class AddSequenceEdit extends AlignmentEdit {
 			getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName, sequenceID);
 		}
 		
-		if (getAlignment() instanceof SingleReadContigAlignmentModel && pherogramReference != null) {
-			
-			for (int j = 0; j < pherogramReference.getModel().getPherogramProvider().getSequenceLength(); j++) {
-				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getModel().getPherogramProvider().getBaseCall(j));
+		if ((getAlignment() instanceof SingleReadContigAlignmentModel) && (pherogramReference != null)) {
+			for (int j = 0; j < pherogramReference.getPherogramProvider().getSequenceLength(); j++) {
+				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j));
 			}
 			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
 		}

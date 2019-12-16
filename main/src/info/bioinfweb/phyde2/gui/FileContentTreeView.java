@@ -26,18 +26,11 @@ import java.net.URL;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 
 import info.bioinfweb.commons.collections.observable.ListAddEvent;
 import info.bioinfweb.commons.collections.observable.ListChangeListener;
 import info.bioinfweb.commons.collections.observable.ListRemoveEvent;
 import info.bioinfweb.commons.collections.observable.ListReplaceEvent;
-import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.AlignmentModelChangeAdapter;
-import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
-import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
-import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
-import info.bioinfweb.libralign.model.events.TokenChangeEvent;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.ContigReferenceChangeEvent;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
@@ -249,7 +242,7 @@ public class FileContentTreeView extends JTree {
 				
 				if (mainframe.getSelectedPherogram() != null) {
 					if (e.getClickCount()== 2){
-						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram().getModel();
+						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram();
 						mainframe.showAlignment(mainframe.getSelectedAlignment());
 						mainframe.getPherogramView().getTraceCurveView().setModel(pherogramModel);
 					}

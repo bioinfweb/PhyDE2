@@ -47,11 +47,11 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 		super(reader, new BioPolymerCharAlignmentModelFactory('?', true));
 		this.reader = reader;
 		charSetReader = new CharSetEventReader(this, new URIOrStringIdentifier(null, PREDICATE_COLOR));
-		addDataModelReader(charSetReader);
+		addDataElementReader(charSetReader);
 		pherogramReader = new PherogramEventReader(this);
-		addDataModelReader(pherogramReader);
+		addDataElementReader(pherogramReader);
 		alignmentTypeReader = new AlignmentTypeDataReader(this);
-		addDataModelReader(alignmentTypeReader);
+		addDataElementReader(alignmentTypeReader);
 	}
 
 	

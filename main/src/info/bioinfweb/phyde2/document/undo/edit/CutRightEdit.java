@@ -18,21 +18,16 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.TreeMap;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.libralign.dataarea.DataAreaList;
-import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
-import info.bioinfweb.phyde2.gui.MainFrame;
+
+
 
 public class CutRightEdit extends AlignmentEdit{
 	private String sequenceID;
@@ -46,7 +41,7 @@ public class CutRightEdit extends AlignmentEdit{
 		this.sequenceID = sequenceIDs;
 		this.newBaseCallCutPos = newBaseCallCutPos;
 		this.oldBaseCallCutPosition = oldBaseCallCutPosition;
-		pherogramModel = ((SingleReadContigAlignmentModel) alignment).getPherogramReference (sequenceID).getModel();
+		pherogramModel = ((SingleReadContigAlignmentModel) alignment).getPherogramReference(sequenceID);
 	}
 	//Info: at the moment two undo steps have to be executed in PhyDE to undo the set of a new cut-position, because
 	//the rebuilding of the sequence with the old cut position is an additional edit that happens in LibrAlign, so that

@@ -21,26 +21,24 @@ package info.bioinfweb.phyde2.document.io;
 
 import java.io.IOException;
 import java.net.URL;
+
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
 import info.bioinfweb.jphyloio.JPhyloIOEventReader;
 import info.bioinfweb.jphyloio.events.JPhyloIOEvent;
 import info.bioinfweb.jphyloio.events.meta.URIOrStringIdentifier;
 import info.bioinfweb.jphyloio.events.type.EventTopologyType;
-import info.bioinfweb.libralign.model.io.AbstractDataModelEventReader;
+import info.bioinfweb.libralign.model.io.AbstractDataElementEventReader;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
-import info.bioinfweb.libralign.model.io.DataModelKey;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.phyde2.document.PherogramProviderByURL;
+import info.bioinfweb.libralign.model.io.DataElementKey;
 import info.bioinfweb.phyde2.document.PherogramReference;
 
 
 
-public class PherogramEventReader extends AbstractDataModelEventReader<PherogramReference>{
+public class PherogramEventReader extends AbstractDataElementEventReader<PherogramReference> {
 	private URIOrStringIdentifier predicate;
 	private String currentSequenceID = null;
 	private String currentAlignmentID = null;
-	private PherogramReference reference = null;
 	private int leftCutPosition;
 	private int rightCutPosition;
 	private URL pherogramURL;
@@ -53,26 +51,30 @@ public class PherogramEventReader extends AbstractDataModelEventReader<Pherogram
 	
 	
 	private void getPherogramAreaModel() {
-		PherogramAreaModel model = null;
 		if (pherogramURL != null) {
-			DataModelKey key = new DataModelKey(currentAlignmentID, currentSequenceID);
+			DataElementKey key = new DataElementKey(currentAlignmentID, currentSequenceID);
 			try {
-				model = new PherogramAreaModel(PherogramProviderByURL.getInstance().getPherogramProvider(pherogramURL));
-			} catch (UnsupportedChromatogramFormatException e) {
+				PherogramReference model = new PherogramReference(
+						getMainReader().getAlignmentModelReader().getModelByJPhyloIOID(key.getAlignmentID()), 
+						pherogramURL, currentSequenceID);  //TODO Reference to the parent alignment model is required here.
+
+				if (leftCutPosition != -1) {
+					model.setLeftCutPosition(leftCutPosition);
+				}
+				if (rightCutPosition != -1) {
+					model.setRightCutPosition(rightCutPosition);				
+				}
+				
+				getCompletedElements().put(key, model);
+			} 
+			catch (UnsupportedChromatogramFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (leftCutPosition != -1) {
-				model.setLeftCutPosition(leftCutPosition);
-			}
-			if (rightCutPosition != -1) {
-				model.setRightCutPosition(rightCutPosition);				
-			}
-			reference = new PherogramReference(model, pherogramURL);
-			getCompletedModels().put(key, reference);
 		}
 	}
 	
@@ -110,7 +112,6 @@ public class PherogramEventReader extends AbstractDataModelEventReader<Pherogram
 				break;
 			case LITERAL_META_CONTENT:
 				Object value = event.asLiteralMetadataContentEvent().getObjectValue();
-				//switch gegen else if tauschen und dann aber QName nutzen
 				if (ReadWriteParameterConstants.PREDICATE_IS_SINGLE_READ.equals(predicate.getURI())) {
 					isSingleRead = (boolean) value;
 				}

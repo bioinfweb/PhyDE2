@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.document.undo.edit;
 
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -25,15 +26,15 @@ import java.util.TreeMap;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
+
+
 
 public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
 
@@ -61,7 +62,6 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
 	   	//SelectionModel selection = getReadsArea().getSelection();  
     	for (String sequenceID : sequenceIDs) {
     		PherogramReference pherogramReference = ((SingleReadContigAlignmentModel) getAlignment()).getPherogramReference(sequenceID);
-    		PherogramAreaModel pherogramModel = pherogramReference.getModel();
     		
     		int diff = sequenceLengthStorage.get(sequenceID);
     		for (int i = 0; i < diff; i++) {
@@ -70,9 +70,9 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
     		
     		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
     		
-    		if (pherogramModel != null){
-    			 PherogramAlignmentRelation rightRelation = pherogramModel.editableIndexByBaseCallIndex(
-    	                    pherogramModel.getRightCutPosition());
+    		if (pherogramReference != null){
+    			 PherogramAlignmentRelation rightRelation = pherogramReference.editableIndexByBaseCallIndex(
+    					 pherogramReference.getRightCutPosition());
     	            int rightBorder;
     	            if (rightRelation.getCorresponding() == PherogramAlignmentRelation.OUT_OF_RANGE) {
     	                rightBorder = rightRelation.getBeforeValidIndex() + 1;
@@ -83,8 +83,8 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
     	            
     	            int shift = lastColumn-rightBorder;
     	            
-    	            pherogramModel.reverseComplement();
-    	            pherogramModel.setFirstSeqPos(shift+1);
+    	            pherogramReference.reverseComplement();
+    	            pherogramReference.setFirstSeqPos(shift+1);
     		}	
     		
 		}

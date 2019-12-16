@@ -77,7 +77,7 @@ public class Tab extends JPanel {
 			sequenceIndexAlignmentArea = new AlignmentArea(container);
 			characterSetAlignmentArea = new AlignmentArea(container);
 			mainArea = new AlignmentArea(container);
-			charSetArea = new CharSetArea(characterSetAlignmentArea.getContentArea(), mainArea, getAlignmentModel().getCharSetModel());
+			charSetArea = new CharSetArea(characterSetAlignmentArea, getAlignmentModel().getCharSetModel());
 			charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
 				@Override
 				public void selectionChanged(GenericEventObject<CharSetArea> event) {
@@ -86,16 +86,16 @@ public class Tab extends JPanel {
 			});
 					
 			// Prepare heading areas:
-			sequenceIndexAlignmentArea.getDataAreas().getTopAreas().add(new SequenceIndexArea(sequenceIndexAlignmentArea.getContentArea(), mainArea));
+			sequenceIndexAlignmentArea.getDataAreas().getTopList().add(new SequenceIndexArea(sequenceIndexAlignmentArea));
 			sequenceIndexAlignmentArea.setAllowVerticalScrolling(false);
-			characterSetAlignmentArea.getDataAreas().getTopAreas().add(charSetArea);
+			characterSetAlignmentArea.getDataAreas().getTopList().add(charSetArea);
 					
 			container.getAlignmentAreas().add(sequenceIndexAlignmentArea);
 			container.getAlignmentAreas().add(characterSetAlignmentArea);
 			//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
 					
 			// Prepare main area:
-			mainArea.setAlignmentModel(getAlignmentModel().getAlignmentModel(), false);  //TODO The underlying model should not be passed here anymore, as soon as the problem of displaying its contents is solved.
+			mainArea.setAlignmentModel(getAlignmentModel().getAlignmentModel());  //TODO The underlying model should not be passed here anymore, as soon as the problem of displaying its contents is solved.
 			mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
 				@Override
 				public void selectionChanged(GenericEventObject<SelectionModel> event) {

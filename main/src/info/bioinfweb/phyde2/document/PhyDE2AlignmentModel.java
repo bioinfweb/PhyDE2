@@ -19,10 +19,14 @@
 package info.bioinfweb.phyde2.document;
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.AlignmentModelChangeListener;
+import info.bioinfweb.libralign.model.AlignmentModelAdapter;
 import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
 import info.bioinfweb.libralign.model.events.TokenChangeEvent;
@@ -32,10 +36,6 @@ import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignme
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEditFactory;
 import info.bioinfweb.phyde2.document.undo.PhyDE2Edit;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 
@@ -62,21 +62,30 @@ public abstract class PhyDE2AlignmentModel {
 	
 	
 	public PhyDE2AlignmentModel(Document owner) {
-		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), new CharSetDataModel());
-		this.document = owner;
+		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));
+	}
+	
+	
+	public PhyDE2AlignmentModel(Document owner, AlignmentModel<Character> alignmentModel) {
+		this(owner, alignmentModel, new CharSetDataModel(alignmentModel));
 	}
 	
 	
 	public PhyDE2AlignmentModel(Document owner, AlignmentModel<Character> alignmentModel, CharSetDataModel charSetModel) {
 		super();
-		
-		undoManager = new AccessibleUndoManager();
-		undoManager.setLimit(UNDO_LIMIT);
-		alignmentModelEditFactory = new AlignmentModelEditFactory(this);
-		this.charSetModel = charSetModel;
-		setAlignmentModel(alignmentModel);
-		
-		this.document = owner;
+
+		if (alignmentModel != charSetModel.getAlignmentModel()) {
+			throw new IllegalArgumentException("The specified CharSetDataModel is not associated with the specified AlignmentModel.");
+		}
+		else {
+			undoManager = new AccessibleUndoManager();
+			undoManager.setLimit(UNDO_LIMIT);
+			alignmentModelEditFactory = new AlignmentModelEditFactory(this);
+			this.charSetModel = charSetModel;
+			setAlignmentModel(alignmentModel);
+			
+			this.document = owner;
+		}
 	}
 	
 	
@@ -139,24 +148,21 @@ public abstract class PhyDE2AlignmentModel {
 		}
 		
 		// Register changes listener to know when to ask for saving changes:
-		undoAlignmentModel.getChangeListeners().add(new AlignmentModelChangeListener() {
+		undoAlignmentModel.addModelListener(new AlignmentModelAdapter<Character>() {
 			@Override
-			public <T> void afterTokenChange(TokenChangeEvent<T> e) {
+			public void afterSequenceChange(SequenceChangeEvent<Character> e) {
 				setChanged(true);
 			}
-			
+
 			@Override
-			public <T> void afterSequenceRenamed(SequenceRenamedEvent<T> e) {
+			public void afterSequenceRenamed(SequenceRenamedEvent<Character> e) {
 				setChanged(true);
 			}
-			
+
 			@Override
-			public <T> void afterSequenceChange(SequenceChangeEvent<T> e) {
+			public void afterTokenChange(TokenChangeEvent<Character> e) {
 				setChanged(true);
 			}
-			
-			@Override
-			public <T, U> void afterModelChanged(AlignmentModel<T> previous, AlignmentModel<U> current) {}
 		});
 		//TODO The same needs to be done for the character set model as well!
 	}

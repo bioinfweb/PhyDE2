@@ -28,7 +28,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
-import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.ChangeCharSetColorEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -54,7 +53,6 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		CharSetDataModel model = new CharSetDataModel();
 		String id = getSelectedCharSetID();
 		
 		if (id == null) {
@@ -62,8 +60,7 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 					JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			model = getMainFrame().getActiveCharSetArea().getModel();
-			CharSet charSet = model.get(id);
+			CharSet charSet = getMainFrame().getActiveCharSetArea().getModel().get(id);
 			Color color = JColorChooser.showDialog(getMainFrame(), "Edit character set color", charSet.getColor());
 			if (color != null) {
 				getMainFrame().getActiveAlignment().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveAlignment(), getMainFrame().getActiveCharSetArea().getModel(), id, color));

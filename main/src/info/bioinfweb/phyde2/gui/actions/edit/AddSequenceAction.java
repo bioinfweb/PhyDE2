@@ -22,27 +22,16 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.biojava.bio.chromatogram.Chromatogram;
-import org.biojava.bio.chromatogram.ChromatogramFactory;
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
-import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
-import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
-import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.PherogramProviderByURL;
-import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
@@ -53,10 +42,8 @@ import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
 
 
 
-
 @SuppressWarnings("serial")
 public class AddSequenceAction extends AbstractPhyDEAction implements Action {
-	
 	public AddSequenceAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Add sequence"); 
@@ -74,9 +61,12 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
 			if (dialog.execute()){
 				SingleReadContigAlignmentModel selectedContig = dialog.getSelectedConitgModel();
-				AddSequenceEdit edit = new AddSequenceEdit(model, dialog.getSequenceName(), null, selectedContig);
-				model.executeEdit(edit);
-		
+				try {
+					model.executeEdit(new AddSequenceEdit(model, dialog.getSequenceName(), null, selectedContig));
+				} 
+				catch (UnsupportedChromatogramFormatException | IOException ex) {
+					throw new InternalError(ex);  // This should not happen since no pherogram is loaded.
+				}
 			}
 		}
 		
@@ -85,29 +75,27 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			if (dialog.execute()) {
 				if ((dialog.getSelectedURL() != null) && (!"".equals(dialog.getSelectedURL()))) {
 					try {
-						
 						URL url = new URL(dialog.getSelectedURL());
-						PherogramAreaModel pherogramModel = new PherogramAreaModel(PherogramProviderByURL.getInstance().getPherogramProvider(url));
-						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), 
-								new PherogramReference(pherogramModel, url),null));
-					} 
-					catch (MalformedURLException e1) {
-						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
-						e1.printStackTrace();
-					} 
-					catch (UnsupportedChromatogramFormatException e1) {
-						
-						e1.printStackTrace();
+						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(
+							getMainFrame().getActiveAlignment(), dialog.getSequenceName(), url, null));
 					}
-					catch (IOException e1) {
-						JOptionPane.showMessageDialog(getMainFrame(), "Problems with URL!");
-						e1.printStackTrace();
-						//TODO: maybe more information for the user?
+					catch (IOException ex) {
+						JOptionPane.showMessageDialog(getMainFrame(), "The following error occured when trying to load the pherogram from \"" + dialog.getSelectedURL() 
+								+ "\": \"" + ex.getLocalizedMessage() + "\".", "Error when loading pherogram", JOptionPane.ERROR_MESSAGE);
+					}
+					catch (UnsupportedChromatogramFormatException ex) {
+						JOptionPane.showMessageDialog(getMainFrame(), "The format of the pherogram to be loaded from \"" + dialog.getSelectedURL() + "\" is not known.", 
+								"Unsupported pherogram format", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
-				else{
-					getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null,null));
+				else {
+					try {
+						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null, null));
+					} 
+					catch (UnsupportedChromatogramFormatException | IOException ex) {
+						throw new InternalError(ex);  // This should not happen since no pherogram is loaded.
+					}
 				}
 			}
 		}
@@ -118,6 +106,4 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled((document != null) && (mainframe.getActiveAlignmentArea() != null));
 	}
-	
-	
 }

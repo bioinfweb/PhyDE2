@@ -43,7 +43,7 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.io.DataModelKey;
+import info.bioinfweb.libralign.model.io.DataElementKey;
 import info.bioinfweb.phyde2.document.AlignmentType;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
@@ -53,7 +53,6 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.io.AlignmentTypeDataModel;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEAlignmentDataReader;
-import info.bioinfweb.phyde2.document.undo.edit.AddAlignmentEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 
 
@@ -97,6 +96,7 @@ public class OpenAction extends AbstractFileAction {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String message = new String();
@@ -118,11 +118,11 @@ public class OpenAction extends AbstractFileAction {
 					Document document = new Document();
 					getMainFrame().getDocumentList().add(document); // Workaround - Listener of FileContentTreeView has to be updated to add all alignments already belonging to the document to the tree
 					for (AlignmentModel<?> alignmentModel : mainReader.getAlignmentModelReader().getCompletedModels()) {
-						Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+						Collection<CharSetDataModel> charSetModels = mainReader.getCharSetReader().getCompletedElements().get(new DataElementKey(alignmentModel.getID()));
 						CharSetDataModel charSetModel;
 						PhyDE2AlignmentModel newAlignment = null;
 						if (charSetModels.isEmpty()) {
-							charSetModel = new CharSetDataModel();
+							charSetModel = new CharSetDataModel(alignmentModel);
 						}
 						else {
 							charSetModel = charSetModels.iterator().next();
@@ -132,7 +132,8 @@ public class OpenAction extends AbstractFileAction {
 							message = "The file contained more than one set of character sets for the loaded alignment. Only the first one was loaded.";
 						}
 						
-						Collection<AlignmentTypeDataModel> alignmentTypeModels = mainReader.getAlignmentTypeReader().getCompletedModels().get(new DataModelKey(alignmentModel.getID()));
+						Collection<AlignmentTypeDataModel> alignmentTypeModels = 
+								mainReader.getAlignmentTypeReader().getCompletedElements().get(new DataElementKey(alignmentModel.getID()));
 						AlignmentType alignmentType = AlignmentType.DEFAULT;
 						String alignmentTypeString = null;
 						if (!alignmentTypeModels.isEmpty()) {
@@ -148,14 +149,14 @@ public class OpenAction extends AbstractFileAction {
 								newAlignment = new SingleReadContigAlignmentModel(document, (AlignmentModel<Character>)alignmentModel, charSetModel, null);
 								Iterator<String> ids =  newAlignment.getAlignmentModel().sequenceIDIterator();
 								while (ids.hasNext()) {
-								    String id = ids.next();
-								    Collection<PherogramReference> pherogramReferences =  mainReader.getPherogramEventReader().getCompletedModels().get(new DataModelKey(newAlignment.getAlignmentModel().getID(), id));
-								    Iterator<DataModelKey> keys = mainReader.getPherogramEventReader().getCompletedModels().keySet().iterator();
-								    Iterator<PherogramReference> references = pherogramReferences.iterator();
-								    while (references.hasNext()) {
-								    	PherogramReference reference = references.next();
-									    ((SingleReadContigAlignmentModel) newAlignment).addPherogram(id, reference);
-								    }
+									String id = ids.next();
+									Collection<PherogramReference> pherogramReferences = 
+											mainReader.getPherogramEventReader().getCompletedElements().get(new DataElementKey(newAlignment.getAlignmentModel().getID(), id));
+									Iterator<PherogramReference> references = pherogramReferences.iterator();
+									while (references.hasNext()) {
+										PherogramReference reference = references.next();
+										((SingleReadContigAlignmentModel) newAlignment).addPherogram(id, reference);
+									}
 								}
 								break;
 							default:

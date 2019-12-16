@@ -18,16 +18,23 @@
  */
 package info.bioinfweb.phyde2.document.io;
 
+
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.data.AbstractDataModel;
 import info.bioinfweb.libralign.model.data.DataModel;
 
-public class AlignmentTypeDataModel implements DataModel {
+
+
+public class AlignmentTypeDataModel extends AbstractDataModel implements DataModel {
 	private String alignmentType;
 	
-	public AlignmentTypeDataModel(String alignmentType) {
-		super();
+	
+	public AlignmentTypeDataModel(AlignmentModel<?> alignmentModel, String alignmentType) {
+		super(alignmentModel);
 		this.alignmentType = alignmentType;
 	}
-	
+
+
 	public String getAlignmentType() {
 		return alignmentType;
 	}

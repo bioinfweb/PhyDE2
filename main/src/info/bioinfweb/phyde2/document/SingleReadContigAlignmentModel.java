@@ -19,17 +19,14 @@
 package info.bioinfweb.phyde2.document;
 
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import info.bioinfweb.commons.collections.ListChangeType;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-
-import java.net.URL;
-import java.util.Map;
-import java.util.TreeMap;
 
 
 
@@ -40,8 +37,13 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	
 	
 	public SingleReadContigAlignmentModel(Document owner) {
-		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)), 
-				new CharSetDataModel(), new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
+		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
+	}
+	
+	
+	private SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> singleReadModel) {
+		this(owner, singleReadModel, new CharSetDataModel(singleReadModel), 
+				new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
 	}
 	
 	

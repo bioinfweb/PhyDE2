@@ -19,27 +19,23 @@
 package info.bioinfweb.phyde2.document;
 
 
+import java.io.IOException;
 import java.net.URL;
 
-import info.bioinfweb.libralign.model.data.DataModel;
+import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
+
+import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 
 
 
-public class PherogramReference implements DataModel {
-	private PherogramAreaModel model;
+public class PherogramReference extends PherogramAreaModel {
 	private URL url;
 	
 	
-	public PherogramReference(PherogramAreaModel model, URL url) {
-		super();
-		this.model = model;
+	public PherogramReference(AlignmentModel<?> alignmentModel, URL url, String sequenceID) throws UnsupportedChromatogramFormatException, IOException {
+		super(PherogramProviderByURL.getInstance().getPherogramProvider(url), alignmentModel, sequenceID);
 		this.url = url;
-	}
-
-
-	public PherogramAreaModel getModel() {
-		return model;
 	}
 
 

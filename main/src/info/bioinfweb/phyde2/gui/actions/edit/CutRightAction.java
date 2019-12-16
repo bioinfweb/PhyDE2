@@ -20,18 +20,17 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.swing.Action;
 
+import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.dataarea.DataAreaList;
+import info.bioinfweb.libralign.dataarea.DataArea;
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
+import info.bioinfweb.libralign.dataelement.DataList;
 import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.CutLeftEdit;
 import info.bioinfweb.phyde2.document.undo.edit.CutRightEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -39,7 +38,6 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 
 public class CutRightAction extends AbstractPhyDEAction implements Action{
-	private PherogramArea pherogramArea = null;
 	public CutRightAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Set right cut position");	}
@@ -48,7 +46,7 @@ public class CutRightAction extends AbstractPhyDEAction implements Action{
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
-		DataAreaList sequenceDataAreaList = MainFrame.getInstance().getActiveAlignmentArea().getDataAreas().getSequenceAreas(sequenceID);
+		DataList<AlignmentArea, DataArea> sequenceDataAreaList = MainFrame.getInstance().getActiveAlignmentArea().getDataAreas().getSequenceList(sequenceID);
 		PherogramArea pherogramArea = null;
 		
 		if (sequenceDataAreaList.get(sequenceDataAreaList.size()-1) instanceof PherogramArea){
@@ -63,16 +61,13 @@ public class CutRightAction extends AbstractPhyDEAction implements Action{
 				newPos = relation.getBefore() + 1;  // Set cut position behind the end of the pherogram.
 			}
 			getMainFrame().getActiveAlignment().executeEdit(new CutRightEdit(getMainFrame().getActiveAlignment(), sequenceID, newPos, oldPos));
-		}
-				
+		}		
 	}
 		
-	
 
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
-		setEnabled((mainframe.getActiveAlignment() instanceof SingleReadContigAlignmentModel) && (mainframe.getActiveAlignmentArea().getSelection().getCursorHeight() == 1));
-		
+		setEnabled((mainframe.getActiveAlignment() instanceof SingleReadContigAlignmentModel) && 
+				(mainframe.getActiveAlignmentArea().getSelection().getCursorHeight() == 1));
 	}
-
 }
