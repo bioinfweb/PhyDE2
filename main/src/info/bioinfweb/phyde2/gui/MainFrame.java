@@ -144,45 +144,43 @@ public class MainFrame extends JFrame {
 		
 		// Check if document is already present in a tab
 
-			if (tabbedPane.tabByAlignment(phyDE2model) != null) {
-				getTabbedPane().setSelectedComponent(tabbedPane.tabByAlignment(phyDE2model));
+		if (tabbedPane.tabByAlignment(phyDE2model) != null) {
+			getTabbedPane().setSelectedComponent(tabbedPane.tabByAlignment(phyDE2model));
+		}
+		else {
+			phyDE2model.addAlignmentListener(new PhyDE2AlignmentModelListener() {
+				@Override
+				public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
+					refreshWindowTitle();
+					refreshTabTitle();
+				}
+
+				@Override
+				public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
+					refreshWindowTitle();
+					refreshTabTitle();
+				}
+
+				@Override
+				public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {}
+
+				@Override
+				public void afterContigReferenceAddedOrDeleted(ContigReferenceChangeEvent e) {}
+			});
+			
+			
+			if (phyDE2model instanceof SingleReadContigAlignmentModel){
+				newTab = new ContigTab((SingleReadContigAlignmentModel)phyDE2model);	
+			}
+			else {
+				newTab = new Tab(phyDE2model);
 			}
 			
-			else {
-				phyDE2model.addAlignmentListener(new PhyDE2AlignmentModelListener() {
-					@Override
-					public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
-						refreshWindowTitle();
-						refreshTabTitle();
-					}
-
-					@Override
-					public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
-						refreshWindowTitle();
-						refreshTabTitle();
-					}
-
-					@Override
-					public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {}
-
-					@Override
-					public void afterContigReferenceAddedOrDeleted(
-							ContigReferenceChangeEvent e) {}
-				});
-				
-				
-				if (phyDE2model instanceof SingleReadContigAlignmentModel){
-					newTab = new ContigTab ((SingleReadContigAlignmentModel)phyDE2model);	
-				}
-				else {
-					newTab = new Tab(phyDE2model);
-				}
-				
-				tabTitle = phyDE2model.getAlignmentModel().getLabel();
-				
-				tabbedPane.addTab(tabTitle, null, newTab, null);
-			}
+			tabTitle = phyDE2model.getAlignmentModel().getLabel();
+			
+			tabbedPane.addTab(tabTitle, null, newTab, null);
 		}
+	}
 
 
 	private Tab getActiveTab() {
