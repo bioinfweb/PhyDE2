@@ -27,7 +27,9 @@ import javax.swing.undo.CannotUndoException;
 
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
+import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PherogramProviderByURL;
 import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
@@ -38,7 +40,9 @@ import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
 public class AddSequenceEdit extends AlignmentEdit {
 	private String sequenceName;
 	private String sequenceID = null;
-	private PherogramReference pherogramReference;
+	private URL url;
+	private PherogramProvider pherogramProvider;
+	private PherogramReference pherogramReference = null;
 	private SingleReadContigAlignmentModel contigReference;
 	
 	
@@ -48,11 +52,13 @@ public class AddSequenceEdit extends AlignmentEdit {
 		super(alignmentModel);
 	
 		this.sequenceName = sequenceName;
+		this.url = url;
 		if (url == null) {
-			pherogramReference = null;
+			pherogramProvider = null;
 		}
 		else {
-			this.pherogramReference = new PherogramReference(getAlignment().getAlignmentModel(), url, sequenceID);
+			//TODO The sequence ID is not known yet
+			pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
 		}
 		this.contigReference = contigReference;
 	}
@@ -62,6 +68,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 	public void redo() throws CannotRedoException {
 		if (sequenceID == null) {
 			sequenceID = getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName);
+			pherogramReference = new PherogramReference(getAlignment().getAlignmentModel().getUnderlyingModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
 		}
 		else {
 			getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName, sequenceID);

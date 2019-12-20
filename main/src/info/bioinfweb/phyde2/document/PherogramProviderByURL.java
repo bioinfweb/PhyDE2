@@ -19,17 +19,16 @@
 package info.bioinfweb.phyde2.document;
 
 
-import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
-import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.biojava.bio.chromatogram.Chromatogram;
 import org.biojava.bio.chromatogram.ChromatogramFactory;
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
+
+import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProvider;
+import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 
 
 
@@ -52,19 +51,14 @@ public class PherogramProviderByURL {
 	
 	
 	public PherogramProvider getPherogramProvider(URL url) throws UnsupportedChromatogramFormatException, IOException {
-		PherogramProvider pherogramProvider = null;
-		
+		PherogramProvider pherogramProvider = null;		
 		if (pherogramProviderMap.get(url.toString()) == null){
-			
-				Chromatogram chromatogram = ChromatogramFactory.create(url.openStream());
-				pherogramProvider = new BioJavaPherogramProvider(chromatogram);
-				pherogramProviderMap.put(url.toString(), pherogramProvider);		
-		
+			pherogramProvider = new BioJavaPherogramProvider(ChromatogramFactory.create(url.openStream()));
+			pherogramProviderMap.put(url.toString(), pherogramProvider);		
 		}
 		else {
 			pherogramProvider = pherogramProviderMap.get(url.toString());
 		}
-		
 		return pherogramProvider;
 	}
 }

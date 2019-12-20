@@ -26,6 +26,7 @@ import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
+import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 
 
 
@@ -33,9 +34,14 @@ public class PherogramReference extends PherogramAreaModel {
 	private URL url;
 	
 	
-	public PherogramReference(AlignmentModel<?> alignmentModel, URL url, String sequenceID) throws UnsupportedChromatogramFormatException, IOException {
-		super(PherogramProviderByURL.getInstance().getPherogramProvider(url), alignmentModel, sequenceID);
+	public PherogramReference(AlignmentModel<?> alignmentModel, PherogramProvider provider, URL url, String sequenceID) {
+		super(provider, alignmentModel, sequenceID);
 		this.url = url;
+	}
+
+
+	public PherogramReference(AlignmentModel<?> alignmentModel, URL url, String sequenceID) throws UnsupportedChromatogramFormatException, IOException {
+		this(alignmentModel, PherogramProviderByURL.getInstance().getPherogramProvider(url), url, sequenceID);
 	}
 
 
