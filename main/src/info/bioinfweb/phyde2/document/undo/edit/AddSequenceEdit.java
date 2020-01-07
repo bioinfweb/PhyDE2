@@ -57,7 +57,6 @@ public class AddSequenceEdit extends AlignmentEdit {
 			pherogramProvider = null;
 		}
 		else {
-			//TODO The sequence ID is not known yet
 			pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
 		}
 		this.contigReference = contigReference;
@@ -68,7 +67,9 @@ public class AddSequenceEdit extends AlignmentEdit {
 	public void redo() throws CannotRedoException {
 		if (sequenceID == null) {
 			sequenceID = getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName);
-			pherogramReference = new PherogramReference(getAlignment().getAlignmentModel().getUnderlyingModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
+			if (pherogramProvider != null) {  // New sequence does not have an attached pherogram.
+				pherogramReference = new PherogramReference(getAlignment().getAlignmentModel().getUnderlyingModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
+			}
 		}
 		else {
 			getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName, sequenceID);
@@ -81,7 +82,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
 		}
 		
-		else if (getAlignment() instanceof DefaultPhyDE2AlignmentModel && contigReference != null){
+		else if ((getAlignment() instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
 			((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigReference, sequenceID);
 		}
 		
@@ -109,7 +110,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 		StringBuilder result = new StringBuilder();
 		result.append("Sequence ");
 		result.append(sequenceName);
-		result.append(" added in alignment ");
+		result.append(" added to alignment ");
 		result.append(getAlignment());
 		result.append(".");
 		

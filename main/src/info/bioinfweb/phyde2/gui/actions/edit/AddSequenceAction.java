@@ -70,14 +70,14 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			}
 		}
 		
-		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel){
+		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel) {
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			if (dialog.execute()) {
 				if ((dialog.getSelectedURL() != null) && (!"".equals(dialog.getSelectedURL()))) {
 					try {
 						URL url = new URL(dialog.getSelectedURL());
 						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(
-							getMainFrame().getActiveAlignment(), dialog.getSequenceName(), url, null));
+								getMainFrame().getActiveAlignment(), dialog.getSequenceName(), url, null));
 					}
 					catch (IOException ex) {
 						JOptionPane.showMessageDialog(getMainFrame(), "The following error occured when trying to load the pherogram from \"" + dialog.getSelectedURL() 

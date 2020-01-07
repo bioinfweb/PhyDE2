@@ -19,8 +19,6 @@
 package info.bioinfweb.phyde2.document;
 
 
-import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
-
 import java.util.EventListener;
 
 

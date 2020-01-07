@@ -72,19 +72,17 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 
 	public void addPherogram(String sequenceID, PherogramReference reference) {
 		if ((sequenceID != null) && (reference != null)) {
-			pherogramModelMap.put(sequenceID, reference);
+			pherogramModelMap.put(sequenceID, reference);  //TODO Add as data model to the underlying alignment model and not to a custom map.
 			fireAfterPherogramAddedOrDeleted(ListChangeType.INSERTION, reference, sequenceID);
 		}
 		else {
 			throw new NullPointerException("sequenceID and model must not be null.");
-		
 		}
 	}
 	
 	
-	protected void fireAfterPherogramAddedOrDeleted(ListChangeType listChangeType, PherogramReference pherogramReference, 
-			String sequenceID) {
-		
+	//TODO Can this event be removed, now that AlignmentModel listener contains an event for adding data models?
+	protected void fireAfterPherogramAddedOrDeleted(ListChangeType listChangeType, PherogramReference pherogramReference, String sequenceID) {
 		PherogramReferenceChangeEvent e = new PherogramReferenceChangeEvent(this, listChangeType, sequenceID, pherogramReference);
 		for (PhyDE2AlignmentModelListener listener : listeners){
 			listener.afterPherogramAddedOrDeleted(e);

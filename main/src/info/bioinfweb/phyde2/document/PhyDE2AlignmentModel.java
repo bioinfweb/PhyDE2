@@ -46,18 +46,15 @@ import info.bioinfweb.phyde2.document.undo.PhyDE2Edit;
  */
 public abstract class PhyDE2AlignmentModel {
 	public static final int UNDO_LIMIT = 50;
-	private Document document;
 
-
-	private AccessibleUndoManager undoManager;
 	
+	private Document document;
+	private AccessibleUndoManager undoManager;
 	private boolean changed;
 	private File file;  //TODO Remove, since file is now a property of Document.
-	
 	private SwingEditFactory<Character> alignmentModelEditFactory;
 	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
 	private CharSetDataModel charSetModel;
-	
 	protected Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
 	
 	
@@ -190,14 +187,14 @@ public abstract class PhyDE2AlignmentModel {
 	}
 	
 	
-	public void removeDocumentListener(PhyDE2AlignmentModelListener listener) {
+	public void removeAlignmentListener(PhyDE2AlignmentModelListener listener) {
 		listeners.remove(listener);
 	}
 	
 	
 	protected void fireAfterFileNameChanged() {
 		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
-		for (PhyDE2AlignmentModelListener listener : listeners) {
+		for (PhyDE2AlignmentModelListener listener : new ArrayList<PhyDE2AlignmentModelListener>(listeners)) {  // Copy list to avoid possible ConcurrentModificationException
 			listener.afterFileNameChanged(e);
 		}
 	}
@@ -205,9 +202,8 @@ public abstract class PhyDE2AlignmentModel {
 	
 	protected void fireAfterChangedFlagSet() {
 		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
-		for (PhyDE2AlignmentModelListener listener : listeners) {
+		for (PhyDE2AlignmentModelListener listener : new ArrayList<PhyDE2AlignmentModelListener>(listeners)) {  // Copy list to avoid possible ConcurrentModificationException
 			listener.afterChangedFlagSet(e);
 		}
 	}
-	
 }

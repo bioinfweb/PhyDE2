@@ -95,11 +95,11 @@ public class Tab extends JPanel {
 			//container.getAlignmentAreas().add(mainArea);  //TODO Why have sequence index and character set areas no width if the main area is added here already? 
 					
 			// Prepare main area:
-			mainArea.setAlignmentModel(getAlignmentModel().getAlignmentModel());  //TODO The underlying model should not be passed here anymore, as soon as the problem of displaying its contents is solved.
+			mainArea.setAlignmentModel(getAlignmentModel().getAlignmentModel());
 			mainArea.getSelection().addSelectionListener(new SelectionListener<GenericEventObject<SelectionModel>>() {
 				@Override
 				public void selectionChanged(GenericEventObject<SelectionModel> event) {
-				MainFrame.getInstance().getActionManagement().refreshActionStatus();
+					MainFrame.getInstance().getActionManagement().refreshActionStatus();
 				}
 			});
 					

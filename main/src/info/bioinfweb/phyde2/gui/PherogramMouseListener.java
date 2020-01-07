@@ -37,7 +37,7 @@ public class PherogramMouseListener extends TICMouseAdapter{
 	
 	@Override
 	public boolean mousePressed(TICMouseEvent event) {
-		if (event.getClickCount() == 2) { // Double click
+		if ((event.getClickCount() == 2) && area.hasModel()) {  // Double click
 			MainFrame.getInstance().getPherogramView().getTraceCurveView().setModel(area.getModel());
 		}
 		return true;

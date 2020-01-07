@@ -107,7 +107,7 @@ public class AddSingleReadDialog extends OkCancelApplyHelpDialog {
 			AddSingleReadDialog thisDialog = this;
 			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getOpenFileChooser().showDialog(thisDialog,"add pherogram") == JFileChooser.APPROVE_OPTION){
+					if (getOpenFileChooser().showDialog(thisDialog,"Add pherogram") == JFileChooser.APPROVE_OPTION){
 						try {
 							filePathTextField.setText(getOpenFileChooser().getSelectedFile().toURI().toURL().toString());
 						} 

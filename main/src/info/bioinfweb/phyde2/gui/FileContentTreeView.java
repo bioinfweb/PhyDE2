@@ -233,18 +233,12 @@ public class FileContentTreeView extends JTree {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//checks, if selected alignment is PhyDE2AlignmentModel
-				if (mainframe.getSelectedAlignment() != null){
-					if (e.getClickCount() == 2) {
-						PhyDE2AlignmentModel model = mainframe.getSelectedAlignment();
-						mainframe.showAlignment(model);
-					}
-				}
-				
-				if (mainframe.getSelectedPherogram() != null) {
-					if (e.getClickCount()== 2){
-						PherogramAreaModel pherogramModel = mainframe.getSelectedPherogram();
+				if (e.getClickCount() == 2) {
+					if (mainframe.getSelectedAlignment() != null) {
 						mainframe.showAlignment(mainframe.getSelectedAlignment());
-						mainframe.getPherogramView().getTraceCurveView().setModel(pherogramModel);
+					}
+					if (mainframe.getSelectedPherogram() != null) {
+						mainframe.getPherogramView().getTraceCurveView().setModel(mainframe.getSelectedPherogram());
 					}
 				}
 			}
@@ -256,7 +250,4 @@ public class FileContentTreeView extends JTree {
 	public DefaultTreeModel getModel() {
 		return (DefaultTreeModel) super.getModel();
 	}
-	
-	
-	
 }

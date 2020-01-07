@@ -36,58 +36,52 @@ public class ContigTab extends Tab {
 	
 	public ContigTab(SingleReadContigAlignmentModel contigAlignment) {
 		super(contigAlignment);
+		getAlignmentArea().setDataAreaFactory(new PhyDE2DataAreaFactory(getAlignmentArea()));
+		
 		consensusSequenceArea = new AlignmentArea(getAlignmentsContainer());
 		consensusSequenceArea.setAlignmentModel(contigAlignment.getConsensusModel());
 		getAlignmentsContainer().getAlignmentAreas().add(consensusSequenceArea);
 		consensusSequenceArea.setAllowVerticalScrolling(false);
-		contigAlignment.addAlignmentListener(new PhyDE2AlignmentModelListener() {
-			
-			@Override
-			public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {
-				PherogramAreaModel pherogramModel = e.getPherogramReference();
-				String sequenceID = e.getSequenceID();
-				AlignmentArea alignmentArea = MainFrame.getInstance().getActiveAlignmentArea();
-
-				switch (e.getListChangeType()) {
-				case INSERTION: 	
-					if (pherogramModel != null){
-						PherogramArea pherogramDataArea = new PherogramArea(alignmentArea, pherogramModel, MainFrame.getInstance().getPherogramFormats());
-						pherogramDataArea.addMouseListener(new PherogramMouseListener(pherogramDataArea));
-						alignmentArea.getDataAreas().getSequenceList(sequenceID).add(pherogramDataArea);
-					}
-				
-					break;
-					
-				case DELETION:
-					if (pherogramModel != null){
-						//muss hier vorher auch der Listener removed werden?
-						alignmentArea.getDataAreas().getSequenceList(sequenceID).clear();  //TODO Is this or should this be done in LibrAlign?
-					}
-					break;
-				
-				default:
-					break;
-				
-			}
-			
-				
-			}
-			
-			@Override
-			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void afterContigReferenceAddedOrDeleted(ContigReferenceChangeEvent e) {}
-		});
+		
+		//TODO Add initial pherogram areas
+		
+//		contigAlignment.addAlignmentListener(new PhyDE2AlignmentModelListener() {
+//			@Override
+//			public void afterPherogramAddedOrDeleted(PherogramReferenceChangeEvent e) {
+//				PherogramAreaModel pherogramModel = e.getPherogramReference();
+//				AlignmentArea alignmentArea = MainFrame.getInstance().getActiveAlignmentArea();
+//
+//				switch (e.getListChangeType()) {
+//					case INSERTION: 	
+//						if (pherogramModel != null) {
+//							PherogramArea pherogramDataArea = new PherogramArea(alignmentArea, pherogramModel, MainFrame.getInstance().getPherogramFormats());
+//							pherogramDataArea.addMouseListener(new PherogramMouseListener(pherogramDataArea));
+//							alignmentArea.getDataAreas().getSequenceList(e.getSequenceID()).add(pherogramDataArea);
+//						}
+//						break;
+//						
+//					case DELETION:
+//						if (pherogramModel != null) {
+//							contigAlignment.removeAlignmentListener(this);  //TODO If a ConcurrentModificationException occurs, make sure to copy list in firing code.
+//							//TODO Why is the listener for the whole alignment removed when a single pherogram is removed?
+//							alignmentArea.getDataAreas().getSequenceList(e.getSequenceID()).clear();  //TODO Should this be done in LibrAlign?
+//						}
+//						break;
+//					
+//					default:
+//						break;
+//				}
+//			}
+//			
+//			@Override
+//			public void afterFileNameChanged(PhyDE2AlignmentModelChangeEvent e) {}
+//			
+//			@Override
+//			public void afterChangedFlagSet(PhyDE2AlignmentModelChangeEvent e) {}
+//
+//			@Override
+//			public void afterContigReferenceAddedOrDeleted(ContigReferenceChangeEvent e) {}
+//		});
 	}
 
 	

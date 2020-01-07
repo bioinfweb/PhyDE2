@@ -79,6 +79,7 @@ main/src/info/bioinfweb/phyde2/gui/FileContentTreeView.java -text svneol=unset#t
 main/src/info/bioinfweb/phyde2/gui/MainFrame.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/PherogramMouseListener.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/PherogramReferenceTreeNode.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/PhyDE2DataAreaFactory.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/SelectContigView.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/SelectForExportTreeView.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/Tab.java -text svneol=unset#text/plain

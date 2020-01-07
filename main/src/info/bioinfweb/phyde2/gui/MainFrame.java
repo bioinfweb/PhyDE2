@@ -169,7 +169,7 @@ public class MainFrame extends JFrame {
 			});
 			
 			
-			if (phyDE2model instanceof SingleReadContigAlignmentModel){
+			if (phyDE2model instanceof SingleReadContigAlignmentModel) {
 				newTab = new ContigTab((SingleReadContigAlignmentModel)phyDE2model);	
 			}
 			else {
