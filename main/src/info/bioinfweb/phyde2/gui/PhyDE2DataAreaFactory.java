@@ -42,18 +42,16 @@ public class PhyDE2DataAreaFactory implements DataAreaFactory {
 
 	@Override
 	public void createDataAreas(DataModel<?> model, String sequenceID, List<DataAreaResult> result) {
-		System.out.println("removeDataArea: " + model + " " + sequenceID);
 		if (model instanceof PherogramReference) {
 			PherogramArea pherogramArea = new PherogramArea(alignmentArea, (PherogramReference)model, MainFrame.getInstance().getPherogramFormats());
 			pherogramArea.addMouseListener(new PherogramMouseListener(pherogramArea));
 			result.add(new DataAreaResult(pherogramArea));
 		}
 	}
-
+	
 	
 	@Override
 	public boolean removeDataArea(ModelBasedDataArea<?, ?> dataArea) {
-		System.out.println("removeDataArea: " + dataArea);
 		return true;
 		//TODO SequenceIndexArea, CharSetArea and ConsensusSequenceArea should not be removed, if they are linked to the model.
 		//     - A third option in LibrAlign to leave areas unchanged (associated with their model) might make sense, but it might also not be necessary, since the TOP and BOTTOM areas would only be passed here, when a model is changed.

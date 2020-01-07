@@ -19,9 +19,6 @@
 package info.bioinfweb.phyde2.document;
 
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import info.bioinfweb.commons.collections.ListChangeType;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
@@ -31,7 +28,6 @@ import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 
 
 public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
-	private Map<String, PherogramReference> pherogramModelMap = new TreeMap<String, PherogramReference>();
 	private AlignmentModel<Character> consensusModel;
 	private String consensusSequenceID;
 	
@@ -71,12 +67,15 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 
 
 	public void addPherogram(String sequenceID, PherogramReference reference) {
-		if ((sequenceID != null) && (reference != null)) {
-			pherogramModelMap.put(sequenceID, reference);  //TODO Add as data model to the underlying alignment model and not to a custom map.
-			fireAfterPherogramAddedOrDeleted(ListChangeType.INSERTION, reference, sequenceID);
+		if (sequenceID == null) {
+			throw new IllegalArgumentException("sequenceID must not be null.");
+		}
+		else if (reference == null) {
+			throw new IllegalArgumentException("reference must not be null.");
 		}
 		else {
-			throw new NullPointerException("sequenceID and model must not be null.");
+			getAlignmentModel().getDataModels().getSequenceList(sequenceID).add(reference);
+			fireAfterPherogramAddedOrDeleted(ListChangeType.INSERTION, reference, sequenceID);
 		}
 	}
 	
@@ -84,24 +83,23 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 	//TODO Can this event be removed, now that AlignmentModel listener contains an event for adding data models?
 	protected void fireAfterPherogramAddedOrDeleted(ListChangeType listChangeType, PherogramReference pherogramReference, String sequenceID) {
 		PherogramReferenceChangeEvent e = new PherogramReferenceChangeEvent(this, listChangeType, sequenceID, pherogramReference);
-		for (PhyDE2AlignmentModelListener listener : listeners){
+		for (PhyDE2AlignmentModelListener listener : listeners) {
 			listener.afterPherogramAddedOrDeleted(e);
 		}
 	}
 
 	
 	public PherogramReference getPherogramReference(String sequenceID) {
-		return pherogramModelMap.get(sequenceID);
+		return getAlignmentModel().getDataModels().getSequenceList(sequenceID).getFirstOfType(PherogramReference.class);
 	}
 	
 	
 	public PherogramReference removePherogramModel(String sequenceID){
-		PherogramReference pherogramReference = pherogramModelMap.remove(sequenceID);
+		PherogramReference pherogramReference = getAlignmentModel().getDataModels().getSequenceList(sequenceID).removeFirstOfType(PherogramReference.class);
 		if (pherogramReference != null){
 			fireAfterPherogramAddedOrDeleted(ListChangeType.DELETION, pherogramReference, sequenceID);
 		}
 		return pherogramReference;
-	
 	}
 
 

@@ -28,6 +28,7 @@ import info.bioinfweb.libralign.alignmentarea.selection.SelectionListener;
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetArea;
 import info.bioinfweb.libralign.dataarea.implementations.sequenceindex.SequenceIndexArea;
+import info.bioinfweb.libralign.model.data.DataModelFactory;
 import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.tic.SwingComponentFactory;
@@ -73,10 +74,11 @@ public class Tab extends JPanel {
 			// Create main container instance (TIC component):
 			container = new MultipleAlignmentsContainer(MainFrame.getInstance().getEditSettings());
 					
-			// out head and main AlignmentArea in container:
 			sequenceIndexAlignmentArea = new AlignmentArea(container);
 			characterSetAlignmentArea = new AlignmentArea(container);
 			mainArea = new AlignmentArea(container);
+			mainArea.setDataAreaFactory(new PhyDE2DataAreaFactory(getAlignmentArea()));  // This needs to be done here to be available before the set model call later in this method. Setting in the constructor of ContigTab would be too late.
+
 			charSetArea = new CharSetArea(characterSetAlignmentArea, getAlignmentModel().getCharSetModel());
 			charSetArea.getSelectionListeners().add(new SelectionListener<GenericEventObject<CharSetArea>>() {
 				@Override

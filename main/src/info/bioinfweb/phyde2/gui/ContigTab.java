@@ -35,9 +35,7 @@ public class ContigTab extends Tab {
 			
 	
 	public ContigTab(SingleReadContigAlignmentModel contigAlignment) {
-		super(contigAlignment);
-		getAlignmentArea().setDataAreaFactory(new PhyDE2DataAreaFactory(getAlignmentArea()));
-		
+		super(contigAlignment);		
 		consensusSequenceArea = new AlignmentArea(getAlignmentsContainer());
 		consensusSequenceArea.setAlignmentModel(contigAlignment.getConsensusModel());
 		getAlignmentsContainer().getAlignmentAreas().add(consensusSequenceArea);
