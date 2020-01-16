@@ -25,9 +25,7 @@ import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.LibrAlignSwingAlignmentEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingAddSequenceEdit;
 import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingConcreteAddSequenceEdit;
-import info.bioinfweb.libralign.model.implementations.swingundo.edits.sequence.SwingRemoveSequenceEdit;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
 
 
 

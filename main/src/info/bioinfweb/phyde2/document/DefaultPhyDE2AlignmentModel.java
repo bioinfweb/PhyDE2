@@ -51,7 +51,7 @@ public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 	
 	public void addConsensus(SingleReadContigAlignmentModel contig, String sequenceID) {
 		for (int i = 0; i < contig.getConsensusModel().getSequenceLength(contig.getConsensusSequenceID()); i++) {
-			this.getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, contig.getConsensusModel().getTokenAt(contig.getConsensusSequenceID(), i));
+			this.getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, contig.getConsensusModel().getTokenAt(contig.getConsensusSequenceID(), i), true);  //TODO Check if all tokens can be left bound if pherograms are attached here in the future.
 		}
 		
 		if (!sequenceHasContig(sequenceID)){

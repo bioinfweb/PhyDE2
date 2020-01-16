@@ -80,7 +80,8 @@ public class RefreshConsensusSequenceEdit extends AlignmentEdit {
 			int sequenceLength = getAlignment().getAlignmentModel().getSequenceLength(sequenceID);
 			getAlignment().getAlignmentModel().getUnderlyingModel().removeTokensAt(sequenceID, 0 , sequenceLength);
 			for (int i = 0; i < tokens.length; i++) {
-				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, tokens[i]);
+				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, tokens[i], true);
+						//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
 			}	
 		}
 		

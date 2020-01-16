@@ -77,7 +77,8 @@ public class AddSequenceEdit extends AlignmentEdit {
 		
 		if ((getAlignment() instanceof SingleReadContigAlignmentModel) && (pherogramReference != null)) {
 			for (int j = 0; j < pherogramReference.getPherogramProvider().getSequenceLength(); j++) {
-				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j));
+				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j), true);
+						//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
 			}
 			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
 		}

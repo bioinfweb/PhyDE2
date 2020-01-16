@@ -65,8 +65,9 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
     		
     		int diff = sequenceLengthStorage.get(sequenceID);
     		for (int i = 0; i < diff; i++) {
-    			underlyingModel.appendToken(sequenceID, '-');
-			}
+    			underlyingModel.appendToken(sequenceID, '-', true);
+					//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
+    		}
     		
     		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
     		

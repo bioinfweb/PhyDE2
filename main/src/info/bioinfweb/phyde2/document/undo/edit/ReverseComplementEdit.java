@@ -58,7 +58,7 @@ public class ReverseComplementEdit extends AlignmentEdit {
     	for (String sequenceID : sequenceIDs) {
     		int diff = sequenceLengthStorage.get(sequenceID);
     		for (int i = 0; i <= diff; i++) {
-    			underlyingModel.appendToken(sequenceID, '-');
+    			underlyingModel.appendToken(sequenceID, '-', true);
     			//TODO: Check if <= is right here.
 			}
     		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);

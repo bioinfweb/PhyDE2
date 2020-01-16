@@ -30,6 +30,7 @@ import info.bioinfweb.libralign.model.AlignmentModelAdapter;
 import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
 import info.bioinfweb.libralign.model.events.TokenChangeEvent;
+import info.bioinfweb.libralign.model.events.TypedAlignmentModelChangeEvent;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory;
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
