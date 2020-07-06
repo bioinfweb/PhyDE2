@@ -44,6 +44,7 @@ main/src/info/bioinfweb/phyde2/document/io/AlignmentTypeDataModel.java -text svn
 main/src/info/bioinfweb/phyde2/document/io/AlignmentTypeDataReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PherogramEventReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/io/PhyDE2CharacterStateSetChooser.java -text
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEDocumentDataAdapter.java -text svneol=unset#text/plain
@@ -93,6 +94,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/AddContigAlignmentAction.java -t
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddDefaultPhyDE2AlignmentAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/AddSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/ChangeCharSetColorAction.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/actions/edit/CharacterStateSetChooserAction.java -text
 main/src/info/bioinfweb/phyde2/gui/actions/edit/CutLeftAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/CutRightAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/DeleteAlignmentAction.java -text svneol=unset#text/plain
@@ -130,6 +132,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/view/SwitchLeftRightInsertionAction.j
 main/src/info/bioinfweb/phyde2/gui/dialogs/AboutDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AddSequenceDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/AddSingleReadDialog.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/gui/dialogs/CharacterStateSetChooserDialog.java -text
 main/src/info/bioinfweb/phyde2/gui/dialogs/ExportDialog.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/dialogs/NewCharSetDialog.java -text svneol=unset#text/plain
 main/src/resources/Splash.png -text

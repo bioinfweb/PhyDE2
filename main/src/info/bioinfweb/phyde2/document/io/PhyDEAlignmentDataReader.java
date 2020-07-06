@@ -31,6 +31,7 @@ import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetEventReader;
 import info.bioinfweb.libralign.model.factory.BioPolymerCharAlignmentModelFactory;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
+import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
@@ -44,7 +45,7 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	
 	
 	public PhyDEAlignmentDataReader(JPhyloIOEventReader reader) {
-		super(reader, new BioPolymerCharAlignmentModelFactory('?', true));
+		super(reader, new BioPolymerCharAlignmentModelFactory('?', new PhyDE2CharacterStateSetChooser(),true));
 		this.reader = reader;
 		charSetReader = new CharSetEventReader(this, new URIOrStringIdentifier(null, PREDICATE_COLOR));
 		addDataElementReader(charSetReader);

@@ -537,6 +537,7 @@ public class MainFrame extends JFrame {
 			editMenu.add(getActionManagement().get("edit.removecurrendCharSet"));
 			editMenu.add(getActionManagement().get("edit.changecolorCharSet"));
 			editMenu.add(getActionManagement().get("edit.renameCharSet"));
+			editMenu.add(getActionManagement().get("edit.changeCharactersStateSet"));
 			editMenu.add(getActionManagement().get("edit.reverseComplement"));
 			editMenu.add(getActionManagement().get("edit.reverseComplementWithPherogram"));
 			editMenu.addSeparator();
