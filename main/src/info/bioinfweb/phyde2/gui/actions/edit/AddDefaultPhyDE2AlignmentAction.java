@@ -35,6 +35,7 @@ public class AddDefaultPhyDE2AlignmentAction extends AbstractAddAlignmentAction 
 		super(mainframe);
 		putValue(Action.NAME, "Add alignment"); 
 		putValue(Action.SHORT_DESCRIPTION, "Add alignment");
+		loadSymbols("AddAlignment");
 	}
 	
 

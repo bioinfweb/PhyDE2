@@ -35,6 +35,7 @@ public class DeleteAlignmentAction extends AbstractPhyDEAction implements Action
 		super(mainframe);
 		putValue(Action.NAME, "Delete alignment"); 
 		putValue(Action.SHORT_DESCRIPTION, "Delete alignment");
+		loadSymbols("DeleteAlignment");
 		// TODO Auto-generated constructor stub
 	}
 

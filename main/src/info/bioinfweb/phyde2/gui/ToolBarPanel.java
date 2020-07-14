@@ -77,6 +77,10 @@ public class ToolBarPanel extends JPanel{
 			upperToolBar.add(getActionManagement().get("edit.undo"));
 			upperToolBar.add(getActionManagement().get("edit.redo"));
 			upperToolBar.addSeparator();
+			upperToolBar.add(getActionManagement().get("edit.addContigAlignment"));
+			upperToolBar.add(getActionManagement().get("edit.addDefaultPhyDE2Alignment"));
+			upperToolBar.add(getActionManagement().get("edit.deleteAlignment"));
+			upperToolBar.addSeparator();
 			upperToolBar.add(getActionManagement().get("edit.addSequence"));
 			upperToolBar.add(getActionManagement().get("edit.deleteSequence"));
 			upperToolBar.addSeparator();
@@ -84,6 +88,7 @@ public class ToolBarPanel extends JPanel{
 			upperToolBar.add(getActionManagement().get("edit.deleteCharSet"));
 			upperToolBar.add(getActionManagement().get("edit.addcurrendCharSet"));
 			upperToolBar.add(getActionManagement().get("edit.removecurrendCharSet"));
+			
 		}
 		return upperToolBar;
 	}

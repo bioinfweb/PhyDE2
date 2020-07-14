@@ -24,10 +24,13 @@ import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 
 
@@ -37,7 +40,7 @@ public class AddContigAlignmentAction extends AbstractAddAlignmentAction impleme
 		super(mainframe);
 		putValue(Action.NAME, "Add contig alignment"); 
 		putValue(Action.SHORT_DESCRIPTION, "Add contig alignment");
-		//loadSymbols("Delete");
+		loadSymbols("AddContigAlignment");
 	}
 
 	
