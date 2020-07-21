@@ -43,6 +43,7 @@ import info.bioinfweb.phyde2.gui.actions.edit.DeleteCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.DeleteSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RedoToAction;
+import info.bioinfweb.phyde2.gui.actions.edit.RefreshAllConsensusSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RefreshConsensusSequenceAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveColumnsFromCharSetAction;
 import info.bioinfweb.phyde2.gui.actions.edit.RemoveGapsAction;
@@ -100,6 +101,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("edit.addSequence", new AddSequenceAction(mainFrame));
 		put("edit.changeCharactersStateSet", new CharacterStateSetChooserAction(mainFrame));
 		put("edit.refreshConsensusSequence", new RefreshConsensusSequenceAction(mainFrame));
+		put("edit.refreshAllConsensusSequence", new RefreshAllConsensusSequenceAction(mainFrame));
 		put("edit.deleteSequence", new DeleteSequenceAction(mainFrame));
 		put("edit.renameSequence", new RenameSequenceAction(mainFrame));
 		put("edit.removeGaps", new RemoveGapsAction(mainFrame));
@@ -119,7 +121,7 @@ public class ActionManagement extends AbstractUndoActionManagement {
 		put("view.showHideBasecalllinesAction", new ShowHideBasecalllinesAction(mainFrame));
 		put("view.displayQualityScoresAction", new DisplayQualityScoresAction(mainFrame));
 		put("view.showHideProbabilityValuesAction", new ShowHideProbabilityValuesAction(mainFrame));
-		
+		 
 		
 		// TODO add Links
 		put("help.about", new AboutAction(mainFrame));

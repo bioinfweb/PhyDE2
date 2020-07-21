@@ -528,6 +528,7 @@ public class MainFrame extends JFrame {
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));
 			editMenu.add(getActionManagement().get("edit.renameSequence"));
 			editMenu.add(getActionManagement().get("edit.refreshConsensusSequence"));
+			editMenu.add(getActionManagement().get("edit.refreshAllConsensusSequence"));
 			editMenu.add(getActionManagement().get("edit.removeGaps"));
 			editMenu.addSeparator();
 			editMenu.add(getActionManagement().get("edit.addCharSet"));

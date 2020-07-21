@@ -35,7 +35,7 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 
 	public RefreshConsensusSequenceAction(MainFrame mainframe) {
 		super(mainframe);
-		putValue(Action.NAME, "Refresh consensus sequence"); 
+		putValue(Action.NAME, "Refresh selected consensus sequences"); 
 	}
 
 	@Override
