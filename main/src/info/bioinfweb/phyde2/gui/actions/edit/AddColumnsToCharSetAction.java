@@ -34,6 +34,8 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 @SuppressWarnings("serial")
 public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Action {
+	String id = null;
+	
 	public AddColumnsToCharSetAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Add columns to selected character set"); 
@@ -45,18 +47,25 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String id = getSelectedCharSetID();
+		id = getSelectedCharSetID();
 		
 		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set where you want to add a column.", "Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		getMainFrame().getActiveAlignment().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+		getMainFrame().getActiveAlignment().getCharSetModel().get(id).add(getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn());
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
+		//getMainFrame().getActiveAlignment().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
 	}
 
 	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(getSelectedCharSetID() != null);
+	}
+	
+	
+	private String getPresentationName() {
+		return "Add columns to character set \"" + getMainFrame().getActiveAlignment().getCharSetModel().get(id) + "\"";
 	}
 }

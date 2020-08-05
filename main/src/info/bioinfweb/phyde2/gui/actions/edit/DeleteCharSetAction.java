@@ -26,6 +26,7 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.DeleteCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -52,12 +53,21 @@ public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the Char-Set which you want to delete.","Char-Set not found.", JOptionPane.ERROR_MESSAGE);
 		}
 		CharSet charSet = getMainFrame().getActiveAlignment().getCharSetModel().get(id);
-		getMainFrame().getActiveAlignment().executeEdit(new DeleteCharSetEdit(getMainFrame().getActiveAlignment(), charSet, id));
+		CharSetDataModel dataModel = getMainFrame().getActiveAlignment().getCharSetModel();
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+		dataModel.remove(id, charSet);
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(charSet.getName()));
+		//getMainFrame().getActiveAlignment().executeEdit(new DeleteCharSetEdit(getMainFrame().getActiveAlignment(), charSet, id));
 	}
 	
 	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(getSelectedCharSetID() != null);
+	}
+	
+	
+	private String getPresentationName(String name) {
+		return "Delete character set \"" + name + "\"";
 	}
 }

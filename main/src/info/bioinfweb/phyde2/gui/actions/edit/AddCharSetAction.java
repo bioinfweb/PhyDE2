@@ -26,6 +26,9 @@ import javax.swing.Action;
 
 import info.bioinfweb.commons.IntegerIDManager;
 import info.bioinfweb.commons.graphics.UniqueColorLister;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.libralign.dataarea.implementations.charset.events.CharSetChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -54,7 +57,14 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 		dialog.setSelectedColor(colorLister.generateNext());
 		dialog.setName("");
 		if (dialog.execute()) {
-			getMainFrame().getActiveAlignment().executeEdit(new AddCharSetEdit(getMainFrame().getActiveAlignment(), "cs" + idManager.createNewID(), dialog.getCharSetName(), dialog.getSelectedColor()));
+			CharSetDataModel dataModel = getMainFrame().getActiveAlignment().getCharSetModel();
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+			String csId = "cs" + idManager.createNewID();
+			CharSet charSet = new CharSet(dialog.getCharSetName(), dialog.getSelectedColor());
+			dataModel.put(csId, charSet);
+			getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(charSet));
+			
+			//getMainFrame().getActiveAlignment().executeEdit(new AddCharSetEdit(getMainFrame().getActiveAlignment(), "cs" + idManager.createNewID(), dialog.getCharSetName(), dialog.getSelectedColor()));
 		}
 	}
 
@@ -62,5 +72,10 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(document != null);
+	}
+	
+	
+	private String getPresentationName(CharSet charSet) {
+		return "Add character set \"" + charSet.getName() + "\"";
 	}
 }

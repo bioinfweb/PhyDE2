@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
+import info.bioinfweb.libralign.dataarea.implementations.charset.events.CharSetRenamedEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.RenameCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -52,7 +53,11 @@ public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
 			String name = JOptionPane.showInputDialog("New character set name:");
 			if (name != null) {
 				PhyDE2AlignmentModel document = getMainFrame().getActiveAlignment();
-				document.executeEdit(new RenameCharSetEdit(document, id, name));
+				document.getEditRecorder().startEdit();
+				document.getCharSetModel().get(id).setName(name);
+				document.getEditRecorder().endEdit("Renamed CharSet " + id + " to " + name);
+				
+				//document.executeEdit(new RenameCharSetEdit(document, id, name));
 			}
 		}
 	}

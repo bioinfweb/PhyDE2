@@ -43,6 +43,7 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
  */
 @SuppressWarnings("serial")
 public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Action {
+
 	public ChangeCharSetColorAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Change character set color"); 
@@ -63,7 +64,10 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 			CharSet charSet = getMainFrame().getActiveCharSetArea().getModel().get(id);
 			Color color = JColorChooser.showDialog(getMainFrame(), "Edit character set color", charSet.getColor());
 			if (color != null) {
-				getMainFrame().getActiveAlignment().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveAlignment(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
+				getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+				getMainFrame().getActiveCharSetArea().getModel().get(id).setColor(color);
+				getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(id));
+				//getMainFrame().getActiveAlignment().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveAlignment(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
 			}
 		}
 	}
@@ -72,5 +76,10 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(getSelectedCharSetID() != null);
+	}
+	
+	
+	private String getPresentationName(String id) {
+		return "Change color of character set \"" + getMainFrame().getActiveAlignment().getCharSetModel().get(id).getName() + "\"";
 	}
 }

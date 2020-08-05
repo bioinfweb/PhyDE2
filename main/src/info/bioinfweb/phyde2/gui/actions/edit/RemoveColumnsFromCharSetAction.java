@@ -47,13 +47,20 @@ public class RemoveColumnsFromCharSetAction extends AbstractPhyDEAction implemen
 		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set area where you want to remove columns.","Character set not found.", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		getMainFrame().getActiveAlignment().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+		getMainFrame().getActiveAlignment().getCharSetModel().get(id).remove(getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn());
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(id));
+		//getMainFrame().getActiveAlignment().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
 	}
 
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled(getSelectedCharSetID() != null);
+	}
+	
+	
+	private String getPresentationName(String id) {
+		return "Remove columns at character set \"" + getMainFrame().getActiveAlignment().getCharSetModel().get(id) + "\"";
 	}
 
 }
