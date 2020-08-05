@@ -185,11 +185,11 @@ public class CharacterStateSetChooserAction extends AbstractPhyDEAction implemen
 		
 		if (activeAlignment.getType().equals(AlignmentType.DEFAULT)) {
 			DefaultPhyDE2AlignmentModel model = new DefaultPhyDE2AlignmentModel (getMainFrame().getSelectedDocument(), newModel, new CharSetDataModel(newModel)); //TODO: save the model so it can be set later
-			newAlignment = model.getAlignmentModel().getUnderlyingModel();
+			newAlignment = model.getAlignmentModel();
 		}
 		else if (activeAlignment.getType().equals(AlignmentType.SINGLE_READ_CONTIG)){
 			SingleReadContigAlignmentModel model = new SingleReadContigAlignmentModel(getMainFrame().getSelectedDocument(), newModel, new CharSetDataModel(newModel), null); //TODO: save the model so it can be set later
-			newAlignment = model.getAlignmentModel().getUnderlyingModel();
+			newAlignment = model.getAlignmentModel();
 		}
 		
 		for (Iterator<String> it = currentAlignment.sequenceIDIterator(); it.hasNext();) {

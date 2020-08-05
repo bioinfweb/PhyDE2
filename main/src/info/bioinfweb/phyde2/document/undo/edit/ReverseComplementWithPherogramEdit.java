@@ -47,7 +47,7 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
 	public ReverseComplementWithPherogramEdit(PhyDE2AlignmentModel alignment, Collection<String> sequenceIDs) {
 		super(alignment);
 		this.sequenceIDs = sequenceIDs;
-		underlyingModel = getAlignment().getAlignmentModel().getUnderlyingModel();
+		underlyingModel = getAlignment().getAlignmentModel();
 		firstColumn = 0;
 		lastColumn = underlyingModel.getMaxSequenceLength() - 1;
 		
@@ -84,7 +84,7 @@ public class ReverseComplementWithPherogramEdit extends AlignmentEdit{
     	            
     	            int shift = lastColumn-rightBorder;
     	            
-    	            pherogramReference.reverseComplement();
+    	            pherogramReference.reverseComplement(sequenceIDs);
     	            pherogramReference.setFirstSeqPos(shift+1);
     		}	
     		

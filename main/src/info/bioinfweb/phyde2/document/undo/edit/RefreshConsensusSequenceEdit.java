@@ -62,7 +62,7 @@ public class RefreshConsensusSequenceEdit extends AlignmentEdit {
 			if(((DefaultPhyDE2AlignmentModel)getAlignment()).sequenceHasContig(sequenceID)){
 				int sequenceLength = getAlignment().getAlignmentModel().getSequenceLength(sequenceID);
 				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getAlignment()).getContig(sequenceID);
-				getAlignment().getAlignmentModel().getUnderlyingModel().removeTokensAt(sequenceID, 0 , sequenceLength);
+				getAlignment().getAlignmentModel().removeTokensAt(sequenceID, 0 , sequenceLength);
 				((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
 			}
 			
@@ -78,9 +78,9 @@ public class RefreshConsensusSequenceEdit extends AlignmentEdit {
 		for (String sequenceID : sequenceIDs){
 			char [] tokens = tokenMap.get(sequenceID);
 			int sequenceLength = getAlignment().getAlignmentModel().getSequenceLength(sequenceID);
-			getAlignment().getAlignmentModel().getUnderlyingModel().removeTokensAt(sequenceID, 0 , sequenceLength);
+			getAlignment().getAlignmentModel().removeTokensAt(sequenceID, 0 , sequenceLength);
 			for (int i = 0; i < tokens.length; i++) {
-				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, tokens[i], true);
+				getAlignment().getAlignmentModel().appendToken(sequenceID, tokens[i], true);
 						//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
 			}	
 		}

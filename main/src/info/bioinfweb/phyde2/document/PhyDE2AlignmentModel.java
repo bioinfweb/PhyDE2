@@ -1,21 +1,3 @@
-/*
- * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
- * <http://bioinfweb.info/PhyDE2>
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package info.bioinfweb.phyde2.document;
 
 
@@ -23,18 +5,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.undo.UndoManager;
+
 import info.bioinfweb.commons.swing.AccessibleUndoManager;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.AlignmentModelAdapter;
+import info.bioinfweb.libralign.model.AlignmentModelListener;
 import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
 import info.bioinfweb.libralign.model.events.TokenChangeEvent;
 import info.bioinfweb.libralign.model.events.TypedAlignmentModelChangeEvent;
+import info.bioinfweb.libralign.model.implementations.AbstractAlignmentModel;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingEditFactory;
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
+import info.bioinfweb.libralign.model.undo.EditRecorder;
+import info.bioinfweb.libralign.model.undo.alignment.AlignmentModelUndoListener;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEditFactory;
 import info.bioinfweb.phyde2.document.undo.PhyDE2Edit;
 
@@ -54,9 +42,10 @@ public abstract class PhyDE2AlignmentModel {
 	private boolean changed;
 	private File file;  //TODO Remove, since file is now a property of Document.
 	private SwingEditFactory<Character> alignmentModelEditFactory;
-	private SwingUndoAlignmentModel<Character> undoAlignmentModel;
+	private AlignmentModel<Character> alignmentModel;
 	private CharSetDataModel charSetModel;
 	protected Collection<PhyDE2AlignmentModelListener> listeners = new ArrayList<>();
+	private EditRecorder<?, ?> editRecorder = null;
 	
 	
 	public PhyDE2AlignmentModel(Document owner) {
@@ -103,8 +92,8 @@ public abstract class PhyDE2AlignmentModel {
 	}
 	
 	
-	public AccessibleUndoManager getUndoManager() {
-		return undoManager;
+	public AccessibleUndoManager getUndoManager() { 
+		return editRecorder.getUndoManager();
 	}
 	
 	
@@ -132,21 +121,19 @@ public abstract class PhyDE2AlignmentModel {
 	}
 	
 	
-	public SwingUndoAlignmentModel<Character> getAlignmentModel() {
-		return undoAlignmentModel;
+	public AlignmentModel<Character> getAlignmentModel() {
+		return alignmentModel;
 	}
 	
 	
 	private void setAlignmentModel(AlignmentModel<Character> alignmentModel) {
-		if (alignmentModel instanceof SwingUndoAlignmentModel) {
-			this.undoAlignmentModel = (SwingUndoAlignmentModel<Character>)alignmentModel;
-		}
-		else {
-			this.undoAlignmentModel = new SwingUndoAlignmentModel<Character>(alignmentModel, undoManager, alignmentModelEditFactory);
-		}
+		this.alignmentModel = alignmentModel;
+		editRecorder = new EditRecorder(alignmentModel);
+		this.alignmentModel.addModelListener(new AlignmentModelUndoListener<Character>(editRecorder));
+		//TODO: possibly register undo listeners with all data models already present now
 		
 		// Register changes listener to know when to ask for saving changes:
-		undoAlignmentModel.addModelListener(new AlignmentModelAdapter<Character>() {
+		alignmentModel.addModelListener(new AlignmentModelAdapter<Character>() {
 			@Override
 			public void afterSequenceChange(SequenceChangeEvent<Character> e) {
 				setChanged(true);
@@ -193,6 +180,11 @@ public abstract class PhyDE2AlignmentModel {
 	}
 	
 	
+	public EditRecorder<?, ?> getEditRecorder() {
+		return editRecorder;
+	}
+
+
 	protected void fireAfterFileNameChanged() {
 		PhyDE2AlignmentModelChangeEvent e = new PhyDE2AlignmentModelChangeEvent(this);
 		for (PhyDE2AlignmentModelListener listener : new ArrayList<PhyDE2AlignmentModelListener>(listeners)) {  // Copy list to avoid possible ConcurrentModificationException

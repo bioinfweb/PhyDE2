@@ -66,18 +66,18 @@ public class AddSequenceEdit extends AlignmentEdit {
 	@Override
 	public void redo() throws CannotRedoException {
 		if (sequenceID == null) {
-			sequenceID = getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName);
+			sequenceID = getAlignment().getAlignmentModel().addSequence(sequenceName);
 			if (pherogramProvider != null) {  // New sequence does not have an attached pherogram.
-				pherogramReference = new PherogramReference(getAlignment().getAlignmentModel().getUnderlyingModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
+				pherogramReference = new PherogramReference(getAlignment().getAlignmentModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
 			}
 		}
 		else {
-			getAlignment().getAlignmentModel().getUnderlyingModel().addSequence(sequenceName, sequenceID);
+			getAlignment().getAlignmentModel().addSequence(sequenceName, sequenceID);
 		}
 		
 		if ((getAlignment() instanceof SingleReadContigAlignmentModel) && (pherogramReference != null)) {
 			for (int j = 0; j < pherogramReference.getPherogramProvider().getSequenceLength(); j++) {
-				getAlignment().getAlignmentModel().getUnderlyingModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j), true);
+				getAlignment().getAlignmentModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j), true);
 						//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
 			}
 			((SingleReadContigAlignmentModel) getAlignment()).addPherogram(sequenceID, pherogramReference);
@@ -93,7 +93,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 
 	@Override
 	public void undo() throws CannotUndoException {
-		getAlignment().getAlignmentModel().getUnderlyingModel().removeSequence(sequenceID);
+		getAlignment().getAlignmentModel().removeSequence(sequenceID);
 		if (getAlignment() instanceof SingleReadContigAlignmentModel) {
 			((SingleReadContigAlignmentModel) getAlignment()).removePherogramModel(sequenceID);	
 		}
