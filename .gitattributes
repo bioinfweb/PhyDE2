@@ -107,6 +107,7 @@ main/src/info/bioinfweb/phyde2/gui/actions/edit/GenerateConsensusSequenceAction.
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RedoAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RedoToAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RefreshAllConsensusSequenceAction.java -text
+main/src/info/bioinfweb/phyde2/gui/actions/edit/RefreshConsensusSequenceAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RefreshSelectedConsensusSequenceAction.java -text
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveColumnsFromCharSetAction.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/actions/edit/RemoveGapsAction.java -text svneol=unset#text/plain
