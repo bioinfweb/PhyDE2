@@ -22,9 +22,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
+import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
@@ -35,7 +41,17 @@ import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import javax.swing.Action;
 
 public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction implements Action{
-
+	private Collection <String> sequenceIDs = new ArrayList<>();;
+	private TreeMap<String, Integer> sequenceLengthStorage = new TreeMap<>(); 
+	private AlignmentModel<Character> underlyingModel = null;
+	private int firstColumn = 0;
+	private int lastColumn = 0;
+	private AlignmentModel<Character> consensusModel = null;
+	private int firstColumnCon = 0;
+	private int lastColumnCon = 0;
+	private String conSequenceID = "";
+	
+	
 	public ReverseComplementWithPherogramAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Reverse complement with Pherogram"); 
@@ -46,21 +62,117 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
-		Collection<String> sequenceIDs = new ArrayList<>();
 		
 		for (int i = selection.getFirstRow(); i <= selection.getLastRow(); i++) {
 			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(i));
 		}
 		
-		getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementWithPherogramEdit(getMainFrame().getActiveAlignment(), sequenceIDs));
+	//	getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementWithPherogramEdit(getMainFrame().getActiveAlignment(), sequenceIDs));
 		
+		underlyingModel = getMainFrame().getActiveAlignment().getAlignmentModel();
+		SingleReadContigAlignmentModel consensus = (SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment();
+		consensusModel = consensus.getConsensusModel();
+		firstColumnCon = 0;
+		lastColumnCon = consensusModel.getMaxSequenceLength() - 1;
+		//Iterator<String> iterator = consensusModel.sequenceIDIterator();
+		firstColumn = 0;
+		lastColumn = underlyingModel.getMaxSequenceLength() - 1;
+		
+		for (Iterator<String> iterator = consensusModel.sequenceIDIterator(); iterator.hasNext();) {
+			conSequenceID = iterator.next();
+		}
+		
+		
+		for (String sequenceID : sequenceIDs) {
+			int diff = lastColumn + 1 - underlyingModel.getSequenceLength(sequenceID);
+			sequenceLengthStorage.put(sequenceID, diff);
+		}
+		
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+		reverseComplement();
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
 	}
 
+	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel model, MainFrame mainframe) {
 		setEnabled((model != null) && (model instanceof SingleReadContigAlignmentModel) && 
 				mainframe.getActiveAlignmentArea().getAlignmentModel().getTokenSet().getType().isNucleotide());
 		
+	}
+	
+	
+	private void reverseComplement() {
+	   	//SelectionModel selection = getReadsArea().getSelection();  
+    	for (String sequenceID : sequenceIDs) {
+    		PherogramReference pherogramReference = ((SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment()).getPherogramReference(sequenceID);
+    		
+    		int diff = sequenceLengthStorage.get(sequenceID);
+    		for (int i = 0; i < diff; i++) {
+    			underlyingModel.appendToken(sequenceID, '-', true);
+					//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
+    		}
+    		
+    		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
+    		AlignmentModelUtils.reverseComplement(consensusModel, conSequenceID, firstColumnCon, lastColumnCon + 1);
+    		
+    		if (pherogramReference != null){
+    			 PherogramAlignmentRelation rightRelation = pherogramReference.editableIndexByBaseCallIndex(
+    					 pherogramReference.getRightCutPosition());
+    	            int rightBorder;
+    	            if (rightRelation.getCorresponding() == PherogramAlignmentRelation.OUT_OF_RANGE) {
+    	                rightBorder = rightRelation.getBeforeValidIndex() + 1;
+    	            }
+    	            else {
+    	                rightBorder = rightRelation.getAfterValidIndex();
+    	            }
+    	            
+    	            int shift = lastColumn-rightBorder;
+    	            
+    	            pherogramReference.reverseComplement(sequenceIDs);
+    	            pherogramReference.setFirstSeqPos(shift+1);
+    		}	
+    		
+		}
+
+	}
+	
+	
+	private String getPresentationName() {
+		AlignmentModel<?> model = getMainFrame().getActiveAlignment().getAlignmentModel();
+		StringBuilder result = new StringBuilder(64);
+		int counter = 0;
+		int dif;
+
+		result.append("Reverse complement in sequence");
+		
+		if (sequenceIDs.size() > 1) {
+			result.append("s");
+		}
+		result.append(" ");
+			
+		Iterator<String> i = sequenceIDs.iterator();
+		while (i.hasNext() && (counter < 3)) {
+			result.append("\"");
+			result.append(model.sequenceNameByID(i.next()));
+			result.append("\"");
+			if (i.hasNext() && (counter < 2)){
+				result.append(", ");
+			}
+			counter++;
+		}
+		
+		dif = sequenceIDs.size() - 3;
+		
+		if (dif > 0){
+			result.append(" and ");
+			result.append(dif);
+			result.append(" more sequence(s)");
+		}
+		
+		result.append(".");
+		
+		return result.toString();
 	}
 
 }

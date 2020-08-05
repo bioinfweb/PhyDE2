@@ -29,6 +29,7 @@ import info.bioinfweb.libralign.dataarea.DataArea;
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.dataelement.DataList;
 import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
+import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.CutRightEdit;
@@ -60,7 +61,12 @@ public class CutRightAction extends AbstractPhyDEAction implements Action{
 			if (newPos == PherogramAlignmentRelation.OUT_OF_RANGE) {
 				newPos = relation.getBefore() + 1;  // Set cut position behind the end of the pherogram.
 			}
-			getMainFrame().getActiveAlignment().executeEdit(new CutRightEdit(getMainFrame().getActiveAlignment(), sequenceID, newPos, oldPos));
+			PherogramAreaModel pherogramModel = ((SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment()).getPherogramReference(sequenceID);
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+			pherogramModel.setRightCutPosition(newPos);
+			getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(newPos, sequenceID));
+			
+			//getMainFrame().getActiveAlignment().executeEdit(new CutRightEdit(getMainFrame().getActiveAlignment(), sequenceID, newPos, oldPos));
 		}		
 	}
 		
@@ -69,5 +75,19 @@ public class CutRightAction extends AbstractPhyDEAction implements Action{
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled((mainframe.getActiveAlignment() instanceof SingleReadContigAlignmentModel) && 
 				(mainframe.getActiveAlignmentArea().getSelection().getCursorHeight() == 1));
+	}
+	
+	
+	private String getPresentationName(int newBaseCallCutPos, String sequenceID) {
+		StringBuilder result = new StringBuilder();
+		
+		result.append("Right cut position set to index ");
+		result.append(newBaseCallCutPos);
+		result.append(" in sequence ");
+		result.append(getMainFrame().getActiveAlignment().getAlignmentModel().sequenceNameByID(sequenceID));
+		result.append(".");
+		
+		return result.toString();
+		
 	}
 }

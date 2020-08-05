@@ -19,7 +19,11 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 
+import info.bioinfweb.commons.collections.ListChangeType;
+import info.bioinfweb.commons.collections.PackedObjectArrayList;
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.DeleteSequencesEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
@@ -51,12 +55,16 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
-		Collection <String> sequenceIDs = new ArrayList<>();
+		Collection<String> sequenceIDs = new ArrayList<>();
+		
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
 			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
+			String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row);
+			getMainFrame().getActiveAlignment().getAlignmentModel().removeSequence(id);
 		}
-		
-		getMainFrame().getActiveAlignment().executeEdit(new DeleteSequencesEdit(getMainFrame().getActiveAlignment(), sequenceIDs) );
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(sequenceIDs.size() + " sequences were deleted. " + "From row " + selection.getFirstRow() + " to row " + selection.getLastRow());
+		//getMainFrame().getActiveAlignment().executeEdit(new DeleteSequencesEdit(getMainFrame().getActiveAlignment(), sequenceIDs) );
 	}
 
 
@@ -64,4 +72,5 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled((document != null) && document.getAlignmentModel().getSequenceCount() != 0);
 	}	
+	
 }

@@ -31,7 +31,10 @@ import javax.swing.KeyStroke;
 
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
+import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.PherogramProviderByURL;
+import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
@@ -44,6 +47,13 @@ import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
 
 @SuppressWarnings("serial")
 public class AddSequenceAction extends AbstractPhyDEAction implements Action {
+	private URL url;
+	private PherogramProvider pherogramProvider;
+	private PherogramReference pherogramReference = null;
+	private SingleReadContigAlignmentModel contigReference;
+	private String sequenceID = null;
+	private String seqName = null;
+	
 	public AddSequenceAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Add sequence"); 
@@ -60,9 +70,11 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
 			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
 			if (dialog.execute()){
-				SingleReadContigAlignmentModel selectedContig = dialog.getSelectedConitgModel();
+				contigReference = dialog.getSelectedConitgModel();
+				seqName = dialog.getSequenceName();
 				try {
-					model.executeEdit(new AddSequenceEdit(model, dialog.getSequenceName(), null, selectedContig));
+					doEdit(seqName);
+					//model.executeEdit(new AddSequenceEdit(model, dialog.getSequenceName(), null, contigReference)); //when gone there is an error with UnsupportedChromatogramFormatException
 				} 
 				catch (UnsupportedChromatogramFormatException | IOException ex) {
 					throw new InternalError(ex);  // This should not happen since no pherogram is loaded.
@@ -75,9 +87,13 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			if (dialog.execute()) {
 				if ((dialog.getSelectedURL() != null) && (!"".equals(dialog.getSelectedURL()))) {
 					try {
-						URL url = new URL(dialog.getSelectedURL());
-						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(
-								getMainFrame().getActiveAlignment(), dialog.getSequenceName(), url, null));
+						url = new URL(dialog.getSelectedURL());
+						pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
+						seqName = dialog.getSequenceName();
+						doEdit(seqName);
+					
+//						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(
+//								getMainFrame().getActiveAlignment(), dialog.getSequenceName(), url, null)); //when gone there is an error with UnsupportedChromatogramFormatException
 					}
 					catch (IOException ex) {
 						JOptionPane.showMessageDialog(getMainFrame(), "The following error occured when trying to load the pherogram from \"" + dialog.getSelectedURL() 
@@ -91,7 +107,9 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 				
 				else {
 					try {
-						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null, null));
+						seqName = dialog.getSequenceName();
+						doEdit(seqName);
+						//getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null, null));
 					} 
 					catch (UnsupportedChromatogramFormatException | IOException ex) {
 						throw new InternalError(ex);  // This should not happen since no pherogram is loaded.
@@ -101,9 +119,48 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		}
 	}
 
-
+	private void doEdit(String sequenceName) throws UnsupportedChromatogramFormatException, IOException {
+		PhyDE2AlignmentModel model = getMainFrame().getActiveAlignment();
+		model.getEditRecorder().startEdit();
+		int seqNumber = model.getAlignmentModel().getSequenceCount();
+		if (sequenceID == null) {
+			sequenceID = model.getAlignmentModel().addSequence(sequenceName);
+			if (pherogramProvider != null) {  // New sequence does not have an attached pherogram.
+				pherogramReference = new PherogramReference(model.getAlignmentModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
+			}
+		}
+		else {
+			model.getAlignmentModel().addSequence(sequenceName);
+		}
+		if ((model instanceof SingleReadContigAlignmentModel) && (pherogramReference != null)) {
+			for (int j = 0; j < pherogramReference.getPherogramProvider().getSequenceLength(); j++) {
+				model.getAlignmentModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j), true);
+						//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
+			}
+			((SingleReadContigAlignmentModel) model).addPherogram(sequenceID, pherogramReference);
+		}
+		
+		else if ((model instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
+			((DefaultPhyDE2AlignmentModel) model).addConsensus(contigReference, sequenceID);
+		}
+		model.getEditRecorder().endEdit(getPresentationName());
+	}
+	
+	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel document, MainFrame mainframe) {
 		setEnabled((document != null) && (mainframe.getActiveAlignmentArea() != null));
+	}
+	
+	
+	private String getPresentationName() {
+		StringBuilder result = new StringBuilder();
+		result.append("Sequence ");
+		result.append(seqName);
+		result.append(" added to alignment ");
+		result.append(getMainFrame().getActiveAlignment());
+		result.append(".");
+		
+		return result.toString();
 	}
 }

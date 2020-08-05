@@ -25,6 +25,8 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.model.events.SequenceRenamedEvent;
+import info.bioinfweb.libralign.model.undo.alignment.sequence.AlignmentModelRenameSequenceEdit;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
@@ -45,10 +47,12 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		String name = JOptionPane.showInputDialog("New sequence name");
 		if (name != null) {
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 			for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
 				String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row);
 				getMainFrame().getActiveAlignment().getAlignmentModel().renameSequence(id, name);
 			}
+			getMainFrame().getActiveAlignment().getEditRecorder().endEdit("Sequence name changed to " + name);
 		}
 	}
 	//TODO: undo option can not get the sequence name back

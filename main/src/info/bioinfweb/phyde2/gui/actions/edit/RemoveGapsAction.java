@@ -50,12 +50,14 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		int indexFirstColumn = selection.getFirstColumn();
-
+		
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
 			String id = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row);
 			int indexLastColumn = Math.min(selection.getLastColumn(), getMainFrame().getActiveAlignmentArea().getAlignmentModel().getSequenceLength(id) - 1);
 
 			int columnPosition = indexFirstColumn;
+			
 			for (int i = indexFirstColumn; i <= indexLastColumn; i++) {				
 				if (getMainFrame().getActiveAlignmentArea().getAlignmentModel().getTokenAt(id, columnPosition).equals('-')) {
 					getMainFrame().getActiveAlignmentArea().getAlignmentModel().removeTokenAt(id, columnPosition);
@@ -63,8 +65,9 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 				else {
 					columnPosition++;
 				}
-			}				
+			}	
 		}
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("Gaps were removed from " + selection.getFirstRow() + " to " + selection.getLastRow());
 	}
 	
 	

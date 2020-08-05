@@ -20,6 +20,8 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
@@ -30,6 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 import javax.swing.Action;
 
@@ -37,6 +41,13 @@ import javax.swing.Action;
 
 @SuppressWarnings("serial")
 public class ReverseComplementAction extends AbstractPhyDEAction implements Action {
+	private int firstColumn;
+	private int lastColumn;
+	private AlignmentModel<Character> underlyingModel;
+	private Collection<String> sequenceIDs = new ArrayList<>();  
+	private TreeMap<String, Integer> sequenceLengthStorage = new TreeMap<>(); 
+	
+	
 	public ReverseComplementAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Reverse Complement"); 
@@ -49,14 +60,27 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
-		Collection<String> sequenceIDs = new ArrayList<>();
+
 		
 		for (int i = selection.getFirstRow(); i <= selection.getLastRow(); i++) {
 			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(i));
 		}
 		
-		getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementEdit(getMainFrame().getActiveAlignment(), 
-				selection.getFirstColumn(), selection.getLastColumn(), sequenceIDs));
+		
+		firstColumn = selection.getFirstColumn();
+		lastColumn = selection.getLastColumn();
+		underlyingModel = getMainFrame().getActiveAlignment().getAlignmentModel();
+		for (String sequenceID : sequenceIDs) {
+			int diff = lastColumn - underlyingModel.getSequenceLength(sequenceID);
+			sequenceLengthStorage.put(sequenceID, diff);
+		}
+		
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
+		reverseComplement();
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
+		
+//		getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementEdit(getMainFrame().getActiveAlignment(), 
+//				selection.getFirstColumn(), selection.getLastColumn(), sequenceIDs));
 	}
 
 	
@@ -64,5 +88,67 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 	public void setEnabled(PhyDE2AlignmentModel model, MainFrame mainframe) {
 		setEnabled((model != null) && (model instanceof DefaultPhyDE2AlignmentModel) && !mainframe.getActiveAlignmentArea().getSelection().isEmpty() && 
 				mainframe.getActiveAlignmentArea().getAlignmentModel().getTokenSet().getType().isNucleotide());
+	}
+	
+	
+	private void reverseComplement() { 
+    	for (String sequenceID : sequenceIDs) {
+    		int diff = sequenceLengthStorage.get(sequenceID);
+    		for (int i = 0; i <= diff; i++) {
+    			underlyingModel.appendToken(sequenceID, '-', true);
+    			//TODO: Check if <= is right here.
+			}
+    		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
+		
+		}
+
+	}
+	
+	private String getPresentationName() {
+		AlignmentModel<?> model = getMainFrame().getActiveAlignment().getAlignmentModel();
+		StringBuilder result = new StringBuilder(64);
+		int counter = 0;
+		int dif;
+
+		result.append("Reverse complement ");
+		if ((firstColumn-lastColumn) < 0){
+			result.append("between column ");
+			result.append(firstColumn + 1);
+			result.append(" and ");
+		}
+		else {
+			result.append("in column ");
+		}
+		result.append(lastColumn + 1);
+		
+		result.append(" in sequence");
+		if (sequenceIDs.size() > 1) {
+			result.append("s");
+		}
+		result.append(" ");
+		
+		
+		Iterator<String> i = sequenceIDs.iterator();
+		while (i.hasNext() && (counter < 3)) {
+			result.append("\"");
+			result.append(model.sequenceNameByID(i.next()));
+			result.append("\"");
+			if (i.hasNext() && (counter < 2)){
+				result.append(", ");
+			}
+			counter++;
+		}
+		
+		dif = sequenceIDs.size() - 3;
+		
+		if (dif > 0){
+			result.append(" and ");
+			result.append(dif);
+			result.append(" more sequence(s)");
+		}
+		
+		result.append(".");
+		
+		return result.toString();
 	}
 }
