@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 import java.awt.List;
@@ -25,32 +27,38 @@ import java.util.ArrayList;
 import javax.swing.Action;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
+import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.RefreshConsensusSequenceEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
-public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implements Action{
-
-	public RefreshConsensusSequenceAction(MainFrame mainframe) {
+public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction implements Action {
+	public RefreshSelectedConsensusSequenceAction(MainFrame mainframe)  {
 		super(mainframe);
 		putValue(Action.NAME, "Refresh selected consensus sequences"); 
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		ArrayList<String> sequenceIDs = new ArrayList<>();
-		//String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
+		String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
-		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
-		}
-		getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));
 		
+		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
+			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContig(sequenceID).getConsensusModel(), model.getContig(sequenceID).getConsensusSequenceID())) {
+				sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
+			}	
+		}
+		getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));	
 	}
 
+	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel model, MainFrame mainframe) {
 		boolean enabled = false;
@@ -64,6 +72,7 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 						for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++){
 							if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row))) {
 								hasContig = true;
+								break;
 							}
 						}
 					}
@@ -79,3 +88,4 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 	}
 
 }
+

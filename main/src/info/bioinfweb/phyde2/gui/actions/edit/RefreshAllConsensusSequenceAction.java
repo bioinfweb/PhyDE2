@@ -18,6 +18,7 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
+
 //import java.awt.List;
 import java.awt.event.ActionEvent;
 //import java.io.File;
@@ -41,16 +42,17 @@ import info.bioinfweb.libralign.dataelement.DataLists;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.data.DataModel;
 import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
+import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 //import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentModelEdit;
 import info.bioinfweb.phyde2.document.undo.edit.RefreshConsensusSequenceEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction implements Action {
-	
 	public RefreshAllConsensusSequenceAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Refresh all consensus sequences"); 
@@ -59,16 +61,17 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Iterator<String> all = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
+		Iterator<String> iterator = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
 		ArrayList<String> sequenceIDs = new ArrayList<>();
-	
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
-		while (all.hasNext()) {
-			sequenceIDs.add(all.next());
-			}
-					
-		getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));
 		
+		while (iterator.hasNext()) {
+			String sequenceID = iterator.next(); 
+			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContig(sequenceID).getConsensusModel(), model.getContig(sequenceID).getConsensusSequenceID())) {
+				sequenceIDs.add(sequenceID);
+			}
+		}
+		getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));
 	}
 	
 	
@@ -77,15 +80,19 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 		boolean enabled = false;
 		if (mainframe.getActiveAlignmentArea() != null) {
 			if (model instanceof DefaultPhyDE2AlignmentModel) {
-				Iterator<String> activeAlignmentArea = mainframe.getActiveAlignmentArea().getAlignmentModel().sequenceIDIterator();
+				Iterator<String> iterator = mainframe.getActiveAlignmentArea().getAlignmentModel().sequenceIDIterator();
 				boolean hasContig = false;
 				if (model.getAlignmentModel().getSequenceCount() > 0) {
-					if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(0))) {
-						hasContig = true;
-					}
-				}
+					
+					while (iterator.hasNext()) {
+						if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(iterator.next().toString())) {
+							hasContig = true;
+							break;
+						}
+					} 
 
-				enabled = ((model != null) && (model.getAlignmentModel().getSequenceCount() != 0) && hasContig);
+				enabled = ((model != null) && (model.getAlignmentModel().sequenceIDIterator().hasNext() != false) && hasContig);
+				}
 			}
 		}
 		setEnabled(enabled);

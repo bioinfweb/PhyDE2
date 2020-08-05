@@ -20,27 +20,28 @@ package info.bioinfweb.phyde2.gui;
 
 
 import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
-import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
-import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
-import info.bioinfweb.phyde2.document.ContigReferenceChangeEvent;
-import info.bioinfweb.phyde2.document.PherogramReferenceChangeEvent;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelChangeEvent;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModelListener;
+import info.bioinfweb.libralign.dataarea.implementations.consensus.ConsensusSequenceArea;
+import info.bioinfweb.libralign.dataarea.implementations.consensus.ConsensusSequenceModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 
 
 public class ContigTab extends Tab {
-	private AlignmentArea consensusSequenceArea = null;
-			
+	private AlignmentArea consensusSequenceAlignmentArea = null;
+	private ConsensusSequenceModel consensusSequenceModel = null;
+	
 	
 	public ContigTab(SingleReadContigAlignmentModel contigAlignment) {
 		super(contigAlignment);		
-		consensusSequenceArea = new AlignmentArea(getAlignmentsContainer());
-		consensusSequenceArea.setAlignmentModel(contigAlignment.getConsensusModel());
-		getAlignmentsContainer().getAlignmentAreas().add(consensusSequenceArea);
-		consensusSequenceArea.setAllowVerticalScrolling(false);
+		consensusSequenceAlignmentArea = new AlignmentArea(getAlignmentsContainer());
+		consensusSequenceAlignmentArea.setAlignmentModel(contigAlignment.getConsensusModel());
 		
+		ConsensusSequenceArea data = new ConsensusSequenceArea(consensusSequenceAlignmentArea,consensusSequenceModel);
+		consensusSequenceAlignmentArea.getDataAreas().getTopList().add(data);
+		getAlignmentsContainer().getAlignmentAreas().add(consensusSequenceAlignmentArea);
+		consensusSequenceAlignmentArea.setAllowVerticalScrolling(false);
+				
+	
 		//TODO Add initial pherogram areas
 		
 //		contigAlignment.addAlignmentListener(new PhyDE2AlignmentModelListener() {
@@ -82,6 +83,8 @@ public class ContigTab extends Tab {
 //		});
 	}
 
+	
+	
 	
 	@Override
 	public SingleReadContigAlignmentModel getAlignmentModel() {

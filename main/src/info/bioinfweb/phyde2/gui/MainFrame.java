@@ -78,7 +78,7 @@ public class MainFrame extends JFrame {
 	private JSplitPane contentSplitPane = null;
 	private PherogramView pherogramView = null;
 	public ClosableJTabbedPane tabbedPane = null;
-	private JPanel jContentPane = null;  // ?
+	private JPanel jContentPane = null;  
 	
 	private JMenuBar mainMenu = null;
 	private JMenu fileMenu = null;
@@ -527,7 +527,9 @@ public class MainFrame extends JFrame {
 			editMenu.add(getActionManagement().get("edit.addSequence"));
 			editMenu.add(getActionManagement().get("edit.deleteSequence"));
 			editMenu.add(getActionManagement().get("edit.renameSequence"));
-			editMenu.add(getActionManagement().get("edit.refreshConsensusSequence"));
+			editMenu.add(getActionManagement().get("edit.generateConsensusSequence"));
+			editMenu.add(getActionManagement().get("edit.extendGeneratedConsensusSequence"));
+			editMenu.add(getActionManagement().get("edit.refreshSelectedConsensusSequence"));
 			editMenu.add(getActionManagement().get("edit.refreshAllConsensusSequence"));
 			editMenu.add(getActionManagement().get("edit.removeGaps"));
 			editMenu.addSeparator();

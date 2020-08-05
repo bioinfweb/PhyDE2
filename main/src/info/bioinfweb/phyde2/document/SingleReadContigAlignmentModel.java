@@ -21,37 +21,44 @@ package info.bioinfweb.phyde2.document;
 
 import info.bioinfweb.commons.collections.ListChangeType;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
+import info.bioinfweb.libralign.dataarea.implementations.consensus.ConsensusSequenceModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.DataModelLists;
+import info.bioinfweb.libralign.model.data.DataModel;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
 import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 
 
 
 public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
-	private AlignmentModel<Character> consensusModel;
+	private AlignmentModel<Character> consensusAlignmentModel;
 	private String consensusSequenceID;
+	private ConsensusSequenceModel consensusDataModel; 
+
 	
 	
 	public SingleReadContigAlignmentModel(Document owner) {
 		this(owner, new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
 	}
-	
-	
+
+
 	private SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> singleReadModel) {
 		this(owner, singleReadModel, new CharSetDataModel(singleReadModel), 
 				new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true)));		
+				
 	}
 	
-	
-	public SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> singleReadModel, CharSetDataModel charSetModel, AlignmentModel<Character> consensusModel) {
+	public SingleReadContigAlignmentModel(Document owner, AlignmentModel<Character> singleReadModel, CharSetDataModel charSetModel, AlignmentModel<Character> consensusAlignmentModel) {
 		super(owner, singleReadModel, charSetModel);
-		if (consensusModel == null) {
-			this.consensusModel = new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true));
+		if (consensusAlignmentModel == null) {
+			this.consensusAlignmentModel = new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(true));
 		}
 		else {
-			this.consensusModel = consensusModel;
+			this.consensusAlignmentModel = consensusAlignmentModel;
 		}
-		consensusSequenceID = this.consensusModel.addSequence("Consensus");
+		consensusSequenceID = this.consensusAlignmentModel.addSequence("Consensus");
+		
+		this.consensusDataModel = new ConsensusSequenceModel(singleReadModel);
 	}
 	
 	
@@ -104,6 +111,11 @@ public class SingleReadContigAlignmentModel extends PhyDE2AlignmentModel {
 
 
 	public AlignmentModel<Character> getConsensusModel() {
-		return consensusModel;
+		return consensusAlignmentModel;
+	}
+	
+
+	public ConsensusSequenceModel getConsensusDataModel() {
+		return consensusDataModel;
 	}
 }
