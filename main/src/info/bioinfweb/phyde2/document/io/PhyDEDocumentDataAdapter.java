@@ -27,8 +27,10 @@ import info.bioinfweb.jphyloio.dataadapters.implementations.ListBasedDocumentDat
 import info.bioinfweb.jphyloio.events.CommentEvent;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
 import info.bioinfweb.phyde2.Main;
+import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 import java.io.IOException;
 import java.util.Set;
@@ -46,9 +48,20 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 		super();
 		this.document = document;
 		Set<String> ids = document.idSet();
-		for (String id : ids) {
-			getMatrices().add(new PhyDEAlignmentDataAdapter(document.getAlignmentModel(id)));
+		
+		for (String id : ids) {  // Contig models have to be written first, since they can be referenced by default models.
+			PhyDE2AlignmentModel model = document.getAlignmentModel(id);
+			if (model instanceof SingleReadContigAlignmentModel) {
+				getMatrices().add(new PhyDEAlignmentDataAdapter(model));
+			}
 		}
+		for (String id : ids) {
+			PhyDE2AlignmentModel model = document.getAlignmentModel(id);
+			if (model instanceof DefaultPhyDE2AlignmentModel) {
+				getMatrices().add(new PhyDEAlignmentDataAdapter(model));
+			}
+		}	
+		// Write possible additional future alignment model types here.
 	}
 	
 	
