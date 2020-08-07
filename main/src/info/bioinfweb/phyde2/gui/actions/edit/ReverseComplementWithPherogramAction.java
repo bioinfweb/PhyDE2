@@ -46,10 +46,6 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 	private AlignmentModel<Character> underlyingModel = null;
 	private int firstColumn = 0;
 	private int lastColumn = 0;
-	private AlignmentModel<Character> consensusModel = null;
-	private int firstColumnCon = 0;
-	private int lastColumnCon = 0;
-	private String conSequenceID = "";
 	
 	
 	public ReverseComplementWithPherogramAction(MainFrame mainframe) {
@@ -67,20 +63,9 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 			sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(i));
 		}
 		
-	//	getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementWithPherogramEdit(getMainFrame().getActiveAlignment(), sequenceIDs));
-		
 		underlyingModel = getMainFrame().getActiveAlignment().getAlignmentModel();
-		SingleReadContigAlignmentModel consensus = (SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment();
-		consensusModel = consensus.getConsensusModel();
-		firstColumnCon = 0;
-		lastColumnCon = consensusModel.getMaxSequenceLength() - 1;
-		//Iterator<String> iterator = consensusModel.sequenceIDIterator();
 		firstColumn = 0;
 		lastColumn = underlyingModel.getMaxSequenceLength() - 1;
-		
-		for (Iterator<String> iterator = consensusModel.sequenceIDIterator(); iterator.hasNext();) {
-			conSequenceID = iterator.next();
-		}
 		
 		
 		for (String sequenceID : sequenceIDs) {
@@ -88,6 +73,10 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 			sequenceLengthStorage.put(sequenceID, diff);
 		}
 		
+		//getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementWithPherogramEdit(getMainFrame().getActiveAlignment(), sequenceIDs));
+		
+
+	
 		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		reverseComplement();
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
@@ -104,7 +93,7 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 	
 	private void reverseComplement() {
 	   	//SelectionModel selection = getReadsArea().getSelection();  
-    	for (String sequenceID : sequenceIDs) {
+		for (String sequenceID : sequenceIDs) {
     		PherogramReference pherogramReference = ((SingleReadContigAlignmentModel) getMainFrame().getActiveAlignment()).getPherogramReference(sequenceID);
     		
     		int diff = sequenceLengthStorage.get(sequenceID);
@@ -114,7 +103,6 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
     		}
     		
     		AlignmentModelUtils.reverseComplement(underlyingModel, sequenceID, firstColumn, lastColumn + 1);
-    		AlignmentModelUtils.reverseComplement(consensusModel, conSequenceID, firstColumnCon, lastColumnCon + 1);
     		
     		if (pherogramReference != null){
     			 PherogramAlignmentRelation rightRelation = pherogramReference.editableIndexByBaseCallIndex(
