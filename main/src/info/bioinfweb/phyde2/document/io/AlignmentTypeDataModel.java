@@ -22,6 +22,8 @@ package info.bioinfweb.phyde2.document.io;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.data.AbstractDataModel;
 import info.bioinfweb.libralign.model.data.DataModel;
+import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
+import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
 
 
 
@@ -30,7 +32,7 @@ public class AlignmentTypeDataModel extends AbstractDataModel implements DataMod
 	
 	
 	public AlignmentTypeDataModel(AlignmentModel<?> alignmentModel, String alignmentType) {
-		super(alignmentModel);
+		super(new PackedAlignmentModel<Character>(CharacterTokenSet.newNucleotideInstance(false)));  // TODO: Temporary workaround (The alignment model passed from outside is currently null because new models are created before the first sequence is encountered.)
 		this.alignmentType = alignmentType;
 	}
 

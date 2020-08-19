@@ -31,7 +31,6 @@ import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetEventReader;
 import info.bioinfweb.libralign.model.factory.BioPolymerCharAlignmentModelFactory;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
-import info.bioinfweb.phyde2.gui.MainFrame;
 
 
 
@@ -42,6 +41,8 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	private CharSetEventReader charSetReader;
 	private PherogramEventReader pherogramReader;
 	private AlignmentTypeDataReader alignmentTypeReader;
+	private ContigReferenceDataReader contigReferenceReader;
+	private ConsensusSequenceDataReader consensusSequenceReader;
 	
 	
 	public PhyDEAlignmentDataReader(JPhyloIOEventReader reader) {
@@ -53,6 +54,10 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 		addDataElementReader(pherogramReader);
 		alignmentTypeReader = new AlignmentTypeDataReader(this);
 		addDataElementReader(alignmentTypeReader);
+		contigReferenceReader = new ContigReferenceDataReader(this);
+		addDataElementReader(contigReferenceReader);
+		consensusSequenceReader = new ConsensusSequenceDataReader(this);
+		addDataElementReader(consensusSequenceReader);
 	}
 
 	
@@ -78,6 +83,16 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	
 	public AlignmentTypeDataReader getAlignmentTypeReader() {
 		return alignmentTypeReader;
+	}
+	
+	
+	public ContigReferenceDataReader getContigReferenceReader() {
+		return contigReferenceReader;
+	}
+
+
+	public ConsensusSequenceDataReader getConsensusSequenceReader() {
+		return consensusSequenceReader;
 	}
 
 

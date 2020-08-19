@@ -46,14 +46,7 @@ import info.bioinfweb.phyde2.gui.dialogs.AddSingleReadDialog;
 
 
 @SuppressWarnings("serial")
-public class AddSequenceAction extends AbstractPhyDEAction implements Action {
-	private URL url;
-	private PherogramProvider pherogramProvider;
-	private PherogramReference pherogramReference = null;
-	private SingleReadContigAlignmentModel contigReference;
-	private String sequenceID = null;
-	private String seqName = null;
-	
+public class AddSequenceAction extends AbstractPhyDEAction implements Action {	
 	public AddSequenceAction(MainFrame mainFrame) {
 		super(mainFrame);
 		putValue(Action.NAME, "Add sequence"); 
@@ -70,10 +63,9 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
 			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
 			if (dialog.execute()){
-				contigReference = dialog.getSelectedConitgModel();
-				seqName = dialog.getSequenceName();
+				SingleReadContigAlignmentModel contigReference = dialog.getSelectedConitgModel();
 				try {
-					doEdit(seqName);
+					doEdit(dialog.getSequenceName(), contigReference, null, null);//
 					//model.executeEdit(new AddSequenceEdit(model, dialog.getSequenceName(), null, contigReference)); //when gone there is an error with UnsupportedChromatogramFormatException
 				} 
 				catch (UnsupportedChromatogramFormatException | IOException ex) {
@@ -81,16 +73,14 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 				}
 			}
 		}
-		
 		else if (getMainFrame().getActiveAlignment() instanceof SingleReadContigAlignmentModel) {
 			AddSingleReadDialog dialog = new AddSingleReadDialog(getMainFrame());
 			if (dialog.execute()) {
 				if ((dialog.getSelectedURL() != null) && (!"".equals(dialog.getSelectedURL()))) {
 					try {
-						url = new URL(dialog.getSelectedURL());
-						pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
-						seqName = dialog.getSequenceName();
-						doEdit(seqName);
+						URL url = new URL(dialog.getSelectedURL());
+						PherogramProvider pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
+						doEdit(dialog.getSequenceName(), null, url, pherogramProvider);//
 					
 //						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(
 //								getMainFrame().getActiveAlignment(), dialog.getSequenceName(), url, null)); //when gone there is an error with UnsupportedChromatogramFormatException
@@ -104,11 +94,9 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 								"Unsupported pherogram format", JOptionPane.ERROR_MESSAGE);
 					}
 				}
-				
 				else {
 					try {
-						seqName = dialog.getSequenceName();
-						doEdit(seqName);
+						doEdit(dialog.getSequenceName(), null , null, null);
 						//getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(getMainFrame().getActiveAlignment(), dialog.getSequenceName(), null, null));
 					} 
 					catch (UnsupportedChromatogramFormatException | IOException ex) {
@@ -119,18 +107,13 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		}
 	}
 
-	private void doEdit(String sequenceName) throws UnsupportedChromatogramFormatException, IOException {
+	private void doEdit(String sequenceName, SingleReadContigAlignmentModel contigReference, URL url,PherogramProvider pherogramProvider ) throws UnsupportedChromatogramFormatException, IOException {
+		PherogramReference pherogramReference = null; 
 		PhyDE2AlignmentModel model = getMainFrame().getActiveAlignment();
 		model.getEditRecorder().startEdit();
-		int seqNumber = model.getAlignmentModel().getSequenceCount();
-		if (sequenceID == null) {
-			sequenceID = model.getAlignmentModel().addSequence(sequenceName);
-			if (pherogramProvider != null) {  // New sequence does not have an attached pherogram.
-				pherogramReference = new PherogramReference(model.getAlignmentModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
-			}
-		}
-		else {
-			model.getAlignmentModel().addSequence(sequenceName);
+		String sequenceID = model.getAlignmentModel().addSequence(sequenceName);
+		if (pherogramProvider != null) {  // New sequence does not have an attached pherogram.
+			pherogramReference = new PherogramReference(model.getAlignmentModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
 		}
 		if ((model instanceof SingleReadContigAlignmentModel) && (pherogramReference != null)) {
 			for (int j = 0; j < pherogramReference.getPherogramProvider().getSequenceLength(); j++) {
@@ -139,11 +122,10 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 			}
 			((SingleReadContigAlignmentModel) model).addPherogram(sequenceID, pherogramReference);
 		}
-		
 		else if ((model instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
-			((DefaultPhyDE2AlignmentModel) model).addConsensus(contigReference, sequenceID);
+			((DefaultPhyDE2AlignmentModel) model).addContigReference(contigReference, sequenceID);//contig Reference
 		}
-		model.getEditRecorder().endEdit(getPresentationName());
+		model.getEditRecorder().endEdit(getPresentationName(sequenceName));
 	}
 	
 	
@@ -153,10 +135,10 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	}
 	
 	
-	private String getPresentationName() {
+	private String getPresentationName(String sequenceName) {
 		StringBuilder result = new StringBuilder();
 		result.append("Sequence ");
-		result.append(seqName);
+		result.append(sequenceName);
 		result.append(" added to alignment ");
 		result.append(getMainFrame().getActiveAlignment());
 		result.append(".");

@@ -50,15 +50,10 @@ public abstract class AbstractAddAlignmentAction extends AbstractPhyDEAction imp
 			}
 			model.getAlignmentModel().setID(getMainFrame().getSelectedDocument().generateUniqueID());
 			model.getAlignmentModel().setLabel(label);
-			
-			getMainFrame().getSelectedDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getSelectedDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved.
-		
-
+			getMainFrame().getSelectedDocument().executeEdit(new AddAlignmentEdit(getMainFrame().getSelectedDocument(), model));  //TODO Use getNewDocument().executeEdit() as soon as undo manager has been moved
 			getMainFrame().showAlignment(model);
 		}
 	}
-	
-	
 	
 
 	@Override

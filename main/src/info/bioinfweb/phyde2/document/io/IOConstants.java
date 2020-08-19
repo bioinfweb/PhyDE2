@@ -48,7 +48,7 @@ public interface IOConstants {
 	public static final String DATA_TYPE_NAMESPACE_PREFIX = "radt";
 	public static final String PHEROGRAM_ALIGNMENT_NAMESPACE_URI = NAMESPACE_URI_PREFIX + "PherogramAlignment/";
 	public static final String PHEROGRAM_ALIGNMENT_NAMESPACE_PREFIX = "pha";
-
+		
 	public static final FormatVersion FORMAT_VERSION = new FormatVersion(0, 0);
 	public static final QName PREDICATE_FORMAT_VERSION = new QName(PREDICATE_NAMESPACE_URI, "formatVersion", PREDICATE_NAMESPACE_PREFIX);
 	public static final QName PREDICATE_APPLICATION_VERSION = new QName(PREDICATE_NAMESPACE_URI, "applicationVersion", PREDICATE_NAMESPACE_PREFIX);
@@ -61,7 +61,8 @@ public interface IOConstants {
 	public static final QName PREDICATE_HAS_LEFT_CUT_POSITION = new QName(PREDICATE_NAMESPACE_URI, "hasLeftCutPosition", PREDICATE_NAMESPACE_PREFIX);
 	public static final QName PREDICATE_HAS_RIGHT_CUT_POSITION = new QName(PREDICATE_NAMESPACE_URI, "hasRightCutPosition", PREDICATE_NAMESPACE_PREFIX);
 	public static final QName PREDICATE_COLOR = new QName(PREDICATE_NAMESPACE_URI, "color", PREDICATE_NAMESPACE_PREFIX);
-
+	public static final QName PREDICATE_HAS_CONTIG_REFERENCE = new QName(PREDICATE_NAMESPACE_URI, "hasContigReference", PREDICATE_NAMESPACE_PREFIX); 
+		
 	public static final QName DATA_TYPE_PHERORAGM_ALIGNMENT = new QName(DATA_TYPE_NAMESPACE_URI, "pherogramAlignment", DATA_TYPE_NAMESPACE_PREFIX);
 	public static final QName DATA_TYPE_COLOR = new QName(DATA_TYPE_NAMESPACE_URI, "color", DATA_TYPE_NAMESPACE_PREFIX);
 

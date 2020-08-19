@@ -49,29 +49,28 @@ public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 	}
 	
 	
-	public void addConsensus(SingleReadContigAlignmentModel contig, String sequenceID) {
+	public void addContigReference(SingleReadContigAlignmentModel contig, String sequenceID) {
 		for (int i = 0; i < contig.getConsensusModel().getSequenceLength(contig.getConsensusSequenceID()); i++) {
 			this.getAlignmentModel().appendToken(sequenceID, contig.getConsensusModel().getTokenAt(contig.getConsensusSequenceID(), i), true);  //TODO Check if all tokens can be left bound if pherograms are attached here in the future.
 		}
-		
 		if (!sequenceHasContig(sequenceID)){
 			contigModelMap.put(sequenceID, contig);
 		}
-		
 		fireAfterContigReferenceAddedOrDeleted(this, ListChangeType.INSERTION, sequenceID, contigModelMap.get(sequenceID));
 	}
 	
 	
-	public SingleReadContigAlignmentModel getContig (String sequenceID){
+	public SingleReadContigAlignmentModel getContigReference(String sequenceID) {
 		return contigModelMap.get(sequenceID);
 	}
 	
 	
-	public void removeConsensusReference(String sequenceID){
+	public void removeContigReference(String sequenceID){
 		if (contigModelMap.remove(sequenceID) != null) {
 			fireAfterContigReferenceAddedOrDeleted(this, ListChangeType.DELETION, sequenceID, contigModelMap.get(sequenceID));
 		}
 	}
+	
 	
 	protected void fireAfterContigReferenceAddedOrDeleted(PhyDE2AlignmentModel source, ListChangeType listChangeType, String sequenceID, 
 			SingleReadContigAlignmentModel contigReference) {
@@ -87,7 +86,6 @@ public class DefaultPhyDE2AlignmentModel extends PhyDE2AlignmentModel {
 		if (contigModelMap.get(sequenceID) != null){
 			return true;
 		}
-		
 		return false;
 	}
 }

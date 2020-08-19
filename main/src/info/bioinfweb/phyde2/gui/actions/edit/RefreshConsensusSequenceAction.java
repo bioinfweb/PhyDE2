@@ -35,22 +35,22 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implements Action{
-	ArrayList<String> sequenceIDs = new ArrayList<>();
-
 	public RefreshConsensusSequenceAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Refresh selected consensus sequences"); 
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
+		ArrayList<String> sequenceIDs = new ArrayList<>();
 
 		//String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContig(sequenceID).getConsensusModel(), model.getContig(sequenceID).getConsensusSequenceID())) {
+			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContigReference(sequenceID).getConsensusModel(), model.getContigReference(sequenceID).getConsensusSequenceID())) {
 				sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
 			}	
 		}
@@ -59,7 +59,7 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 		for (String sequenceID2 : sequenceIDs){
 			if(((DefaultPhyDE2AlignmentModel)getMainFrame().getActiveAlignment()).sequenceHasContig(sequenceID2)){
 				int sequenceLength = model.getAlignmentModel().getSequenceLength(sequenceID2);
-				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) model).getContig(sequenceID2);
+				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) model).getContigReference(sequenceID2);
 				model.getAlignmentModel().removeTokensAt(sequenceID2, 0 , sequenceLength);
 				//					((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
 
@@ -69,12 +69,11 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 			}
 
 		}
-		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
-		
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));
 		//getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));
-		
 	}
 
+	
 	@Override
 	public void setEnabled(PhyDE2AlignmentModel model, MainFrame mainframe) {
 		boolean enabled = false;
@@ -91,18 +90,15 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 							}
 						}
 					}
-					
 					enabled = ((model != null) && (model.getAlignmentModel().getSequenceCount() != 0) && hasContig);		
 				}
-				
 			}
-			
 		}
 		setEnabled(enabled);
-		
 	}
 	
-	private String getPresentationName() {
+	
+	private String getPresentationName(ArrayList<String>sequenceIDs) {
 		StringBuilder result = new StringBuilder(64);
 		int counter = 0;
 		result.append("Sequence refreshed from contig in ");
@@ -116,7 +112,6 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 			}
 			counter++;
 		}
-		
 		int dif = sequenceIDs.size() - 3;
 		
 		if (dif > 0){
@@ -124,9 +119,7 @@ public class RefreshConsensusSequenceAction extends AbstractPhyDEAction implemen
 			result.append(dif);
 			result.append(" more sequence(s)");
 		}
-		
 		result.append(".");
 		return result.toString();
 	}
-
 }

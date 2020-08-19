@@ -39,8 +39,6 @@ import java.util.Set;
 
 public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter implements IOConstants {
 	public static final String ALIGNMENT_ID = "Alignment0";
-	
-	
 	private Document document;
 	
 	
@@ -52,13 +50,13 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 		for (String id : ids) {  // Contig models have to be written first, since they can be referenced by default models.
 			PhyDE2AlignmentModel model = document.getAlignmentModel(id);
 			if (model instanceof SingleReadContigAlignmentModel) {
-				getMatrices().add(new PhyDEAlignmentDataAdapter(model));
+				getMatrices().add(new SingleReadContigAlignmentDataAdapter((SingleReadContigAlignmentModel) model));
 			}
 		}
 		for (String id : ids) {
 			PhyDE2AlignmentModel model = document.getAlignmentModel(id);
 			if (model instanceof DefaultPhyDE2AlignmentModel) {
-				getMatrices().add(new PhyDEAlignmentDataAdapter(model));
+				getMatrices().add(new DefaultAlignmentDataAdapter((DefaultPhyDE2AlignmentModel) model));
 			}
 		}	
 		// Write possible additional future alignment model types here.
@@ -71,7 +69,15 @@ public class PhyDEDocumentDataAdapter extends ListBasedDocumentDataAdapter imple
 		Integer i = 0;
 		for (PhyDE2AlignmentModel model : models) {
 			idPrefix = ReadWriteConstants.DEFAULT_SEQUENCE_SET_ID_PREFIX + i;
-			getMatrices().add(new PhyDEAlignmentDataAdapter(model, idPrefix));
+			if (model instanceof DefaultPhyDE2AlignmentModel) {
+				getMatrices().add(new DefaultAlignmentDataAdapter((DefaultPhyDE2AlignmentModel) model, idPrefix));
+			}
+			else if (model instanceof SingleReadContigAlignmentModel) {
+				getMatrices().add(new SingleReadContigAlignmentDataAdapter((SingleReadContigAlignmentModel) model, idPrefix));	
+			}
+			else {
+				throw new InternalError("There is no adapter for writing avaiable for " + model.getClass().getCanonicalName() + ".");
+			}
 			i++;
 		}
 	}

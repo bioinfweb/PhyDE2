@@ -67,6 +67,7 @@ import javax.swing.tree.TreeNode;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame { 
 	public static final String DEFAULT_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
+	public static final String SINGLE_READ_FORMAT = JPhyloIOFormatIDs.NEXML_FORMAT_ID;
 	
 	
 	private static MainFrame firstInstance = null;

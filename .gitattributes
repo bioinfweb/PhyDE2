@@ -40,15 +40,22 @@ main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModelChangeEvent.java -te
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModelListener.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/SequenceReferenceChangeEvent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/SingleReadContigAlignmentModel.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/io/AbstractPhyDE2AlignmentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/AlignmentTypeDataModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/AlignmentTypeDataReader.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/io/ConsensusAlignmentDataAdapter.java -text
+main/src/info/bioinfweb/phyde2/document/io/ConsensusSequenceDataModel.java -text
+main/src/info/bioinfweb/phyde2/document/io/ConsensusSequenceDataReader.java -text
+main/src/info/bioinfweb/phyde2/document/io/ContigReferenceDataModel.java -text
+main/src/info/bioinfweb/phyde2/document/io/ContigReferenceDataReader.java -text
+main/src/info/bioinfweb/phyde2/document/io/DefaultAlignmentDataAdapter.java -text
 main/src/info/bioinfweb/phyde2/document/io/IOConstants.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PherogramEventReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDE2CharacterStateSetChooser.java -text
-main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEAlignmentDataReader.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/PhyDEDocumentDataAdapter.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/io/ReadWriteParameterConstants.java -text svneol=unset#text/plain
+main/src/info/bioinfweb/phyde2/document/io/SingleReadContigAlignmentDataAdapter.java -text
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEditFactory.java -text svneol=unset#text/plain

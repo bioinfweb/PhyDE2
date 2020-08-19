@@ -51,9 +51,6 @@ import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction implements Action {
-	ArrayList<String> sequenceIDs = new ArrayList<>();
-	
-	
 	public RefreshAllConsensusSequenceAction(MainFrame mainframe) {
 		super(mainframe);
 		putValue(Action.NAME, "Refresh all consensus sequences"); 
@@ -62,12 +59,12 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Iterator<String> all = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
-		
+		Iterator<String> iterator = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
+		ArrayList<String> sequenceIDs = new ArrayList<>();
 	
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
-		while (all.hasNext()) {
-			sequenceIDs.add(all.next());
+		while (iterator.hasNext()) {
+			sequenceIDs.add(iterator.next());
 			}
 		
         getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
@@ -75,15 +72,13 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 		for (String sequenceID : sequenceIDs){
 			if(((DefaultPhyDE2AlignmentModel)getMainFrame().getActiveAlignment()).sequenceHasContig(sequenceID)){
 				int sequenceLength = getMainFrame().getActiveAlignment().getAlignmentModel().getSequenceLength(sequenceID);
-				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment()).getContig(sequenceID);
+				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment()).getContigReference(sequenceID);
 				getMainFrame().getActiveAlignment().getAlignmentModel().removeTokensAt(sequenceID, 0 , sequenceLength);
-				((DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment()).addConsensus(contigModel, sequenceID);
+				((DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment()).addContigReference(contigModel, sequenceID);
 			}
-			
 		}
-		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());			
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));	//		
 		//getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));
-		
 	}
 	
 	
@@ -92,22 +87,24 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 		boolean enabled = false;
 		if (mainframe.getActiveAlignmentArea() != null) {
 			if (model instanceof DefaultPhyDE2AlignmentModel) {
-				Iterator<String> activeAlignmentArea = mainframe.getActiveAlignmentArea().getAlignmentModel().sequenceIDIterator();
+				Iterator<String> iterator = mainframe.getActiveAlignmentArea().getAlignmentModel().sequenceIDIterator();
 				boolean hasContig = false;
 				if (model.getAlignmentModel().getSequenceCount() > 0) {
-					if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(0))) {
-						hasContig = true;
+					while (iterator.hasNext()) {
+						if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(iterator.next().toString())) {
+							hasContig = true;
+							break;
+						}
 					}
+					enabled = ((model != null) && (model.getAlignmentModel().sequenceIDIterator().hasNext()!= false) && hasContig);
 				}
-
-				enabled = ((model != null) && (model.getAlignmentModel().getSequenceCount() != 0) && hasContig);
 			}
 		}
 		setEnabled(enabled);
 	}
 	
 	
-	private String getPresentationName() {
+	private String getPresentationName(ArrayList<String> sequenceIDs) {//sequenceIDs
 		StringBuilder result = new StringBuilder(64);
 		int counter = 0;
 		result.append("Sequence refreshed from contig in ");
@@ -129,7 +126,6 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 			result.append(dif);
 			result.append(" more sequence(s)");
 		}
-		
 		result.append(".");
 		return result.toString();
 	}

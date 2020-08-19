@@ -84,7 +84,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 		}
 		
 		else if ((getAlignment() instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
-			((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigReference, sequenceID);
+			((DefaultPhyDE2AlignmentModel) getAlignment()).addContigReference(contigReference, sequenceID);
 		}
 		
 		super.redo();
@@ -99,7 +99,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 		}
 		
 		if (getAlignment() instanceof DefaultPhyDE2AlignmentModel){
-			((DefaultPhyDE2AlignmentModel)getAlignment()).removeConsensusReference(sequenceID);
+			((DefaultPhyDE2AlignmentModel)getAlignment()).removeContigReference(sequenceID);
 		}
 	
 		super.undo();

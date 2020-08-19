@@ -51,7 +51,7 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
 		
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContig(sequenceID).getConsensusModel(), model.getContig(sequenceID).getConsensusSequenceID())) {
+			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContigReference(sequenceID).getConsensusModel(), model.getContigReference(sequenceID).getConsensusSequenceID())) {
 				sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
 			}	
 		}
@@ -76,16 +76,11 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 							}
 						}
 					}
-					
 					enabled = ((model != null) && (model.getAlignmentModel().getSequenceCount() != 0) && hasContig);		
 				}
-				
 			}
-			
 		}
 		setEnabled(enabled);
-		
 	}
-
 }
 

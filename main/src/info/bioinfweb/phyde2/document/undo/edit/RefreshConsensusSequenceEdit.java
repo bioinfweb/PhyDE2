@@ -59,9 +59,9 @@ public class RefreshConsensusSequenceEdit extends AlignmentEdit {
 		for (String sequenceID : sequenceIDs){
 			if(((DefaultPhyDE2AlignmentModel)getAlignment()).sequenceHasContig(sequenceID)){
 				int sequenceLength = getAlignment().getAlignmentModel().getSequenceLength(sequenceID);
-				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getAlignment()).getContig(sequenceID);
+				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getAlignment()).getContigReference(sequenceID);
 				getAlignment().getAlignmentModel().removeTokensAt(sequenceID, 0 , sequenceLength);
-//				((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
+				//((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
 				
 				for (int token = 0; token < contigModel.getConsensusModel().getSequenceLength(contigModel.getConsensusSequenceID()); token++) {
 					((DefaultPhyDE2AlignmentModel) getAlignment()).getAlignmentModel().appendToken(sequenceID, contigModel.getConsensusModel().getTokenAt(contigModel.getConsensusSequenceID(), token), true);  
