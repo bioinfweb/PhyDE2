@@ -18,35 +18,16 @@
  */
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-//import java.awt.List;
+
 import java.awt.event.ActionEvent;
-//import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.Action;
 
-//import info.bioinfweb.libralign.actions.AlignmentActionProvider;
-import info.bioinfweb.libralign.alignmentarea.AlignmentArea;
-import info.bioinfweb.libralign.alignmentarea.DataAreaLists;
-import info.bioinfweb.libralign.alignmentarea.order.SequenceOrder;
-//import info.bioinfweb.libralign.alignmentarea.DataAreaLists;
-//import info.bioinfweb.libralign.alignmentarea.label.AlignmentLabelArea;
-//import info.bioinfweb.libralign.alignmentarea.order.SequenceOrder;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.dataarea.DataArea;
-import info.bioinfweb.libralign.dataelement.DataList;
-import info.bioinfweb.libralign.dataelement.DataLists;
-import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.data.DataModel;
-import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
-//import info.bioinfweb.libralign.multiplealignments.MultipleAlignmentsContainer;
+
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.AlignmentModelEdit;
-import info.bioinfweb.phyde2.document.undo.edit.RefreshConsensusSequenceEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -61,24 +42,26 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 	public void actionPerformed(ActionEvent e) {
 		Iterator<String> iterator = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
 		ArrayList<String> sequenceIDs = new ArrayList<>();
-	
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
+		
 		while (iterator.hasNext()) {
 			sequenceIDs.add(iterator.next());
 			}
-		
         getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		
-		for (String sequenceID : sequenceIDs){
-			if(((DefaultPhyDE2AlignmentModel)getMainFrame().getActiveAlignment()).sequenceHasContig(sequenceID)){
-				int sequenceLength = getMainFrame().getActiveAlignment().getAlignmentModel().getSequenceLength(sequenceID);
-				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment()).getContigReference(sequenceID);
-				getMainFrame().getActiveAlignment().getAlignmentModel().removeTokensAt(sequenceID, 0 , sequenceLength);
-				((DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment()).addContigReference(contigModel, sequenceID);
+        for (String sequenceID2 : sequenceIDs){
+			if(((DefaultPhyDE2AlignmentModel)getMainFrame().getActiveAlignment()).sequenceHasContig(sequenceID2)){
+				int sequenceLength = model.getAlignmentModel().getSequenceLength(sequenceID2);
+				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) model).getContigReference(sequenceID2);
+				model.getAlignmentModel().removeTokensAt(sequenceID2, 0 , sequenceLength);
+				//((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
+				
+				for (int token = 0; token < contigModel.getConsensusModel().getSequenceLength(contigModel.getConsensusSequenceID()); token++) {
+					((DefaultPhyDE2AlignmentModel)model).getAlignmentModel().appendToken(sequenceID2, contigModel.getConsensusModel().getTokenAt(contigModel.getConsensusSequenceID(), token), true);  
+				}
 			}
-		}
-		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));	//		
-		//getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));
+		}//TODO: check if proper token change events are fired here	
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));	
 	}
 	
 	
@@ -104,7 +87,7 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 	}
 	
 	
-	private String getPresentationName(ArrayList<String> sequenceIDs) {//sequenceIDs
+	private String getPresentationName(ArrayList<String> sequenceIDs) {
 		StringBuilder result = new StringBuilder(64);
 		int counter = 0;
 		result.append("Sequence refreshed from contig in ");

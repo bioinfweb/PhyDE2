@@ -20,19 +20,17 @@
 
 package info.bioinfweb.phyde2.gui.actions.edit;
 
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import javax.swing.Action;
 
+
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.RefreshConsensusSequenceEdit;
+import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
@@ -51,11 +49,26 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
 		
 		for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++) {
-			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, model.getContigReference(sequenceID).getConsensusModel(), model.getContigReference(sequenceID).getConsensusSequenceID())) {
+			if (model.sequenceHasContig(sequenceID) && !AlignmentModelUtils.sequencesEqual(model.getAlignmentModel(), sequenceID, 
+					model.getContigReference(sequenceID).getConsensusModel(), model.getContigReference(sequenceID).getConsensusSequenceID())) {
 				sequenceIDs.add(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row));
 			}	
 		}
-		getMainFrame().getActiveAlignment().executeEdit(new RefreshConsensusSequenceEdit(model, sequenceIDs));	
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();	
+	
+		for (String sequenceID2 : sequenceIDs){
+			if(((DefaultPhyDE2AlignmentModel)getMainFrame().getActiveAlignment()).sequenceHasContig(sequenceID2)){
+				int sequenceLength = model.getAlignmentModel().getSequenceLength(sequenceID2);
+				SingleReadContigAlignmentModel contigModel = ((DefaultPhyDE2AlignmentModel) model).getContigReference(sequenceID2);
+				model.getAlignmentModel().removeTokensAt(sequenceID2, 0 , sequenceLength);
+				//((DefaultPhyDE2AlignmentModel) getAlignment()).addConsensus(contigModel, sequenceID);
+				
+				for (int token = 0; token < contigModel.getConsensusModel().getSequenceLength(contigModel.getConsensusSequenceID()); token++) {
+					((DefaultPhyDE2AlignmentModel)model).getAlignmentModel().appendToken(sequenceID2, contigModel.getConsensusModel().getTokenAt(contigModel.getConsensusSequenceID(), token), true);  
+				}
+			}
+		}//TODO: check if proper token change events are fired here	
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));
 	}
 
 	
@@ -68,7 +81,6 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 					SelectionModel selection = mainframe.getActiveAlignmentArea().getSelection();
 					boolean hasContig = false; 
 					if (model.getAlignmentModel().getSequenceCount() > 0) {
-						
 						for (int row = selection.getFirstRow(); row <= selection.getLastRow(); row++){
 							if (((DefaultPhyDE2AlignmentModel) model).sequenceHasContig(getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(row))) {
 								hasContig = true;
@@ -81,6 +93,32 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 			}
 		}
 		setEnabled(enabled);
+	}
+	
+	
+	private String getPresentationName(ArrayList<String>sequenceIDs) {
+		StringBuilder result = new StringBuilder(64);
+		int counter = 0;
+		result.append("Sequence refreshed from contig in ");
+		Iterator<String> i = sequenceIDs.iterator();
+		while (i.hasNext() && (counter < 3)) {
+			result.append("\"");
+			result.append(getMainFrame().getActiveAlignment().getAlignmentModel().sequenceNameByID(i.next()));
+			result.append("\"");
+			if (i.hasNext() && (counter < 2)){
+				result.append(", ");
+			}
+			counter++;
+		}
+		int dif = sequenceIDs.size() - 3;
+		
+		if (dif > 0){
+			result.append(" and ");
+			result.append(dif);
+			result.append(" more sequence(s)");
+		}
+		result.append(".");
+		return result.toString();
 	}
 }
 
