@@ -107,23 +107,20 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		}
 	}
 
+	
 	private void doEdit(String sequenceName, SingleReadContigAlignmentModel contigReference, URL url,PherogramProvider pherogramProvider ) throws UnsupportedChromatogramFormatException, IOException {
-		PherogramReference pherogramReference = null; 
 		PhyDE2AlignmentModel model = getMainFrame().getActiveAlignment();
 		model.getEditRecorder().startEdit();
 		String sequenceID = model.getAlignmentModel().addSequence(sequenceName);
-		if (pherogramProvider != null) {  // New sequence does not have an attached pherogram.
-			pherogramReference = new PherogramReference(model.getAlignmentModel(), pherogramProvider, url, sequenceID);  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught.
-		}
-		if ((model instanceof SingleReadContigAlignmentModel) && (pherogramReference != null)) {
-			for (int j = 0; j < pherogramReference.getPherogramProvider().getSequenceLength(); j++) {
-				model.getAlignmentModel().appendToken(sequenceID, pherogramReference.getPherogramProvider().getBaseCall(j), true);
-						//TODO Will the pherogram now be distorted, since interaction was recently moved to the models? This would have to be avoided. (Implementation of edits will anyway be refactored, though.)
+		if ((model instanceof SingleReadContigAlignmentModel) && (pherogramProvider != null)) {
+			for (int j = 0; j < pherogramProvider.getSequenceLength() - 1; j++) {
+				model.getAlignmentModel().appendToken(sequenceID, pherogramProvider.getBaseCall(j), true);
 			}
-			((SingleReadContigAlignmentModel) model).addPherogram(sequenceID, pherogramReference);
+			
+			((SingleReadContigAlignmentModel) model).addPherogram(sequenceID, new PherogramReference(model.getAlignmentModel(), pherogramProvider, url, sequenceID));  // PherogramReference cannot be created before, since the sequenceID is not known. The provider cannot be created here, since that might throw an exception that cannot be caught
 		}
 		else if ((model instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
-			((DefaultPhyDE2AlignmentModel) model).addContigReference(contigReference, sequenceID);//contig Reference
+			((DefaultPhyDE2AlignmentModel) model).addContigReference(contigReference, sequenceID);
 		}
 		model.getEditRecorder().endEdit(getPresentationName(sequenceName));
 	}

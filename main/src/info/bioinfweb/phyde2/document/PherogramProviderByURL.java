@@ -52,7 +52,7 @@ public class PherogramProviderByURL {
 	
 	public PherogramProvider getPherogramProvider(URL url) throws UnsupportedChromatogramFormatException, IOException {
 		PherogramProvider pherogramProvider = null;		
-		if (pherogramProviderMap.get(url.toString()) == null){
+		if (pherogramProviderMap.get(url.toString()) == null) {
 			pherogramProvider = new BioJavaPherogramProvider(ChromatogramFactory.create(url.openStream()));
 			pherogramProviderMap.put(url.toString(), pherogramProvider);		
 		}
