@@ -57,7 +57,6 @@ public class PherogramEventReader extends AbstractDataElementEventReader<Pherogr
 				PherogramReference model = new PherogramReference(
 						getMainReader().getAlignmentModelReader().getModelByJPhyloIOID(key.getAlignmentID()), 
 						pherogramURL, currentSequenceID);  //TODO Reference to the parent alignment model is required here.
-
 				if (leftCutPosition != -1) {
 					model.setLeftCutPosition(leftCutPosition);
 				}

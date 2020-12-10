@@ -150,7 +150,7 @@ public class OpenAction extends AbstractFileAction {
 							while (ids.hasNext()) {
 								String id = ids.next();
 								Collection<PherogramReference> pherogramReferences = 
-										mainReader.getPherogramEventReader().getCompletedElements().get(new DataElementKey(newAlignment.getAlignmentModel().getID(), id));
+										mainReader.getPherogramEventReader().getCompletedElements().get(new DataElementKey(newAlignment.getAlignmentModel().getID(), newAlignment.getAlignmentModel().getID() + id));
 								Iterator<PherogramReference> references = pherogramReferences.iterator();
 								while (references.hasNext()) {
 									((SingleReadContigAlignmentModel) newAlignment).addPherogram(id, references.next());

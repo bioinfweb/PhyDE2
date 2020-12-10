@@ -154,7 +154,6 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 				}
 			}
 		}
-		
 		try {
 			ReadWriteParameterMap parameters = new ReadWriteParameterMap();
 			parameters.put(ReadWriteParameterMap.KEY_APPLICATION_NAME, Main.APPLICATION_NAME);

@@ -112,6 +112,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		PhyDE2AlignmentModel model = getMainFrame().getActiveAlignment();
 		model.getEditRecorder().startEdit();
 		String sequenceID = model.getAlignmentModel().addSequence(sequenceName);
+		model.getEditRecorder().endEdit(getPresentationName(sequenceName));
 		if ((model instanceof SingleReadContigAlignmentModel) && (pherogramProvider != null)) {
 			for (int j = 0; j < pherogramProvider.getSequenceLength() - 1; j++) {
 				model.getAlignmentModel().appendToken(sequenceID, pherogramProvider.getBaseCall(j), true);
@@ -122,7 +123,6 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		else if ((model instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
 			((DefaultPhyDE2AlignmentModel) model).addContigReference(contigReference, sequenceID);
 		}
-		model.getEditRecorder().endEdit(getPresentationName(sequenceName));
 	}
 	
 	
