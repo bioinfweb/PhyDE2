@@ -36,6 +36,8 @@ import info.bioinfweb.phyde2.document.PherogramReference;
 
 
 public class PherogramEventReader extends AbstractDataElementEventReader<PherogramReference> {
+	//TODO Use LibrAlign namespaces and move this class there.
+	
 	private URIOrStringIdentifier predicate;
 	private String currentSequenceID = null;
 	private String currentAlignmentID = null;

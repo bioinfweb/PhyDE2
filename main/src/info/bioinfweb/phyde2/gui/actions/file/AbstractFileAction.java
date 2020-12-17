@@ -27,6 +27,8 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.objecttranslation.ObjectTranslatorFactory;
 import info.bioinfweb.jphyloio.objecttranslation.implementations.ColorTranslator;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramIOConstants;
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.ShiftListObjectTranslator;
 import info.bioinfweb.phyde2.Main;
 import info.bioinfweb.phyde2.document.io.IOConstants;
 import info.bioinfweb.phyde2.document.io.PhyDEDocumentDataAdapter;
@@ -53,6 +55,7 @@ public abstract class AbstractFileAction extends AbstractPhyDEAction {
 		result.addXSDTranslators(true);
 		result.addJPhyloIOTranslators(true);
 		result.addTranslator(new ColorTranslator(), true, IOConstants.DATA_TYPE_COLOR);
+		result.addTranslator(new ShiftListObjectTranslator(), true, PherogramIOConstants.DATA_TYPE_SHIFT_LIST);
 		return result;
 	}
 	
