@@ -38,6 +38,8 @@ public class UndoToAction extends UndoRedoToAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		getMainFrame().getActiveAlignment().getUndoManager().undoTo(edit);
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 }

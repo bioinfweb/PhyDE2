@@ -40,6 +40,7 @@ public class GenerateConsensusSequenceAction extends AbstractPhyDEAction impleme
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		Iterator<String> idIterator = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
 		ArrayList <String> sequenceIDs = new ArrayList<>();
 		AlignmentModel model = getMainFrame().getActiveAlignment().getAlignmentModel();
@@ -49,7 +50,8 @@ public class GenerateConsensusSequenceAction extends AbstractPhyDEAction impleme
 		while (idIterator.hasNext()) {
 			sequenceIDs.add(idIterator.next());
 		}	
-		getMainFrame().getActiveAlignment().executeEdit(new GenerateConsensusSequenceEdit(contigSequences));	
+		getMainFrame().getActiveAlignment().executeEdit(new GenerateConsensusSequenceEdit(contigSequences));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 	
 

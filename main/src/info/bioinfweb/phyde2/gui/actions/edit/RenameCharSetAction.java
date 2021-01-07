@@ -45,6 +45,7 @@ public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		String id = getSelectedCharSetID();
 		if (id == null) {
 			JOptionPane.showMessageDialog(getMainFrame(), "Please select the character set that should renamed.", "Character set not found.", JOptionPane.ERROR_MESSAGE);
@@ -56,7 +57,7 @@ public class RenameCharSetAction extends AbstractPhyDEAction implements Action {
 				document.getEditRecorder().startEdit();
 				document.getCharSetModel().get(id).setName(name);
 				document.getEditRecorder().endEdit("Renamed CharSet " + id + " to " + name);
-				
+				document.getEditRecorder().startEdit();
 				//document.executeEdit(new RenameCharSetEdit(document, id, name));
 			}
 		}

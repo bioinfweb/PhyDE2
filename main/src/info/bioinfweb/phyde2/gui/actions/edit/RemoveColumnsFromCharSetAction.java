@@ -42,6 +42,7 @@ public class RemoveColumnsFromCharSetAction extends AbstractPhyDEAction implemen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		String id = getSelectedCharSetID();
 		
 		if (id == null) {
@@ -50,6 +51,7 @@ public class RemoveColumnsFromCharSetAction extends AbstractPhyDEAction implemen
 		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		getMainFrame().getActiveAlignment().getCharSetModel().get(id).remove(getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn());
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(id));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		//getMainFrame().getActiveAlignment().executeEdit(new RemoveColumnsFromCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
 	}
 

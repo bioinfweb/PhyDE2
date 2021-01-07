@@ -54,6 +54,7 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		Collection<String> sequenceIDs = new ArrayList<>();
 		
@@ -64,6 +65,7 @@ public class DeleteSequenceAction extends AbstractPhyDEAction implements Action 
 			getMainFrame().getActiveAlignment().getAlignmentModel().removeSequence(id);
 		}
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(sequenceIDs.size() + " sequences were deleted. " + "From row " + selection.getFirstRow() + " to row " + selection.getLastRow());
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		//getMainFrame().getActiveAlignment().executeEdit(new DeleteSequencesEdit(getMainFrame().getActiveAlignment(), sequenceIDs) );
 	}
 

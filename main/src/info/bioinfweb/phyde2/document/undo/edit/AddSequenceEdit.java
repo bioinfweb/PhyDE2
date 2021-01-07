@@ -27,10 +27,10 @@ import javax.swing.undo.CannotUndoException;
 
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
+import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProviderByURL;
 import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.PherogramProviderByURL;
-import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;
@@ -57,7 +57,7 @@ public class AddSequenceEdit extends AlignmentEdit {
 			pherogramProvider = null;
 		}
 		else {
-			pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
+			pherogramProvider = BioJavaPherogramProviderByURL.getInstance().getPherogramProvider(url);
 		}
 		this.contigReference = contigReference;
 	}

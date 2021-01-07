@@ -42,7 +42,9 @@ public class UndoAction  extends AbstractPhyDEAction implements Action{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (getMainFrame().getActiveAlignment().getUndoManager().canUndo()) {
+			getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 			getMainFrame().getActiveAlignment().getUndoManager().undo();
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		}
 	}
 

@@ -54,6 +54,7 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		String id = getSelectedCharSetID();
 		
 		if (id == null) {
@@ -67,6 +68,7 @@ public class ChangeCharSetColorAction extends AbstractPhyDEAction implements Act
 				getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 				getMainFrame().getActiveCharSetArea().getModel().get(id).setColor(color);
 				getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(id));
+				getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 				//getMainFrame().getActiveAlignment().executeEdit(new ChangeCharSetColorEdit(getMainFrame().getActiveAlignment(), getMainFrame().getActiveCharSetArea().getModel(), id, color));
 			}
 		}

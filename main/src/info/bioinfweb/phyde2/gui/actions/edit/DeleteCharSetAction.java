@@ -47,6 +47,7 @@ public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		String id = getSelectedCharSetID();
 		
 		if (id == null) {
@@ -57,6 +58,7 @@ public class DeleteCharSetAction extends AbstractPhyDEAction implements Action{
 		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		dataModel.remove(id, charSet);
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(charSet.getName()));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		//getMainFrame().getActiveAlignment().executeEdit(new DeleteCharSetEdit(getMainFrame().getActiveAlignment(), charSet, id));
 	}
 	

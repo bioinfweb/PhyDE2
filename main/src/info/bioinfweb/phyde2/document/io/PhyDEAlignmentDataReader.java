@@ -29,8 +29,10 @@ import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.jphyloio.events.type.EventType;
 import info.bioinfweb.jphyloio.utils.JPhyloIOReadingUtils;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetEventReader;
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramEventReaderIO;
 import info.bioinfweb.libralign.model.factory.BioPolymerCharAlignmentModelFactory;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
+import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProviderByURL;
 
 
 
@@ -39,7 +41,7 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	private FormatVersion formatVersion = null;;
 	private ApplicationVersion applicationVersion = null;
 	private CharSetEventReader charSetReader;
-	private PherogramEventReader pherogramReader;
+	private PherogramEventReaderIO pherogramReader;
 	private AlignmentTypeDataReader alignmentTypeReader;
 	private ContigReferenceDataReader contigReferenceReader;
 	private ConsensusSequenceDataReader consensusSequenceReader;
@@ -50,7 +52,7 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 		this.reader = reader;
 		charSetReader = new CharSetEventReader(this, new URIOrStringIdentifier(null, PREDICATE_COLOR));
 		addDataElementReader(charSetReader);
-		pherogramReader = new PherogramEventReader(this);
+		pherogramReader = new PherogramEventReaderIO(this, BioJavaPherogramProviderByURL.getInstance());
 		addDataElementReader(pherogramReader);
 		alignmentTypeReader = new AlignmentTypeDataReader(this);
 		addDataElementReader(alignmentTypeReader);
@@ -76,7 +78,7 @@ public class PhyDEAlignmentDataReader extends AlignmentDataReader implements IOC
 	}
 	
 	
-	public PherogramEventReader getPherogramEventReader() {
+	public PherogramEventReaderIO getPherogramEventReader() {
 		return pherogramReader;
 	}
 	

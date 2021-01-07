@@ -19,9 +19,9 @@
 package info.bioinfweb.phyde2.gui;
 
 
-import info.bioinfweb.phyde2.document.PherogramReference;
-
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 
 
 

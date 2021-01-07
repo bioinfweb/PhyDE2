@@ -29,8 +29,8 @@ import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
@@ -57,6 +57,7 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		
 		for (int i = selection.getFirstRow(); i <= selection.getLastRow(); i++) {
@@ -80,6 +81,7 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
 		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		reverseComplement();
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 
 	

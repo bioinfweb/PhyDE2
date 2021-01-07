@@ -45,5 +45,6 @@ public class AddDefaultPhyDE2AlignmentAction extends AbstractAddAlignmentAction 
 		String message = "Enter a label for the new alignment:";
 		String defaultLabel = "unnamedAlignment";
 		addAlignment(model, defaultLabel, message);
+		model.getEditRecorder().startEdit();
 	}
 }

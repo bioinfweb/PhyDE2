@@ -48,6 +48,7 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		int indexFirstColumn = selection.getFirstColumn();
 		
@@ -68,6 +69,7 @@ public class RemoveGapsAction extends AbstractPhyDEAction implements Action {
 			}	
 		}
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("Gaps were removed from " + selection.getFirstRow() + " to " + selection.getLastRow());
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 	
 	

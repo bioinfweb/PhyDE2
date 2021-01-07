@@ -47,6 +47,7 @@ public class CutLeftAction extends AbstractPhyDEAction implements Action{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
 		DataList<AlignmentArea, DataArea> sequenceDataAreaList = MainFrame.getInstance().getActiveAlignmentArea().getDataAreas().getSequenceList(sequenceID);
@@ -67,7 +68,7 @@ public class CutLeftAction extends AbstractPhyDEAction implements Action{
 			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 			pherogramModel.setLeftCutPosition(newPos);
 			getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(newPos,sequenceID));
-			
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 			//getMainFrame().getActiveAlignment().executeEdit(new CutLeftEdit(getMainFrame().getActiveAlignment(), sequenceID, newPos, oldPos));
 		}	
 	}

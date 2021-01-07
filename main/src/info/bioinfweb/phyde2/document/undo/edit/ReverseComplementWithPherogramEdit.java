@@ -29,7 +29,7 @@ import javax.swing.undo.CannotUndoException;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
-import info.bioinfweb.phyde2.document.PherogramReference;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.AlignmentEdit;

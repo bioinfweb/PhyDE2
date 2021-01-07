@@ -45,11 +45,12 @@ public class AddContigAlignmentAction extends AbstractAddAlignmentAction impleme
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {		
+	public void actionPerformed(ActionEvent e) {
 		SingleReadContigAlignmentModel contig = new SingleReadContigAlignmentModel(getMainFrame().getSelectedDocument());
 		String message = "Enter a label for the new contig alignment:";
 		String defaultLabel = "unnamedContig";	
 		contig.getConsensusModel().setID(getMainFrame().getSelectedDocument().generateUniqueID());
 		addAlignment(contig, defaultLabel, message);
+		contig.getEditRecorder().startEdit();
 	}
 }

@@ -26,7 +26,7 @@ import info.bioinfweb.libralign.dataarea.DataAreaFactory;
 import info.bioinfweb.libralign.dataarea.ModelBasedDataArea;
 import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramArea;
 import info.bioinfweb.libralign.model.data.DataModel;
-import info.bioinfweb.phyde2.document.PherogramReference;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 
 
 

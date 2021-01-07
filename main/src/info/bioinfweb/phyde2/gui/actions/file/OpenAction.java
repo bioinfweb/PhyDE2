@@ -44,10 +44,10 @@ import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.io.DataElementKey;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.AlignmentType;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.Document;
-import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.io.AlignmentTypeDataModel;
@@ -211,7 +211,6 @@ public class OpenAction extends AbstractFileAction {
 							getMainFrame().getActiveAlignment().setChanged(false);
 						}
 					}
-						
 					if (eventReader.getFormatID().equals(MainFrame.DEFAULT_FORMAT) && (IOConstants.FORMAT_VERSION.equals(mainReader.getFormatVersion()))) {
 						getMainFrame().getDocumentList().get(getMainFrame().getDocumentList().size()-1).setFile(getOpenFileChooser().getSelectedFile());
 					}
@@ -224,6 +223,7 @@ public class OpenAction extends AbstractFileAction {
 								message, "Multiple data sets found", JOptionPane.WARNING_MESSAGE);
 					}
 				}
+				getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 			}
 		}
 		catch (Exception ex) {

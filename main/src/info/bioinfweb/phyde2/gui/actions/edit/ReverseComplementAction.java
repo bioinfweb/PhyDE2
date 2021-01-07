@@ -59,6 +59,7 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 
 		
@@ -78,7 +79,7 @@ public class ReverseComplementAction extends AbstractPhyDEAction implements Acti
 		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		reverseComplement();
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
-		
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 //		getMainFrame().getActiveAlignment().executeEdit(new ReverseComplementEdit(getMainFrame().getActiveAlignment(), 
 //				selection.getFirstColumn(), selection.getLastColumn(), sequenceIDs));
 	}

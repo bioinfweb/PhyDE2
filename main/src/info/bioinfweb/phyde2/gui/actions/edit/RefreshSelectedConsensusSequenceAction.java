@@ -43,6 +43,7 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		ArrayList<String> sequenceIDs = new ArrayList<>();
 		String sequenceID = getMainFrame().getActiveAlignmentArea().getSequenceOrder().idByIndex(selection.getFirstRow());
@@ -69,6 +70,7 @@ public class RefreshSelectedConsensusSequenceAction extends AbstractPhyDEAction 
 			}
 		}//TODO: check if proper token change events are fired here	
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 
 	

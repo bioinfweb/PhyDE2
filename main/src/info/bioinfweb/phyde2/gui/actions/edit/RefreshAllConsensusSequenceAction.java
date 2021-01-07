@@ -40,6 +40,7 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		Iterator<String> iterator = getMainFrame().getActiveAlignment().getAlignmentModel().sequenceIDIterator();		
 		ArrayList<String> sequenceIDs = new ArrayList<>();
 		DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
@@ -61,7 +62,8 @@ public class RefreshAllConsensusSequenceAction extends AbstractPhyDEAction imple
 				}
 			}
 		}//TODO: check if proper token change events are fired here	
-		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));	
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(sequenceIDs));
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 	
 	

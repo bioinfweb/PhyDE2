@@ -1,6 +1,6 @@
 /*
  * PhyDE 2 - An alignment editor for phylogenetic purposes
- * Copyright (C) 2017  Ben Stöver, Jonas Bohn, Kai Müller
+ * Copyright (C) 2017  Ben Stï¿½ver, Jonas Bohn, Kai Mï¿½ller
  * <http://bioinfweb.info/PhyDE2>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -73,6 +73,7 @@ public class CharacterStateSetChooserAction extends AbstractPhyDEAction implemen
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		CharacterStateSetChooserDialog dialog = CharacterStateSetChooserDialog.getInstance(MainFrame.getInstance());
 		TokenSet<?> oldTokenSet = MainFrame.getInstance().getActiveAlignmentArea().getAlignmentModel().getTokenSet();
 		dialog.setChangedType(oldTokenSet.getType());
@@ -176,6 +177,7 @@ public class CharacterStateSetChooserAction extends AbstractPhyDEAction implemen
 				//currentAlignment.setTokenSet(tokenSet);
 			}
 		}
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 
 	//TODO: replace conflicting tokens here so that the new Alignment gets the right tokens

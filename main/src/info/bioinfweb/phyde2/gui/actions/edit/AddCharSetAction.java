@@ -54,6 +54,7 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		dialog.setSelectedColor(colorLister.generateNext());
 		dialog.setName("");
 		if (dialog.execute()) {
@@ -63,7 +64,7 @@ public class AddCharSetAction extends AbstractPhyDEAction implements Action {
 			CharSet charSet = new CharSet(dialog.getCharSetName(), dialog.getSelectedColor());
 			dataModel.put(csId, charSet);
 			getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName(charSet));
-			
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 			//getMainFrame().getActiveAlignment().executeEdit(new AddCharSetEdit(getMainFrame().getActiveAlignment(), "cs" + idManager.createNewID(), dialog.getCharSetName(), dialog.getSelectedColor()));
 		}
 	}

@@ -28,8 +28,9 @@ import info.bioinfweb.jphyloio.ReadWriteParameterMap;
 import info.bioinfweb.jphyloio.dataadapters.JPhyloIOEventReceiver;
 import info.bioinfweb.jphyloio.events.LinkedLabeledIDEvent;
 import info.bioinfweb.jphyloio.utils.JPhyloIOWritingUtils;
+import info.bioinfweb.libralign.dataarea.implementations.pherogram.PherogramIOUtils;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.libralign.pherogram.provider.ReverseComplementPherogramProvider;
-import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 
 public class SingleReadContigAlignmentDataAdapter extends AbstractPhyDE2AlignmentDataAdapter<SingleReadContigAlignmentModel> {
@@ -100,22 +101,8 @@ public class SingleReadContigAlignmentDataAdapter extends AbstractPhyDE2Alignmen
 					ReadWriteParameterConstants.PREDICATE_IS_SINGLE_READ, W3CXSConstants.DATA_TYPE_BOOLEAN, true); 
 			
 			if (reference != null) {
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver,
-						jPhyloIOPrefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "2", null,
-						ReadWriteParameterConstants.PREDICATE_IS_REVERSE_COMPLEMENTED, W3CXSConstants.DATA_TYPE_BOOLEAN, 
-						contigModel.getPherogramReference(sequenceID).getPherogramProvider() instanceof ReverseComplementPherogramProvider); // TODO use boolean method of PhyDE2 or LibrAlign in the future
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
-						jPhyloIOPrefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "3", null, 
-						ReadWriteParameterConstants.PREDICATE_HAS_LEFT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
-						contigModel.getPherogramReference(sequenceID).getLeftCutPosition());
-				JPhyloIOWritingUtils.writeSimpleLiteralMetadata(receiver, 
-						jPhyloIOPrefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "4", null, 
-						ReadWriteParameterConstants.PREDICATE_HAS_RIGHT_CUT_POSITION, W3CXSConstants.DATA_TYPE_INT, 
-						contigModel.getPherogramReference(sequenceID).getRightCutPosition());
 				try {
-					JPhyloIOWritingUtils.writeTerminalResourceMetadata(receiver, 
-							jPhyloIOPrefixSequenceID + ReadWriteConstants.DEFAULT_META_ID_PREFIX + "5", null, 
-							ReadWriteParameterConstants.PREDICATE_HAS_PHEROGRAM, contigModel.getPherogramReference(sequenceID).getURL().toURI());
+					PherogramIOUtils.writePherogramMetadata(receiver, jPhyloIOPrefixSequenceID, reference, contigModel.getPherogramReference(sequenceID).getURL().toURI());
 				}
 				catch (URISyntaxException e) {
 					e.printStackTrace();

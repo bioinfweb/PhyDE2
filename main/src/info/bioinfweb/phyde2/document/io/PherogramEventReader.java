@@ -31,7 +31,7 @@ import info.bioinfweb.jphyloio.events.type.EventTopologyType;
 import info.bioinfweb.libralign.model.io.AbstractDataElementEventReader;
 import info.bioinfweb.libralign.model.io.AlignmentDataReader;
 import info.bioinfweb.libralign.model.io.DataElementKey;
-import info.bioinfweb.phyde2.document.PherogramReference;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 
 
 
@@ -58,7 +58,7 @@ public class PherogramEventReader extends AbstractDataElementEventReader<Pherogr
 			try {
 				PherogramReference model = new PherogramReference(
 						getMainReader().getAlignmentModelReader().getModelByJPhyloIOID(key.getAlignmentID()), 
-						pherogramURL, currentSequenceID);  //TODO Reference to the parent alignment model is required here.
+						pherogramURL, currentSequenceID, null);  //TODO Reference to the parent alignment model is required here.
 				if (leftCutPosition != -1) {
 					model.setLeftCutPosition(leftCutPosition);
 				}
@@ -67,10 +67,6 @@ public class PherogramEventReader extends AbstractDataElementEventReader<Pherogr
 				}
 				
 				getCompletedElements().put(key, model);
-			} 
-			catch (UnsupportedChromatogramFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} 
 			catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -82,51 +78,52 @@ public class PherogramEventReader extends AbstractDataElementEventReader<Pherogr
 
 	@Override
 	public void processEvent(JPhyloIOEventReader source, JPhyloIOEvent event) throws IOException {
-		switch (event.getType().getContentType()) {
-			case ALIGNMENT:
-				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-					currentAlignmentID = event.asLabeledIDEvent().getID();
-				}
-				break;
-			case SEQUENCE:
-				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-					currentSequenceID = event.asLabeledIDEvent().getID();
-				}
-				else if (event.getType().getTopologyType().equals(EventTopologyType.END)) {
-					getPherogramAreaModel();
-					pherogramURL = null;
-					leftCutPosition = -1;
-					rightCutPosition = -1;
-				}
-				break;
-			case RESOURCE_META:
-				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-					if (ReadWriteParameterConstants.PREDICATE_HAS_PHEROGRAM.equals(event.asResourceMetadataEvent().getRel().getURI())) {
-						pherogramURL = new URL((String) event.asResourceMetadataEvent().getHRef().toString());
-					}
-				}
-				break;
-			case LITERAL_META:
-				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
-					predicate = event.asLiteralMetadataEvent().getPredicate();
-				}
-				break;
-			case LITERAL_META_CONTENT:
-				Object value = event.asLiteralMetadataContentEvent().getObjectValue();
-				if (ReadWriteParameterConstants.PREDICATE_IS_SINGLE_READ.equals(predicate.getURI())) {
-					isSingleRead = (boolean) value;
-				}
-				else if (ReadWriteParameterConstants.PREDICATE_IS_REVERSE_COMPLEMENTED.equals(predicate.getURI())) {
-					
-				}
-				else if (ReadWriteParameterConstants.PREDICATE_HAS_LEFT_CUT_POSITION.equals(predicate.getURI())) {
-					leftCutPosition = (int) value;
-				}
-				else if (ReadWriteParameterConstants.PREDICATE_HAS_RIGHT_CUT_POSITION.equals(predicate.getURI())) {
-					rightCutPosition = (int) value;
-				}
-			default:
-				break;
-		}
+//		switch (event.getType().getContentType()) {
+//			case ALIGNMENT:
+//				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
+//					currentAlignmentID = event.asLabeledIDEvent().getID();
+//				}
+//				break;
+//			case SEQUENCE:
+//				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
+//					currentSequenceID = event.asLabeledIDEvent().getID();
+//				}
+//				else if (event.getType().getTopologyType().equals(EventTopologyType.END)) {
+//					getPherogramAreaModel();
+//					pherogramURL = null;
+//					leftCutPosition = -1;
+//					rightCutPosition = -1;
+//				}
+//				break;
+//			case RESOURCE_META:
+//				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
+//					if (ReadWriteParameterConstants.PREDICATE_HAS_PHEROGRAM.equals(event.asResourceMetadataEvent().getRel().getURI())) {
+//						pherogramURL = new URL((String) event.asResourceMetadataEvent().getHRef().toString());
+//					}
+//				}
+//				break;
+//			case LITERAL_META:
+//				if (event.getType().getTopologyType().equals(EventTopologyType.START)) {
+//					predicate = event.asLiteralMetadataEvent().getPredicate();
+//				}
+//				break;
+//			case LITERAL_META_CONTENT:
+//				Object value = event.asLiteralMetadataContentEvent().getObjectValue();
+//				if (ReadWriteParameterConstants.PREDICATE_IS_SINGLE_READ.equals(predicate.getURI())) {
+//					isSingleRead = (boolean) value;
+//				}
+//				else if (ReadWriteParameterConstants.PREDICATE_IS_REVERSE_COMPLEMENTED.equals(predicate.getURI())) {
+//					
+//				}
+//				else if (ReadWriteParameterConstants.PREDICATE_HAS_LEFT_CUT_POSITION.equals(predicate.getURI())) {
+//					leftCutPosition = (int) value;
+//				}
+//				else if (ReadWriteParameterConstants.PREDICATE_HAS_RIGHT_CUT_POSITION.equals(predicate.getURI())) {
+//					rightCutPosition = (int) value;
+//				}
+//			default:
+//				break;
+//		}
+//	}
 	}
 }

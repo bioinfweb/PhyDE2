@@ -31,10 +31,10 @@ import javax.swing.KeyStroke;
 
 import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 
+import info.bioinfweb.libralign.pherogram.provider.BioJavaPherogramProviderByURL;
 import info.bioinfweb.libralign.pherogram.provider.PherogramProvider;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.PherogramProviderByURL;
-import info.bioinfweb.phyde2.document.PherogramReference;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
 import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
@@ -59,6 +59,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		if (getMainFrame().getActiveAlignment() instanceof DefaultPhyDE2AlignmentModel) {
 			DefaultPhyDE2AlignmentModel model = (DefaultPhyDE2AlignmentModel) getMainFrame().getActiveAlignment();
 			AddSequenceDialog dialog = new AddSequenceDialog(getMainFrame());
@@ -79,7 +80,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 				if ((dialog.getSelectedURL() != null) && (!"".equals(dialog.getSelectedURL()))) {
 					try {
 						URL url = new URL(dialog.getSelectedURL());
-						PherogramProvider pherogramProvider = PherogramProviderByURL.getInstance().getPherogramProvider(url);
+						PherogramProvider pherogramProvider = BioJavaPherogramProviderByURL.getInstance().getPherogramProvider(url);
 						doEdit(dialog.getSequenceName(), null, url, pherogramProvider);//
 					
 //						getMainFrame().getActiveAlignment().executeEdit(new AddSequenceEdit(
@@ -123,6 +124,7 @@ public class AddSequenceAction extends AbstractPhyDEAction implements Action {
 		else if ((model instanceof DefaultPhyDE2AlignmentModel) && (contigReference != null)) {
 			((DefaultPhyDE2AlignmentModel) model).addContigReference(contigReference, sequenceID);
 		}
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 	
 	

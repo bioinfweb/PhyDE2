@@ -47,6 +47,7 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		id = getSelectedCharSetID();
 		
 		if (id == null) {
@@ -55,6 +56,7 @@ public class AddColumnsToCharSetAction extends AbstractPhyDEAction implements Ac
 		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		getMainFrame().getActiveAlignment().getCharSetModel().get(id).add(getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn());
 		getMainFrame().getActiveAlignment().getEditRecorder().endEdit(getPresentationName());
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		//getMainFrame().getActiveAlignment().executeEdit(new AddColumnsToCharSetEdit(getMainFrame().getActiveAlignment(), id, getMainFrame().getActiveAlignmentArea().getSelection().getFirstColumn(), getMainFrame().getActiveAlignmentArea().getSelection().getLastColumn()));
 	}
 

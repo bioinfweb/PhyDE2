@@ -20,6 +20,7 @@ package info.bioinfweb.phyde2.document;
 
 
 import info.bioinfweb.commons.collections.ListChangeType;
+import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 
 
 

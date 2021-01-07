@@ -44,6 +44,7 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		SelectionModel selection = getMainFrame().getActiveAlignmentArea().getSelection();
 		String name = JOptionPane.showInputDialog("New sequence name");
 		if (name != null) {
@@ -53,6 +54,7 @@ public class RenameSequenceAction extends AbstractPhyDEAction implements Action 
 				getMainFrame().getActiveAlignment().getAlignmentModel().renameSequence(id, name);
 			}
 			getMainFrame().getActiveAlignment().getEditRecorder().endEdit("Sequence name changed to " + name);
+			getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 		}
 	}
 	//TODO: undo option can not get the sequence name back

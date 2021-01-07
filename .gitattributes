@@ -32,8 +32,6 @@ main/src/info/bioinfweb/phyde2/document/DefaultPhyDE2AlignmentModel.java -text s
 main/src/info/bioinfweb/phyde2/document/Document.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/DocumentChangeEvent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/DocumentListener.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/PherogramProviderByURL.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/PherogramReference.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PherogramReferenceChangeEvent.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModel.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/PhyDE2AlignmentModelChangeEvent.java -text svneol=unset#text/plain

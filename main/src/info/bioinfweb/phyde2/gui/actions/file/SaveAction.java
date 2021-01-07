@@ -46,7 +46,9 @@ public class SaveAction extends AbstractFileAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		save();
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 
 	

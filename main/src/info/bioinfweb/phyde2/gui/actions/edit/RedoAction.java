@@ -43,9 +43,11 @@ public class RedoAction  extends AbstractPhyDEAction implements Action{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		getMainFrame().getActiveAlignment().getEditRecorder().endEdit("User edits");
 		if (getMainFrame().getActiveAlignment().getUndoManager().canRedo()) {
 			getMainFrame().getActiveAlignment().getUndoManager().redo();
 		}
+		getMainFrame().getActiveAlignment().getEditRecorder().startEdit();
 	}
 
 
