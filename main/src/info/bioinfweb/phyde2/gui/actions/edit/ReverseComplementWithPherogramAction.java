@@ -118,6 +118,9 @@ public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction im
     	            }
     	            
     	            int shift = lastColumn-rightBorder;
+    	            if (shift < -1) {
+    	            	shift = shift + 1;
+    	            }
     	            
     	            pherogramReference.reverseComplement(sequenceIDs);
     	            pherogramReference.setFirstSeqPos(shift+1);

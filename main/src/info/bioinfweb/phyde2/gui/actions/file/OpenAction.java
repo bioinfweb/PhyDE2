@@ -43,6 +43,7 @@ import info.bioinfweb.jphyloio.factory.JPhyloIOReaderWriterFactory;
 import info.bioinfweb.jphyloio.formatinfo.JPhyloIOFormatInfo;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
+import info.bioinfweb.libralign.model.data.AbstractDataModel;
 import info.bioinfweb.libralign.model.io.DataElementKey;
 import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.AlignmentType;
@@ -159,18 +160,29 @@ public class OpenAction extends AbstractFileAction {
 							
 							Iterator<String> iDs =  ((SingleReadContigAlignmentModel)newAlignment).getAlignmentModel().sequenceIDIterator();
 							while (iDs.hasNext()) {	
-								String consensusID = iDs.next();								
+								String consensusID = iDs.next();
+								String[] alignmentIDs = newAlignment.getAlignmentModel().getID().split("x");
+								int alignmentID = Integer.parseInt(alignmentIDs[1]) - 1;
 								Collection<ConsensusSequenceDataModel> consensusSequences =
-										mainReader.getConsensusSequenceReader().getCompletedElements().get(new DataElementKey(newAlignment.getAlignmentModel().getID(), consensusID));
-
-								ConsensusSequenceDataModel consensusSequenceID;								
+										mainReader.getConsensusSequenceReader().getCompletedElements().get(new DataElementKey(newAlignment.getAlignmentModel().getID(),"matrix" + alignmentID + consensusID));
+//								ConsensusSequenceDataModel consensusSequenceID;								
 								if (!consensusSequences.isEmpty()) {
-									consensusSequenceID = consensusSequences.iterator().next();
-									for (int tokenIndex = 0; tokenIndex < consensusSequenceID.getAlignmentModel().getMaxSequenceLength(); tokenIndex++) {
-										((SingleReadContigAlignmentModel)newAlignment).getConsensusModel().appendToken(((SingleReadContigAlignmentModel)newAlignment).getConsensusSequenceID(),
-												newAlignment.getAlignmentModel().getTokenAt(consensusID, tokenIndex), true);   
+//									consensusSequenceID = consensusSequences.iterator().next();
+									while (iDs.hasNext()) {
+										String realConsensusID = iDs.next();
+										if (!iDs.hasNext() && newAlignment.getAlignmentModel().getSequenceLength(realConsensusID) != 0) {
+											for (int tokenIndex = 0; tokenIndex < newAlignment.getAlignmentModel().getSequenceLength(realConsensusID); tokenIndex++) {
+												((SingleReadContigAlignmentModel)newAlignment).getConsensusModel().appendToken(((SingleReadContigAlignmentModel)newAlignment).getConsensusSequenceID(),
+														newAlignment.getAlignmentModel().getTokenAt(realConsensusID, tokenIndex), true);   
+											}
+											newAlignment.getAlignmentModel().removeSequence(realConsensusID);
+											break;
+										} else if (!iDs.hasNext() && newAlignment.getAlignmentModel().getSequenceLength(realConsensusID) == 0) {
+											newAlignment.getAlignmentModel().removeSequence(realConsensusID);
+											break;
+										}
 									}
-									newAlignment.getAlignmentModel().removeSequence(consensusSequenceID.getAlignmentModel().getID());	
+									break;
 								}
 								if (consensusSequences.size() > 1) {
 									message = "The file contained more than one consensus sequences. Only the first one was loaded.";
