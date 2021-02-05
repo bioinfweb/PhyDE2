@@ -22,40 +22,26 @@ package info.bioinfweb.phyde2.gui.actions.edit;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-
 import info.bioinfweb.commons.bio.CharacterStateSetType;
-import info.bioinfweb.commons.swing.AccessibleUndoManager;
-import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
-import info.bioinfweb.libralign.model.tokenset.TokenSet;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSetDataModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.factory.AlignmentModelFactory;
-import info.bioinfweb.libralign.model.factory.NewAlignmentModelParameterMap;
-import info.bioinfweb.libralign.model.implementations.AbstractAlignmentModel;
 import info.bioinfweb.libralign.model.implementations.PackedAlignmentModel;
-import info.bioinfweb.libralign.model.implementations.swingundo.SwingUndoAlignmentModel;
+import info.bioinfweb.libralign.model.tokenset.CharacterTokenSet;
+import info.bioinfweb.libralign.model.tokenset.TokenSet;
 import info.bioinfweb.phyde2.document.AlignmentType;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.io.AlignmentTypeDataModel;
-import info.bioinfweb.phyde2.document.undo.edit.DeleteSequencesEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import info.bioinfweb.phyde2.gui.dialogs.CharacterStateSetChooserDialog;
-import info.bioinfweb.libralign.model.io.AlignmentModelEventReader;
-import info.bioinfweb.libralign.model.io.DataElementKey;
 
 
 

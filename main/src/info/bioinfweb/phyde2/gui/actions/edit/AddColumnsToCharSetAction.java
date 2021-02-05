@@ -26,7 +26,6 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.AddColumnsToCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 

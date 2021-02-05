@@ -19,16 +19,6 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 
-import info.bioinfweb.commons.collections.ListChangeType;
-import info.bioinfweb.commons.collections.PackedObjectArrayList;
-import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
-import info.bioinfweb.libralign.model.AlignmentModel;
-import info.bioinfweb.libralign.model.events.SequenceChangeEvent;
-import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.DeleteSequencesEdit;
-import info.bioinfweb.phyde2.gui.MainFrame;
-import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -37,6 +27,11 @@ import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
+
+import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
+import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
+import info.bioinfweb.phyde2.gui.MainFrame;
+import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 
 
 

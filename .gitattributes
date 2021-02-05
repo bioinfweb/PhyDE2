@@ -60,26 +60,12 @@ main/src/info/bioinfweb/phyde2/document/undo/AlignmentModelEditFactory.java -tex
 main/src/info/bioinfweb/phyde2/document/undo/DocumentEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/PhyDE2Edit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractAddDeleteAlignmentEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/AbstractCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/AddAlignmentEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/AddCharSetEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/AddColumnsToCharSetEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/AddDeleteCharSetEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/AddRemoveCharSetColumns.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/AddSequenceEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/ChangeCharSetColorEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/CutLeftEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/CutRightEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteAlignmentEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteCharSetEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/DeleteSequencesEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ExtendGeneratedConsensusSequenceEdit.java -text
 main/src/info/bioinfweb/phyde2/document/undo/edit/GenerateConsensusSequenceEdit.java -text
 main/src/info/bioinfweb/phyde2/document/undo/edit/RefreshConsensusSequenceEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/RemoveColumnsFromCharSetEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/RenameCharSetEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementEdit.java -text svneol=unset#text/plain
-main/src/info/bioinfweb/phyde2/document/undo/edit/ReverseComplementWithPherogramEdit.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ClosableJTabbedPane.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ContigReferenceTreeNode.java -text svneol=unset#text/plain
 main/src/info/bioinfweb/phyde2/gui/ContigTab.java -text svneol=unset#text/plain

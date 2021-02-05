@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 
 import info.bioinfweb.libralign.dataarea.implementations.charset.CharSet;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.ChangeCharSetColorEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 

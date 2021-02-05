@@ -25,9 +25,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 
-import info.bioinfweb.libralign.dataarea.implementations.charset.events.CharSetRenamedEvent;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.RenameCharSetEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 

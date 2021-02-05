@@ -32,7 +32,6 @@ import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
 import info.bioinfweb.libralign.pherogram.model.PherogramAreaModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.CutRightEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 

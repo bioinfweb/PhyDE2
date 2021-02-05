@@ -19,26 +19,22 @@
 package info.bioinfweb.phyde2.gui.actions.edit;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
+
+import javax.swing.Action;
 
 import info.bioinfweb.libralign.alignmentarea.selection.SelectionModel;
 import info.bioinfweb.libralign.model.AlignmentModel;
 import info.bioinfweb.libralign.model.utils.AlignmentModelUtils;
 import info.bioinfweb.libralign.pherogram.model.PherogramAlignmentRelation;
 import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
-import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementEdit;
-import info.bioinfweb.phyde2.document.undo.edit.ReverseComplementWithPherogramEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
-
-import javax.swing.Action;
 
 public class ReverseComplementWithPherogramAction extends AbstractPhyDEAction implements Action{
 	private Collection <String> sequenceIDs = new ArrayList<>();;

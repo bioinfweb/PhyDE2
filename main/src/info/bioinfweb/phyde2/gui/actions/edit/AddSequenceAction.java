@@ -37,7 +37,6 @@ import info.bioinfweb.libralign.pherogram.provider.PherogramReference;
 import info.bioinfweb.phyde2.document.DefaultPhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.PhyDE2AlignmentModel;
 import info.bioinfweb.phyde2.document.SingleReadContigAlignmentModel;
-import info.bioinfweb.phyde2.document.undo.edit.AddSequenceEdit;
 import info.bioinfweb.phyde2.gui.MainFrame;
 import info.bioinfweb.phyde2.gui.actions.AbstractPhyDEAction;
 import info.bioinfweb.phyde2.gui.dialogs.AddSequenceDialog;
